@@ -130,7 +130,7 @@ const PreviewImage = () => {
 							{!isSearch && (
 								<LazyLoadImage
 									className='!h-full cursor-pointer w-full !rounded-lg overflow-hidden !object-contain'
-									src={IMAGE_PREFIX + "1/" + photoName?.replace(".jpg", "")}
+									src={src}
 									alt={`Image ${photoName}`}
 									effect='blur'
 									loading='lazy'

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { PixelCrop } from "react-image-crop";
 import { FOLDER_PREFIX } from "../constants";
+import { unauth } from "@/apis/axios";
 
 const lightColorPalette = [
 	"#F9B572",
@@ -74,7 +75,46 @@ export const refactorPath = (directory: string, name: string) => {
 	const regex = /\/+/g;
 	return dir.replaceAll(regex, "/");
 };
-export const onDownload = () => {};
+export const onDownload = async (src: string, onProgress: (percent: number) => void) => {
+	await unauth()
+		.get(src, {
+			responseType: "arraybuffer",
+			onDownloadProgress: function (progressEvent: any) {
+				if (progressEvent) {
+					// Calculate the percentage of completion
+					const percentage = (progressEvent.loaded / progressEvent.total) * 100;
+
+					// Call the provided onProgress callback with the percentage
+					onProgress(percentage);
+				}
+			},
+		})
+		.then(({ data }) => {
+			// Create a Blob object from the received data
+			const url = URL.createObjectURL(new Blob([data]));
+
+			// Extract the filename from the 'src' URL
+			const filename = src.split("/").pop() + ".png" || "image.png";
+
+			// Create a link element
+			const link = document.createElement("a");
+
+			// Set the link's href to the Object URL
+			link.href = url;
+
+			// Set the download attribute to specify the filename
+			link.download = filename;
+
+			// Programmatically click the link to trigger the download
+			link.click();
+
+			// Revoke the Object URL to free up resources
+			URL.revokeObjectURL(url);
+
+			// Remove the link element from the DOM
+			link.remove();
+		});
+};
 export async function canvasPreviewToBlob(
 	image: HTMLImageElement,
 	canvas: HTMLCanvasElement,
