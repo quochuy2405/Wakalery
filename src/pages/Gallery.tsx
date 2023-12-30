@@ -113,7 +113,7 @@ const Public = () => {
 
 	return (
 		<div className='w-full h-screen overflow-y-auto flex'>
-			<SideBar />
+			<SideBar page="discovery"/>
 			<div className='flex-1 bg-[#fdfdfd] h-full p-10'>
 				<Breadcrumb
 					items={[
