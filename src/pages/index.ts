@@ -1,0 +1,14 @@
+export { default as LandingPage } from "./LandingPage";
+export { default as Discovery } from "./Discovery";
+export { default as Works } from "./Works";
+export { default as Recycle } from "./Recycle";
+export { default as Error } from "./Error";
+export { default as Project } from "./Project";
+export { default as Gallery } from "./Gallery";
+export { default as UploadImage } from "./UploadImage";
+export { default as PreviewImage } from "./PreviewImage";
+export { default as Login } from "./Login";
+export { default as SignUp } from "./SignUp";
+export { default as Info } from "./Info";
+export { default as Analytics } from "./Analytics";
+export { default as Favorites } from "./Favorites";
