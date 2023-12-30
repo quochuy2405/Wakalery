@@ -5,8 +5,8 @@ import { SideBar } from "@/components/organims";
 const Works = () => {
 	return (
 		<div className='w-full h-screen overflow-y-auto flex'>
-			<SideBar/>
-			<div className='flex-1 bg-[#d1d8dd] h-full p-10'>
+			<SideBar page="trash"/>
+			<div className='flex-1 bg-neutral-100 h-full p-10'>
 				<div className='flex items-center gap-2 font-semibold text-xl mt-6'>
 					<img src={FolderIcon} /> <p>Recycle</p>
 				</div>

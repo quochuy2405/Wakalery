@@ -14,6 +14,7 @@ import {
 	PreviewImage,
 	Project,
 	Recycle,
+	Settings,
 	SignUp,
 	UploadImage,
 	Works,
@@ -73,6 +74,11 @@ const router = createBrowserRouter([
 			{
 				path: "/info",
 				element: <Info />,
+				errorElement: <Error />,
+			},
+			{
+				path: "/settings",
+				element: <Settings />,
 				errorElement: <Error />,
 			},
 			{

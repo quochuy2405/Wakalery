@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { GraphEdges } from "@/components/moleculers";
 import { SideBar } from "@/components/organims";
 import { Card, Col, Row } from "antd";
 import {
@@ -120,7 +121,7 @@ const Analytics = () => {
 
 					<Col span={16}>
 						<div className='h-full w-full bg-white p-4 rounded-md border border-gray-100'>
-							{/* <GraphEdges /> */}
+							<GraphEdges />
 						</div>
 					</Col>
 				</Row>

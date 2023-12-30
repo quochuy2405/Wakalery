@@ -12,3 +12,4 @@ export { default as SignUp } from "./SignUp";
 export { default as Info } from "./Info";
 export { default as Analytics } from "./Analytics";
 export { default as Favorites } from "./Favorites";
+export { default as Settings } from "./Settings";
