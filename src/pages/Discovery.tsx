@@ -34,7 +34,7 @@ const Public = () => {
 
 	return (
 		<div className='flex flex-col w-full h-screen overflow-y-auto bg-white'>
-			<Header />
+			<Header page="discovery" />
 			<div className='flex-1 w-full h-full bg-white p-4 flex flex-col overflow-y-auto'>
 				<div className='flex justify-between'>
 					<h2 className='font-extrabold text-4xl uppercase leading-[90px] z-10 opacity-70 top-20 py-3'>

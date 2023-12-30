@@ -119,7 +119,7 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 			</section>
 			<div className='flex flex-col gap-3'>
 				<Link to='/recycle' className='flex items-center gap-2'>
-					<div className='w-8 h-8 p-2 bg-slate-200 rounded-lg flex items-center justify-center'>
+					<div className='w-8 h-8 p-2 bg-slate-100 rounded-lg flex items-center justify-center'>
 						<svg
 							width='40'
 							height='40'
@@ -135,7 +135,7 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 					<p className='font-semibold text-sm'>Recycle</p>
 				</Link>
 				<div className='flex items-center gap-2'>
-					<div className='w-8 h-8 p-2 bg-slate-200 rounded-lg flex items-center justify-center'>
+					<div className='w-8 h-8 p-2 bg-slate-100 rounded-lg flex items-center justify-center'>
 						<svg
 							width='40'
 							height='40'
@@ -151,7 +151,7 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 					<p className='font-semibold text-sm'>Settings</p>
 				</div>
 				<div className='flex items-center gap-2'>
-					<div className='w-8 h-8 p-2 bg-slate-200 rounded-lg flex items-center justify-center'>
+					<div className='w-8 h-8 p-2 bg-slate-100 rounded-lg flex items-center justify-center'>
 						<svg
 							width='40'
 							height='40'

@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, Popconfirm } from "antd";
 import clsx from "clsx";
 import React from "react";
 import { BiSolidVideos } from "react-icons/bi";
@@ -39,16 +39,31 @@ const DirectoryRowMove: React.FC<DirectoryRowProps> = ({ name, isFolder, onClick
 			{isFolder && <FcFolder size={20} />}
 			{!isFolder && IconByType[typeDefine[lastFile]]}
 			<p className='flex-1 text-sm font-medium uppercase hover:text-emerald-600'>{name}</p>
-
-			<Button
-				icon={<MdMoveDown size={16} />}
-				onClick={(e) => {
-					e.stopPropagation();
-					onMove(name);
-				}}
-				className='font-normal items-center flex justify-center text-xs'>
-				Move In
-			</Button>
+			{isFolder && (
+				<Popconfirm
+					title='Move In'
+					description='Are you sure to move in this folder?'
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					onConfirm={(event: any) => {
+						event.stopPropagation();
+						onMove(name);
+					}}
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					onCancel={(event: any) => {
+						event.stopPropagation();
+					}}
+					okText='Yes'
+					cancelText='No'>
+					<Button
+						icon={<MdMoveDown size={16} />}
+						onClick={(e) => {
+							e.stopPropagation();
+						}}
+						className='font-normal items-center flex justify-center text-xs'>
+						Move In
+					</Button>
+				</Popconfirm>
+			)}
 		</div>
 	);
 };

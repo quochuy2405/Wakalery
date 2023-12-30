@@ -9,6 +9,7 @@ import onmove from "./features/onmove";
 import storage from "./features/storage";
 import guide from "./features/guide";
 import filemove from "./features/filemove";
+import robot from "./features/robot";
 
 export const store = configureStore({
 	reducer: {
@@ -22,6 +23,7 @@ export const store = configureStore({
 		onmove,
 		guide,
 		filemove,
+		robot,
 	},
 	middleware: getDefaultMiddleware({
 		serializableCheck: false,

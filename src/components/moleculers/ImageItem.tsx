@@ -1,14 +1,24 @@
-import { Dropdown, MenuProps, Rate } from "antd";
+import { openMove } from "@/redux/features/onmove";
+import { PhotoDirectory } from "@/types/image";
+import { Dropdown, MenuProps, Rate, Tooltip } from "antd";
 import { AiFillDelete } from "react-icons/ai";
+import { BsEyeFill } from "react-icons/bs";
 import { GiMove } from "react-icons/gi";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-
-const ImageItem = () => {
+interface ImageItemProps {
+	onQuickPreview: (image: PhotoDirectory) => void;
+	image: PhotoDirectory;
+}
+const ImageItem: React.FC<ImageItemProps> = ({ onQuickPreview, image }) => {
+  const dispatch = useDispatch();
+  
 	const items: MenuProps["items"] = [
 		{
 			label: "Move",
 			key: "1",
-			icon: <GiMove />,
+      icon: <GiMove />,
+      onClick: () => dispatch(openMove()),
 		},
 		{
 			label: "Delete",
@@ -29,11 +39,19 @@ const ImageItem = () => {
 			/>
 			<p className='p-2 font-bold text-sm text-white leading-8 z-9 relative'>Image Name</p>
 			<div className='absolute top-3 right-3 flex gap-2'>
-				<div className='p-3 w-9 h-9 flex items-center justify-center bg-neutral-100 cursor-pointer rounded-full'>
+				<div className='p-3 box-border w-9 h-9 flex items-center justify-center bg-neutral-100 cursor-pointer rounded-full'>
 					<Rate count={1} />
 				</div>
+				<div
+					onClick={() => onQuickPreview(image)}
+					className='p-3 w-9 h-9 flex items-center justify-center hover:bg-neutral-100 cursor-pointer ease-linear duration-100 rounded-full text-white hover:text-gray-800'>
+					<Tooltip title='Quick preview'>
+						<BsEyeFill size={40} />
+					</Tooltip>
+				</div>
+
 				<Dropdown menu={menuProps}>
-					<div className='p-3 w-9 h-9 flex items-center justify-center hover:bg-neutral-100 cursor-pointer rounded-full fill-white hover:fill-black'>
+					<div className='p-3 w-9 h-9 flex items-center justify-center hover:bg-neutral-100 cursor-pointer ease-linear duration-100 rounded-full fill-white hover:fill-gray-800'>
 						<svg
 							className='gUZ R19 U9O kVc'
 							height='20'
@@ -50,7 +68,7 @@ const ImageItem = () => {
 
 			<Link
 				to='/works/project/0001'
-				className='p-3 font-bold text-sm text-white absolute bottom-0 hover:bg-white z-10 right-0 cursor-pointer rounded-tl-2xl z-2 hover:text-black w-[40%] h-[20%] flex items-center justify-center'>
+				className='p-3 font-bold text-sm text-white absolute bottom-0 hover:bg-white z-2 right-0 cursor-pointer rounded-tl-2xl hover:text-black w-[40%] h-[20%] flex items-center justify-center'>
 				Preview
 			</Link>
 		</div>

@@ -3,7 +3,7 @@ import { Header } from "@/components/organims";
 const Info = () => {
 	return (
 		<div className='flex flex-col w-full h-screen overflow-y-auto bg-white'>
-			<Header />
+			<Header page='contact' />
 			<div className='flex flex-col justify-center items-center w-5/6 m-auto'>
 				<h2 className='uppercase text-sm font-semibold'>Hello! 😘</h2>
 				<h1 className='text-4xl lg:text-4xl font-semibold'>Wakalery</h1>

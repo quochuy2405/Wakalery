@@ -14,6 +14,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { IMAGE_PREFIX } from "../constants";
+import { DownloadOutlined } from "@ant-design/icons";
 
 interface DescriptionItemProps {
 	title: string;
@@ -100,12 +101,12 @@ const PreviewImage = () => {
 
 	return (
 		<div className='flex flex-col w-full h-screen overflow-y-auto bg-white'>
-			<Header />
+			<Header page='discovery' />
 
 			<div className='flex-1 relative w-full h-full bg-white p-4 flex flex-col overflow-y-auto items-center justify-center'>
 				<div
 					onClick={() => navigate(-1)}
-					className='absolute top-0 left-10 p-4 w-14 h-14 flex items-center justify-center hover:bg-neutral-100 cursor-pointer rounded-full'>
+					className='absolute top-3 left-10 p-4 w-14 h-14 flex items-center justify-center hover:bg-neutral-100 cursor-pointer rounded-full'>
 					<svg
 						className='Hn_ gUZ R19 U9O kVc'
 						height='20'
@@ -136,7 +137,7 @@ const PreviewImage = () => {
 									loading='lazy'
 								/>
 							)}
-							{
+							{isSearch && (
 								<div className='w-full h-full overflow-hidden'>
 									<ReactCrop
 										crop={(isSearch ? crop : null) as any}
@@ -154,7 +155,7 @@ const PreviewImage = () => {
 										/>
 									</ReactCrop>
 								</div>
-							}
+							)}
 						</div>
 					</Popconfirm>
 					<div className='w-full h-full p-8 relative'>
@@ -188,6 +189,7 @@ const PreviewImage = () => {
 							</div>
 							<div>
 								<Button
+                  icon={<DownloadOutlined size={40} />}
 									onClick={() => onDownload(src, onProgress)}
 									className='bg-red-500 rounded-full h-12 !text-white font-semibold w-[120px] !border-none !outline-none hover:bg-red-600'>
 									Save

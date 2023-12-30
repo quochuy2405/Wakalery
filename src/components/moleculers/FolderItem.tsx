@@ -2,9 +2,19 @@ import FolderBg from "@/assets/folder.svg";
 import { Dropdown, MenuProps, Rate } from "antd";
 import { Link } from "react-router-dom";
 import { AiFillDelete } from "react-icons/ai";
+import { GiMove } from "react-icons/gi";
+import { useDispatch } from "react-redux";
+import { openMove } from "@/redux/features/onmove";
 
 const FolderItem = () => {
+	const dispatch = useDispatch();
 	const items: MenuProps["items"] = [
+		{
+			label: "Move",
+			key: "1",
+			icon: <GiMove />,
+			onClick: () => dispatch(openMove()),
+		},
 		{
 			label: "Delete",
 			key: "3",
@@ -47,8 +57,8 @@ const FolderItem = () => {
 				<div className=' flex gap-2 justify-between'>
 					<p className='font-semibold text-xs'>Files</p>
 					<p className='font-medium text-xs'>1213 files</p>
-        </div>
-        <div className=' flex gap-2 justify-between'>
+				</div>
+				<div className=' flex gap-2 justify-between'>
 					<p className='font-semibold text-xs'>Date created</p>
 					<p className='font-medium text-xs'>20/05/2023</p>
 				</div>
