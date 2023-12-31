@@ -5,7 +5,7 @@ import { Button } from "antd";
 const LandingPage = () => {
 	return (
 		<div className='w-full h-full'>
-			{/* Header */}
+
 			<Header page='home' />
 			<div className="w-full h-full px-3 flex flex-col gap-10">
 				<section>

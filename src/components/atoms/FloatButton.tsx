@@ -38,7 +38,7 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 
 				<FloatButton icon={<LuSearch />} onClick={() => onSearch()} />
 
-				<FloatButton.BackTop visibilityHeight={1} />
+				<FloatButton.BackTop visibilityHeight={0} />
 			</FloatButton.Group>
 		</>
 	);

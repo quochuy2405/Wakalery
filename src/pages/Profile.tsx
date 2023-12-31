@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { TextField } from "@/components/atoms";
 import { SideBar } from "@/components/organims";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
@@ -116,8 +117,8 @@ const Profile = () => {
 								<TextField title='Level' />
 								<Select
 									labelInValue
-									defaultValue={{ value: "lucy", label: "Lucy (101)" }}
-                 className="w-full h-12"
+									defaultValue={{ value: "lucy", label: "Lucy (101)" } as any}
+									className='w-full h-12'
 									onChange={handleChange}
 									options={[
 										{

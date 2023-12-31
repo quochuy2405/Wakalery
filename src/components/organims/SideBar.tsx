@@ -27,11 +27,15 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 					</div>
 				</div>
 				<div className='grid grid-cols-2 pt-6 gap-4 w-full'>
-					<Link to='/' className='border w-full h-24 rounded-3xl p-3 flex flex-col justify-between'>
+					<Link
+						to='/'
+						className={
+							"border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 group hover:bg-blue-400 hover:text-white hover:border-2 hover:border-blue-300"
+						}>
 						<img
 							src={home}
 							alt='Home'
-							className={clsx("w-7 h-7", {
+							className={clsx("w-7 h-7 group-hover:bg-white group-hover:border group-hover:rounded-md", {
 								"border rounded-md bg-white": page === "analytics",
 							})}
 						/>
@@ -39,65 +43,89 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 					</Link>
 					<Link
 						to='/discovery'
-						className='border w-full h-24 flex flex-col justify-between rounded-3xl p-3'>
-						<img src={image} alt='Home' className='w-7 h-7' />
+						className='border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 group hover:bg-red-400 hover:text-white hover:border-2 hover:border-red-300'>
+						<img src={image} alt='Home' className='w-7 h-7 group-hover:bg-white group-hover:border group-hover:rounded-md' />
 						<p className='font-semibold text-sm'>Discovery</p>
 					</Link>
 					<Link
 						to='/works'
-						className={clsx("border w-full h-24 flex flex-col justify-between rounded-3xl p-3", {
-							"bg-blue-400 text-white border-2 border-blue-300": page === "works",
-						})}>
+						className={clsx(
+							"border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 group hover:bg-blue-400 hover:text-white hover:border-2 hover:border-blue-300",
+							{
+								"bg-blue-400 text-white border-2 border-blue-300": page === "works",
+							}
+						)}>
 						<img
 							src={search}
 							alt='Home'
-							className={clsx("w-7 h-7", {
-								"border rounded-md bg-white": page === "works",
-							})}
+							className={clsx(
+								"w-7 h-7 group-hover:bg-white group-hover:border group-hover:rounded-md",
+								{
+									"border rounded-md bg-white": page === "works",
+								}
+							)}
 						/>
-						<p className='font-semibold text-sm'>Works</p>
+						<p className='font-semibold text-sm group-hover:text-white'>Works</p>
 					</Link>
 					<Link
 						to='/favorites'
-						className={clsx("border w-full h-24 flex flex-col justify-between rounded-3xl p-3", {
-							"bg-red-400 text-white border-2 border-red-300": page === "favorites",
-						})}>
+						className={clsx(
+							"border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 group hover:bg-red-400 hover:text-white hover:border-2 hover:border-red-300",
+							{
+								"bg-red-400 text-white border-2 border-red-300": page === "favorites",
+							}
+						)}>
 						<img
 							src={favorite}
 							alt='Home'
-							className={clsx("w-7 h-7", {
-								"border rounded-md bg-white": page === "favorites",
-							})}
+							className={clsx(
+								"w-7 h-7 group-hover:bg-white group-hover:border group-hover:rounded-md",
+								{
+									"border rounded-md bg-white": page === "favorites",
+								}
+							)}
 						/>
-						<p className='font-semibold text-sm'>Favorites</p>
+						<p className='font-semibold text-sm group-hover:text-white'>Favorites</p>
 					</Link>
 					<Link
 						to='/analytics'
-						className={clsx("border w-full h-24 flex flex-col justify-between rounded-3xl p-3", {
-							"bg-emerald-400 text-white border-2 border-emerald-300": page === "analytics",
-						})}>
+						className={clsx(
+							"border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 group hover:text-white hover:border-2 hover:border-emerald-400 hover:bg-emerald-500",
+							{
+								"bg-emerald-400 text-white border-2 border-emerald-300": page === "analytics",
+							}
+						)}>
 						<img
 							src={analys}
 							alt='Home'
-							className={clsx("w-7 h-7", {
-								"border rounded-md bg-white": page === "analytics",
-							})}
+							className={clsx(
+								"w-7 h-7 group-hover:bg-white group-hover:border group-hover:rounded-md",
+								{
+									"border rounded-md bg-white": page === "analytics",
+								}
+							)}
 						/>
-						<p className='font-semibold text-sm'>Analytics</p>
+						<p className='font-semibold text-sm group-hover:text-white'>Analytics</p>
 					</Link>
 					<Link
 						to='/upload'
-						className={clsx("border w-full h-24 flex flex-col justify-between rounded-3xl p-3", {
-							"bg-blue-400 text-white border-2 border-blue-300": page === "favories",
-						})}>
+						className={clsx(
+							"border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 hover:bg-blue-400 group hover:text-white hover:border-2 hover:border-blue-300",
+							{
+								"bg-blue-400 text-white border-2 border-blue-300": page === "favories",
+							}
+						)}>
 						<img
 							src={upload}
 							alt='Home'
-							className={clsx("w-7 h-7", {
-								"border rounded-md bg-white": page === "analytics",
-							})}
+							className={clsx(
+								"w-7 h-7 group-hover:bg-white group-hover:border group-hover:rounded-md",
+								{
+									"border rounded-md bg-white": page === "analytics",
+								}
+							)}
 						/>
-						<p className='font-semibold text-sm'>Upload</p>
+						<p className='font-semibold text-sm group-hover:text-white'>Upload</p>
 					</Link>
 				</div>
 			</div>
