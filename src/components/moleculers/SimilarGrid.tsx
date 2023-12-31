@@ -41,7 +41,7 @@ const SimilarGrid: React.FC<DiscoveryProps> = memo(({ photoName }) => {
 
 	useEffect(() => {
 		if (!photoName) return;
-		getImageSimilar("1", photoName).then(({ data }) => {
+		getImageSimilar("1", photoName.split('.')[0]).then(({ data }) => {
 			console.log("data", data);
 			setImages(data);
 		});

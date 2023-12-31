@@ -1,5 +1,7 @@
+import { IMAGE_PREFIX } from "@/constants/index";
 import { openMove } from "@/redux/features/onmove";
 import { PhotoDirectory } from "@/types/image";
+import { HeartFilled } from "@ant-design/icons";
 import { Dropdown, MenuProps, Rate, Tooltip } from "antd";
 import { AiFillDelete } from "react-icons/ai";
 import { BsEyeFill } from "react-icons/bs";
@@ -11,14 +13,14 @@ interface ImageItemProps {
 	image: PhotoDirectory;
 }
 const ImageItem: React.FC<ImageItemProps> = ({ onQuickPreview, image }) => {
-  const dispatch = useDispatch();
-  
+	const dispatch = useDispatch();
+
 	const items: MenuProps["items"] = [
 		{
 			label: "Move",
 			key: "1",
-      icon: <GiMove />,
-      onClick: () => dispatch(openMove()),
+			icon: <GiMove />,
+			onClick: () => dispatch(openMove()),
 		},
 		{
 			label: "Delete",
@@ -34,24 +36,26 @@ const ImageItem: React.FC<ImageItemProps> = ({ onQuickPreview, image }) => {
 	return (
 		<div className='min-w-[180px] shadow-xl max-w-[400px] h-[24vh] bg-gray-200 rounded-2xl overflow-hidden relative'>
 			<img
-				src={"/login-image.png"}
+				src={IMAGE_PREFIX + "1/" + image.photoName.replace(".jpg", "")}
 				className='w-full h-full object-cover object-top absolute z-1'
 			/>
-			<p className='p-2 font-bold text-sm text-white leading-8 z-9 relative'>Image Name</p>
-			<div className='absolute top-3 right-3 flex gap-2'>
-				<div className='p-3 box-border w-9 h-9 flex items-center justify-center bg-neutral-100 cursor-pointer rounded-full'>
-					<Rate count={1} />
+			<p className='p-2 font-bold text-sm text-white leading-8 z-9 relative w-[40%]'>
+				{image.photoName}
+			</p>
+			<div className='absolute top-3 right-3 flex gap-1'>
+				<div className='box-border w-6 h-6 flex items-center justify-center cursor-pointer rounded-full bg-neutral-100 '>
+					<Rate count={1}  className="text-[14px]" character={<HeartFilled size={0}/>} />
 				</div>
 				<div
 					onClick={() => onQuickPreview(image)}
-					className='p-3 w-9 h-9 flex items-center justify-center hover:bg-neutral-100 cursor-pointer ease-linear duration-100 rounded-full text-white hover:text-gray-800'>
+					className='p-1 w-6 h-6 flex items-center justify-center hover:bg-neutral-100 cursor-pointer ease-linear duration-100 rounded-full text-white hover:text-gray-800'>
 					<Tooltip title='Quick preview'>
 						<BsEyeFill size={40} />
 					</Tooltip>
 				</div>
 
 				<Dropdown menu={menuProps}>
-					<div className='p-3 w-9 h-9 flex items-center justify-center hover:bg-neutral-100 cursor-pointer ease-linear duration-100 rounded-full fill-white hover:fill-gray-800'>
+					<div className='p-1 w-6 h-6 flex items-center justify-center hover:bg-neutral-100 cursor-pointer ease-linear duration-100 rounded-full fill-white hover:fill-gray-800'>
 						<svg
 							className='gUZ R19 U9O kVc'
 							height='20'
@@ -67,7 +71,7 @@ const ImageItem: React.FC<ImageItemProps> = ({ onQuickPreview, image }) => {
 			</div>
 
 			<Link
-				to='/works/project/0001'
+				to={`/preview/${image.photoName}`}
 				className='p-3 font-bold text-sm text-white absolute bottom-0 hover:bg-white z-2 right-0 cursor-pointer rounded-tl-2xl hover:text-black w-[40%] h-[20%] flex items-center justify-center'>
 				Preview
 			</Link>

@@ -1,22 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { getImageByFaceUploadCropAI } from "@/apis/face";
-import { getAllMaterialtByProjectId } from "@/apis/project";
 import { FloatButton } from "@/components/atoms";
 import { FolderItem, ImageItem, LoadMoveFolder } from "@/components/moleculers";
 import { SideBar } from "@/components/organims";
-import { setProject } from "@/redux/features/project";
 import { RootState } from "@/redux/store";
 import { PhotoDirectory } from "@/types/image";
 import { canvasPreviewToBlob, getUniqueItems } from "@/utils/common";
 import { Breadcrumb, Button, Image, Popconfirm } from "antd";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import ReactCrop, { Crop, PixelCrop } from "react-image-crop";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import { IMAGE_PREFIX } from "../constants";
 
 const Project = () => {
-	const { id } = useParams();
-	const dispatch = useDispatch();
+	const path = useParams();
 	const material = useSelector((state: RootState) => state.project.data);
 	const [quickPreview, setQuickPreview] = useState<PhotoDirectory | null>(null);
 	const [isSearch, setIsSearch] = useState(false);
@@ -59,7 +57,7 @@ const Project = () => {
 
 		const file = new File([blob], "crop_ai.png", { type: blob.type });
 		// Now you can use the 'file' object as needed
-		getImageByFaceUploadCropAI("1", file)
+		getImageByFaceUploadCropAI("000001", file)
 			.then(({ data }) => {
 				console.log("data", data);
 			})
@@ -72,15 +70,10 @@ const Project = () => {
 	};
 
 	const items = useMemo(() => {
-		return getUniqueItems("/home/isphoto", material);
-	}, [material]);
-
-	useEffect(() => {
-		if (id)
-			getAllMaterialtByProjectId("1", id).then(({ data }) => {
-				dispatch(setProject(data));
-			});
-	}, [id]);
+		const directory = path["*"];
+		console.log("first", "/home/isphoto/" + directory + "/");
+		return getUniqueItems("/home/isphoto/" + directory + "/", material);
+	}, [path, material]);
 
 	return (
 		<div className='w-full h-screen overflow-y-auto flex'>
@@ -127,7 +120,7 @@ const Project = () => {
 						className='h-[90%] w-full rounded-lg overflow-hidden p-4'
 						onComplete={onCompleteCrop}>
 						<section className='py-6 grid grid-cols-2 md:grid-cols-3  h-full mt-4 rounded-md lg:grid-cols-4 overflow-y-auto gap-10'>
-							{items.map((item:any) => {
+							{items.map((item: any) => {
 								if (item.isFolder) {
 									return <FolderItem key={item.photoSerialId} data={item} />;
 								}
@@ -146,10 +139,10 @@ const Project = () => {
 			{!!quickPreview && (
 				<Image
 					style={{ display: "none" }}
-					src={`https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png`}
+					src={IMAGE_PREFIX + "1/" + quickPreview.photoName.replace(".jpg", "")}
 					preview={{
 						visible: true,
-						src: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
+						src: IMAGE_PREFIX + "1/" + quickPreview.photoName.replace(".jpg", ""),
 						onVisibleChange: (value) => {
 							if (!value) setQuickPreview(null);
 						},

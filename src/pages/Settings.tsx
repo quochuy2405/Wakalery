@@ -15,15 +15,15 @@ const Settings = () => {
 							<Switch className="bg-gray-300" />
 						</div>
 						<div className='flex items-center justify-between bg-neutral-50 shadow-sm py-4 px-2 rounded-md'>
-							<p className='text-sm font-semibold'>Auto Detect Image</p>
+							<p className='text-sm font-semibold'>Auto Detect Material Image</p>
 							<Switch className="bg-gray-300" />
             </div>
             <div  className='flex items-center justify-between bg-neutral-50 shadow-sm py-4 px-2 rounded-md'>
-							<p className='text-sm font-semibold'>Auto Build Graph GNN</p>
+							<p className='text-sm font-semibold'>Auto Build ANN </p>
 							<Switch className="bg-gray-300" />
 						</div>
 						<div className='flex items-center justify-between bg-neutral-50 shadow-sm py-4 px-2 rounded-md'>
-							<p className='text-sm font-semibold'>Auto Detect Image</p>
+							<p className='text-sm font-semibold'>ChatBot AI</p>
 							<Switch className="bg-gray-300" />
 						</div>
 					</div>

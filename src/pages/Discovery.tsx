@@ -1,4 +1,4 @@
-import { getImageAll } from "@/apis/get_image";
+import { getAllPublicPhoto } from "@/apis/public";
 import { GridImages } from "@/components/moleculers";
 import { Header } from "@/components/organims";
 import { closeLoading, startLoading } from "@/redux/features/loading";
@@ -17,7 +17,7 @@ const Public = () => {
 	useEffect(() => {
 		dispatch(startLoading());
 		// Assuming `getImageAll` returns a promise
-		getImageAll("1")
+		getAllPublicPhoto()
 			.then((res) => {
 				const data = res.data;
 				console.log("data", data);

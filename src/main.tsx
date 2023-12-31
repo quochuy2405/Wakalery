@@ -3,22 +3,23 @@ import ReactDOM from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import AuthLayout from "./layouts/auth";
 import {
-	Analytics,
-	Discovery,
-	Error,
-	Favorites,
-	Gallery,
-	Info,
-	LandingPage,
-	Login,
-	PreviewImage,
-	Profile,
-	Project,
-	Recycle,
-	Settings,
-	SignUp,
-	UploadImage,
-	Works,
+  Analytics,
+  Discovery,
+  Error,
+  Favorites,
+  Info,
+  LandingPage,
+  Login,
+  Materials,
+  Preview,
+  PreviewImage,
+  Profile,
+  Project,
+  Recycle,
+  Settings,
+  SignUp,
+  UploadImage,
+  Works
 } from "./pages";
 import "./styles/global.css";
 const router = createBrowserRouter([
@@ -98,16 +99,19 @@ const router = createBrowserRouter([
 				errorElement: <Error />,
 			},
 			{
+				path: "/preview/:photoName",
+				element: <Preview />,
+				errorElement: <Error />,
+			},
+			{
 				path: "/works/project/:id",
 				element: <Project />,
 				errorElement: <Error />,
-				children: [
-					{
-						path: "/works/project/:id/:name",
-						element: <Gallery />,
-						errorElement: <Error />,
-					},
-				],
+			},
+			{
+				path: "/works/project/:id/*",
+				element: <Materials />,
+				errorElement: <Error />,
 			},
 			{
 				path: "/upload",

@@ -2,8 +2,12 @@ import FolderBg from "@/assets/folder.svg";
 import { Dropdown, MenuProps, Rate } from "antd";
 import { Link } from "react-router-dom";
 import { AiFillDelete } from "react-icons/ai";
-
-const ProjectItem = () => {
+import { ProjectType } from "@/types/project";
+import moment from "moment";
+interface ProjectItemProps {
+	data: ProjectType;
+}
+const ProjectItem: React.FC<ProjectItemProps> = ({ data }) => {
 	const items: MenuProps["items"] = [
 		{
 			label: "Delete",
@@ -19,10 +23,10 @@ const ProjectItem = () => {
 	return (
 		<div className='min-w-[180px] shadow-xl max-w-[400px] h-[24vh] bg-gray-200 rounded-2xl overflow-hidden relative'>
 			<img src={FolderBg} className='w-full h-full object-cover absolute z-1' />
-			<p className='p-2 font-bold text-sm text-gray-600 leading-8'>Project Name</p>
+			<p className='p-2 font-bold text-sm text-gray-600 leading-8'>{data?.projectName}</p>
 			<div className='absolute top-3 right-3 flex gap-2'>
 				<div className='p-3 w-9 h-9 flex items-center justify-center hover:bg-neutral-100 cursor-pointer rounded-full'>
-					<Rate count={1} />
+					<Rate count={1} defaultValue={data?.favorite ? 1 : 0} />
 				</div>
 				<Dropdown menu={menuProps}>
 					<div className='p-3 w-9 h-9 flex items-center justify-center hover:bg-neutral-100 cursor-pointer rounded-full'>
@@ -47,14 +51,14 @@ const ProjectItem = () => {
 				<div className=' flex gap-2 justify-between'>
 					<p className='font-semibold text-xs'>Files</p>
 					<p className='font-medium text-xs'>1213 files</p>
-        </div>
-        <div className=' flex gap-2 justify-between'>
+				</div>
+				<div className=' flex gap-2 justify-between'>
 					<p className='font-semibold text-xs'>Date created</p>
-					<p className='font-medium text-xs'>20/05/2023</p>
+					<p className='font-medium text-xs'>{moment(data?.createAt).format("DD-MM-YYYY")}</p>
 				</div>
 			</div>
 			<Link
-				to='/works/project/0001'
+				to={`/works/project/${data.projectId}`}
 				className='p-3 font-bold text-sm text-gray-600 absolute bottom-0 hover:bg-white z-10 right-0 cursor-pointer z-2 hover:text-black w-[40%] h-[20%] flex items-center justify-center'>
 				Open
 			</Link>

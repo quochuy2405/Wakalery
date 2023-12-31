@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { IMAGE_PREFIX } from "@/constants/index";
+import { Empty } from "antd";
 
 interface DiscoveryProps {
 	images: Array<PhotoDirectory>;
@@ -33,6 +34,11 @@ const GridImages: React.FC<DiscoveryProps> = memo(({ images }) => {
 			</div>
 		);
 	}
+	if (!images.length) return;
+	<div className='flex items-center justify-center'>
+		<Empty className='m-auto' />
+	</div>;
+
 	return grid;
 });
 export default GridImages;

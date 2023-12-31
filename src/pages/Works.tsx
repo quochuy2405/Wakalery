@@ -1,16 +1,16 @@
-import { getAllFolderByUserId } from "@/apis/folder";
+import { getAllProjectByUserId } from "@/apis/project";
 import FolderIcon from "@/assets/folder-icon.svg";
 import Storage from "@/assets/storage.svg";
 import { ProjectItem } from "@/components/moleculers";
 import { SideBar } from "@/components/organims";
-import { PhotoDirectory } from "@/types/image";
+import { ProjectType } from "@/types/project";
 import { useEffect, useState } from "react";
 
 const Works = () => {
-	const [folders, setFolders] = useState<PhotoDirectory[]>([]);
+	const [project, setProject] = useState<ProjectType[]>([]);
 	useEffect(() => {
-		getAllFolderByUserId("000001").then(({ data }) => {
-			console.log("data", data);
+		getAllProjectByUserId("1").then(({ data }) => {
+			setProject(data);
 		});
 	}, []);
 	return (
@@ -36,14 +36,10 @@ const Works = () => {
 				<div className='flex items-center gap-2 font-semibold text-md mt-6'>
 					<img src={FolderIcon} /> <p>Projects</p>
 				</div>
-				<section className='py-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10'>
-					<ProjectItem />
-					<ProjectItem />
-					<ProjectItem />
-					<ProjectItem />
-					<ProjectItem />
-					<ProjectItem />
-					<ProjectItem />
+				<section className='py-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 overflow-y-auto'>
+					{project.map((item) => {
+						return <ProjectItem data={item} />;
+					})}
 				</section>
 			</div>
 		</div>

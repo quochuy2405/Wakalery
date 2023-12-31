@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { unauth } from "@/apis/axios";
+import { PhotoDirectory } from "@/types/image";
 import { PixelCrop } from "react-image-crop";
 import { FOLDER_PREFIX } from "../constants";
-import { unauth } from "@/apis/axios";
 
 const lightColorPalette = [
 	"#F9B572",
@@ -55,12 +56,9 @@ export const arrayToTree = (folders: Array<string>, prefix: string) => {
 };
 export const getObjectByPath = (path: string, tree: object) => {
 	const pathParts = path.split("/");
-	console.log("pathParts", pathParts);
 	let currentLevel: any = { ...tree };
 
 	for (const folder of pathParts) {
-		console.log("folder", folder);
-		console.log("currentLevel", currentLevel?.[folder]);
 		if (currentLevel?.[folder] === null) {
 			return currentLevel;
 		}
@@ -171,4 +169,31 @@ export async function canvasPreviewToBlob(
 	});
 
 	return blob;
+}
+
+export function getUniqueItems(startWidth: string, materials: PhotoDirectory[]) {
+	const resultHashmap: any = {};
+	for (let i = 0; i < materials.length; i++) {
+		const material = materials[i];
+
+		if (material.photoDirectory.startsWith(startWidth)) {
+			const parts = material.photoDirectory.substring(startWidth.length).split("/");
+			const afterPath = parts[1];
+			console.log("parts", parts);
+			if (resultHashmap[afterPath]) continue;
+			if (afterPath.includes(".") || !afterPath) {
+				// Nếu có dấu chấm, coi là tệp tin (file)
+				resultHashmap[afterPath] = { ...material, isFolder: false };
+			} else {
+				// Nếu không có dấu chấm, coi là thư mục (folder)
+				resultHashmap[afterPath] = { photoName: afterPath, isFolder: true };
+			}
+		} else {
+			resultHashmap[material.photoName] = { ...material, isFolder: false };
+		}
+	}
+
+	// Lấy giá trị từ hashmap và chuyển thành mảng
+	const resultArray = Object.values(resultHashmap);
+	return resultArray;
 }

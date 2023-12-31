@@ -17,7 +17,7 @@ export interface ImageType {
 	prospect: string;
 	person: string;
 	deepClothing: string;
-	photoSerialId:string
+	photoSerialId: string;
 }
 
 export interface PhotoDirectory {
@@ -26,4 +26,6 @@ export interface PhotoDirectory {
 	photoDirectory: string;
 	userId: number;
 	createAt: Date;
+	isFolder?: boolean;
+	favorite?: boolean;
 }

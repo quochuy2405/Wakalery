@@ -350,15 +350,15 @@ const PreviewImage = () => {
 			</div>
 			{imageSearch && (
 				<div className='h-fit w-[80%] m-auto'>
-					<h2 className='font-semibold  text-2xl text-left w-[80%] p-4'>Search Results</h2>
-					<div className='grid grid-cols-4 gap-4'>
+					<h2 className='font-semibold text-emerald-500 text-2xl text-left w-[80%] p-4'>Search Results</h2>
+					<div className='grid grid-cols-4 gap-4 bg-white'>
 						<GridImages images={imageSearch} />
 						{imageSearch.length === 0 && <Empty></Empty>}
 					</div>
 				</div>
 			)}
-			<div className='h-fit w-[80%] m-auto'>
-				<h2 className='font-semibold  text-4xl text-left w-[80%] p-4'>Similars Imagex</h2>
+			<div className='h-fit w-[80%] m-auto bg-white'>
+				<h2 className='font-semibold text-emerald-500 text-2xl text-left w-[80%] p-4'>Similars Imagex</h2>
 				<div className='grid grid-cols-4 gap-4'>
 					<SimilarGrid photoName={photoName} />
 				</div>
