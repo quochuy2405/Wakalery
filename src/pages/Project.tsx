@@ -52,7 +52,7 @@ const Project = () => {
 
 		const file = new File([blob], "crop_ai.png", { type: blob.type });
 		// Now you can use the 'file' object as needed
-		getImageByFaceUploadCropAI("user-000001", file)
+		getImageByFaceUploadCropAI("000001", file)
 			.then(({ data }) => {
 				console.log("data", data);
 			})

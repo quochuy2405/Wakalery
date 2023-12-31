@@ -2,19 +2,21 @@
 import { getImageByFaceUploadCropAI } from "@/apis/face";
 import { getImageDetails } from "@/apis/get_image";
 import { FloatButton } from "@/components/atoms";
-import { ModalShare, SimilarGrid } from "@/components/moleculers";
+import { GridImages, ModalShare, SimilarGrid } from "@/components/moleculers";
 import { Header } from "@/components/organims";
-import { ImageType } from "@/types/image";
+import { closeLoading, startLoading } from "@/redux/features/loading";
+import { ImageType, PhotoDirectory } from "@/types/image";
 import { canvasPreviewToBlob, getRandomColor, onDownload } from "@/utils/common";
-import { Button, Col, Divider, Popconfirm, Progress, Row, Space, Tag } from "antd";
+import { DownloadOutlined } from "@ant-design/icons";
+import { Button, Col, Divider, Empty, Popconfirm, Progress, Row, Space, Tag } from "antd";
 import { useEffect, useRef, useState } from "react";
 import ReactCrop, { Crop, PixelCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
+import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { IMAGE_PREFIX } from "../constants";
-import { DownloadOutlined } from "@ant-design/icons";
 
 interface DescriptionItemProps {
 	title: string;
@@ -36,7 +38,10 @@ const PreviewImage = () => {
 		width: 30,
 		height: 30,
 	});
+
+	const dispatch = useDispatch();
 	const [detailsImage, setDetailsImage] = useState<ImageType>();
+	const [imageSearch, setImageSearch] = useState<PhotoDirectory[] | null>(null);
 	const [dowload, setDownload] = useState(0);
 	const [isSearch, setIsSearch] = useState(false);
 	const previewCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -66,15 +71,21 @@ const PreviewImage = () => {
 	const confirm = async () => {
 		if (!imgRef.current || !previewCanvasRef.current || !completedCrop) return;
 		// Assuming onCropBlob returns a Promise<Blob>
+		dispatch(startLoading());
 		const blob = await canvasPreviewToBlob(imgRef.current, previewCanvasRef.current, completedCrop);
 
 		const file = new File([blob], "crop_ai.png", { type: blob.type });
 		// Now you can use the 'file' object as needed
-		getImageByFaceUploadCropAI("user-000001", file)
+		getImageByFaceUploadCropAI("1", file)
 			.then(({ data }) => {
-				console.log("data", data);
+				const photos = data.map((item: any) => item.results).flat();
+				setImageSearch(photos);
 			})
-			.catch((e) => console.log("e", e));
+			.catch((e) => console.log("e", e))
+			.finally(() => {
+				setIsSearch(false);
+				dispatch(closeLoading());
+			});
 	};
 	const onSearch = () => {
 		setIsSearch(true);
@@ -103,7 +114,7 @@ const PreviewImage = () => {
 		<div className='flex flex-col w-full h-screen overflow-y-auto bg-white'>
 			<Header page='discovery' />
 
-			<div className='flex-1 relative w-full h-full bg-white p-4 flex flex-col overflow-y-auto items-center justify-center'>
+			<div className='flex-1 relative w-full bg-white p-4 flex flex-col items-center justify-center'>
 				<div
 					onClick={() => navigate(-1)}
 					className='absolute top-3 left-10 p-4 w-14 h-14 flex items-center justify-center hover:bg-neutral-100 cursor-pointer rounded-full'>
@@ -118,7 +129,7 @@ const PreviewImage = () => {
 						<path d='M8.415 4.586a2 2 0 1 1 2.828 2.828L8.657 10H21a2 2 0 0 1 0 4H8.657l2.586 2.586a2 2 0 1 1-2.828 2.828L1 12l7.415-7.414z'></path>
 					</svg>
 				</div>
-				<div className='flex h-[90%] overflow-hidden w-4/5 rounded-lg shadow-[0_0_10px_0px_#0000002b]'>
+				<div className='flex h-screen w-4/5 rounded-lg shadow-[0_0_10px_0px_#0000002b]'>
 					<Popconfirm
 						title='Search Image Similar Face'
 						description='Are you sure to search this face?'
@@ -137,25 +148,24 @@ const PreviewImage = () => {
 									loading='lazy'
 								/>
 							)}
-							{isSearch && (
-								<div className='w-full h-full overflow-hidden'>
-									<ReactCrop
-										crop={(isSearch ? crop : null) as any}
-										onChange={onChangeCrop}
-										className='h-full w-full'
-										onComplete={onCompleteCrop}>
-										<img
-											className='!h-full !w-full !object-contain'
-											src={src}
-											alt={`Image ${photoName}`}
-											loading='lazy'
-											ref={imgRef}
-											crossOrigin='anonymous'
-											hidden={!isSearch}
-										/>
-									</ReactCrop>
-								</div>
-							)}
+
+							<div className='w-full h-full overflow-hidden' hidden={!isSearch}>
+								<ReactCrop
+									crop={(isSearch ? crop : null) as any}
+									onChange={onChangeCrop}
+									className='h-full w-full'
+									onComplete={onCompleteCrop}>
+									<img
+										className='!h-full !w-full !object-contain'
+										src={src}
+										alt={`Image ${photoName}`}
+										loading='lazy'
+										ref={imgRef}
+										crossOrigin='anonymous'
+										hidden={!isSearch}
+									/>
+								</ReactCrop>
+							</div>
 						</div>
 					</Popconfirm>
 					<div className='w-full h-full p-8 relative'>
@@ -189,7 +199,7 @@ const PreviewImage = () => {
 							</div>
 							<div>
 								<Button
-                  icon={<DownloadOutlined size={40} />}
+									icon={<DownloadOutlined size={40} />}
 									onClick={() => onDownload(src, onProgress)}
 									className='bg-red-500 rounded-full h-12 !text-white font-semibold w-[120px] !border-none !outline-none hover:bg-red-600'>
 									Save
@@ -336,8 +346,23 @@ const PreviewImage = () => {
 						</div>
 					</div>
 				</div>
-				<SimilarGrid photoName={photoName} />
 			</div>
+			{imageSearch && (
+				<div className='h-fit w-[80%] m-auto'>
+					<h2 className='font-semibold  text-2xl text-left w-[80%] p-4'>Search Results</h2>
+					<div className='grid grid-cols-4 gap-4'>
+						<GridImages images={imageSearch} />
+						{imageSearch.length === 0 && <Empty></Empty>}
+					</div>
+				</div>
+			)}
+			<div className='h-fit w-[80%] m-auto'>
+				<h2 className='font-semibold  text-4xl text-left w-[80%] p-4'>Similars Imagex</h2>
+				<div className='grid grid-cols-4 gap-4'>
+					<SimilarGrid photoName={photoName} />
+				</div>
+			</div>
+
 			<FloatButton onSearch={onSearch} />
 		</div>
 	);

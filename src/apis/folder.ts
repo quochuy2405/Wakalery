@@ -9,6 +9,7 @@ type CreateDirectory = {
 	newDir: string;
 };
 
+
 export const createFolderFromDirectory = ({ newDir, userId }: CreateDirectory) => {
 	return unauth().post(`/directory/add`, {
 		userId,
@@ -37,4 +38,8 @@ export const moveFolderFromDirectory = ({ oldDirectory, newDirectory, userId }: 
 		oldDirectory,
 		newDirectory,
 	});
+};
+
+export const getChildFolderByFolderParentId = (uid: string,dirId:string) => {
+	return unauth().get(`/directory/get-child?userId=${uid}&dirId=${dirId}`);
 };

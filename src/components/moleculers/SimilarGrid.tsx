@@ -11,7 +11,7 @@ interface DiscoveryProps {
 }
 const SimilarGrid: React.FC<DiscoveryProps> = memo(({ photoName }) => {
 	const [images, setImages] = useState<PhotoDirectory[]>([]);
-	const columns = 7; // Adjust the number of columns as needed
+	const columns = 4; // Adjust the number of columns as needed
 	const grid = useMemo(() => {
 		const grid = [];
 		for (let i = 0; i < columns; i++) {
@@ -41,7 +41,7 @@ const SimilarGrid: React.FC<DiscoveryProps> = memo(({ photoName }) => {
 
 	useEffect(() => {
 		if (!photoName) return;
-		getImageSimilar("user-000001", photoName).then(({ data }) => {
+		getImageSimilar("1", photoName).then(({ data }) => {
 			console.log("data", data);
 			setImages(data);
 		});

@@ -12,6 +12,7 @@ import {
 	LandingPage,
 	Login,
 	PreviewImage,
+	Profile,
 	Project,
 	Recycle,
 	Settings,
@@ -74,6 +75,11 @@ const router = createBrowserRouter([
 			{
 				path: "/info",
 				element: <Info />,
+				errorElement: <Error />,
+			},
+			{
+				path: "/profile",
+				element: <Profile />,
 				errorElement: <Error />,
 			},
 			{

@@ -1,9 +1,18 @@
+import { getAllFolderByUserId } from "@/apis/folder";
 import FolderIcon from "@/assets/folder-icon.svg";
 import Storage from "@/assets/storage.svg";
 import { ProjectItem } from "@/components/moleculers";
 import { SideBar } from "@/components/organims";
+import { PhotoDirectory } from "@/types/image";
+import { useEffect, useState } from "react";
 
 const Works = () => {
+	const [folders, setFolders] = useState<PhotoDirectory[]>([]);
+	useEffect(() => {
+		getAllFolderByUserId("000001").then(({ data }) => {
+			console.log("data", data);
+		});
+	}, []);
 	return (
 		<div className='w-full h-screen overflow-y-auto flex'>
 			<SideBar page='works' />
