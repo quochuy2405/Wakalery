@@ -9,3 +9,4 @@ export { default as GraphEdges } from "./GraphEdges";
 export { default as LoadMoveFolder } from "./LoadMoveFolder";
 export { default as ImageItem } from "./ImageItem";
 export { default as TableTrash } from "./TableTrash";
+export { default as ModalCreateProject } from "./ModalCreateProject";

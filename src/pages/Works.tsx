@@ -1,18 +1,21 @@
 import { getAllProjectByUserId } from "@/apis/project";
 import FolderIcon from "@/assets/folder-icon.svg";
 import Storage from "@/assets/storage.svg";
-import { ProjectItem } from "@/components/moleculers";
+import { ModalCreateProject, ProjectItem } from "@/components/moleculers";
 import { SideBar } from "@/components/organims";
 import { ProjectType } from "@/types/project";
+import { Button } from "antd";
 import { useEffect, useState } from "react";
 
 const Works = () => {
 	const [project, setProject] = useState<ProjectType[]>([]);
-	useEffect(() => {
+	const [newProject, setNewProject] = useState<boolean>(false);
+  useEffect(() => {
+    if(!newProject)
 		getAllProjectByUserId("1").then(({ data }) => {
 			setProject(data);
 		});
-	}, []);
+	}, [newProject]);
 	return (
 		<div className='w-full h-screen overflow-y-auto flex'>
 			<SideBar page='works' />
@@ -33,16 +36,20 @@ const Works = () => {
 						</div>
 					</div>
 				</section>
-				<div className='flex items-center gap-2 font-semibold text-md mt-6 bg-white'>
-					<div className="flex gap-3">
+				<div className='flex justify-between items-center gap-2 shadow-lg p-4 font-semibold text-md mt-6 bg-white rounded-xl'>
+					<div className='flex gap-3'>
 						<img src={FolderIcon} /> <p>Projects</p>
 					</div>
+					<Button onClick={() => setNewProject(true)} className='font-semibold'>
+						New Project
+					</Button>
 				</div>
 				<section className='py-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 overflow-y-auto'>
 					{project.map((item) => {
 						return <ProjectItem data={item} />;
 					})}
 				</section>
+				<ModalCreateProject open={newProject} onClose={() => setNewProject(false)} />
 			</div>
 		</div>
 	);
