@@ -1,14 +1,13 @@
-import manager from "@/assets/manager.svg";
-import home from "@/assets/home.svg";
-import upload from "@/assets/upload.svg";
-import favorite from "@/assets/favorite.svg";
 import analys from "@/assets/analys.svg";
+import favorite from "@/assets/favorite.svg";
+import home from "@/assets/home.svg";
 import image from "@/assets/image.svg";
+import manager from "@/assets/manager.svg";
 import search from "@/assets/search.svg";
 import { Avatar } from "antd";
+import clsx from "clsx";
 import { FaBell } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import clsx from "clsx";
 interface SideBarProps {
 	page: string;
 }
@@ -107,8 +106,7 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 						/>
 						<p className='font-semibold text-sm group-hover:text-white'>Analytics</p>
 					</Link>
-					<Link
-						to='/upload'
+					{/* <div
 						className={clsx(
 							"border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 hover:bg-blue-400 group hover:text-white hover:border-2 hover:border-blue-300",
 							{
@@ -125,8 +123,8 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 								}
 							)}
 						/>
-						<p className='font-semibold text-sm group-hover:text-white'>Upload</p>
-					</Link>
+						<p className='font-semibold text-sm group-hover:text-white'>New Project</p>
+					</div> */}
 				</div>
 			</div>
 			<section>

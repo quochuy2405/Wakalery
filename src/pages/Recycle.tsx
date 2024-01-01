@@ -1,4 +1,5 @@
 import { getDeletedByUserId } from "@/apis/project";
+import { TableTrash } from "@/components/moleculers";
 import { SideBar } from "@/components/organims";
 import { PhotoDirectory } from "@/types/image";
 import { useEffect, useState } from "react";
@@ -30,14 +31,8 @@ const Deleted = () => {
 					</svg>{" "}
 					<p>Recycle</p>
 				</div>
-				<section className='py-6 grid grid-cols-4 gap-10'>
-					{/* <ProjectItem />
-					<ProjectItem />
-					<ProjectItem />
-					<ProjectItem />
-					<ProjectItem />
-					<ProjectItem />
-					<ProjectItem /> */}
+				<section className='mt-2'>
+					<TableTrash />
 				</section>
 			</div>
 		</div>

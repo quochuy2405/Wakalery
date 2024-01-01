@@ -33,8 +33,10 @@ const Works = () => {
 						</div>
 					</div>
 				</section>
-				<div className='flex items-center gap-2 font-semibold text-md mt-6'>
-					<img src={FolderIcon} /> <p>Projects</p>
+				<div className='flex items-center gap-2 font-semibold text-md mt-6 bg-white'>
+					<div className="flex gap-3">
+						<img src={FolderIcon} /> <p>Projects</p>
+					</div>
 				</div>
 				<section className='py-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 overflow-y-auto'>
 					{project.map((item) => {
