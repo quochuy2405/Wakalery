@@ -117,7 +117,7 @@ const PreviewImage = () => {
 			<div className='flex-1 relative w-full bg-white p-4 flex flex-col items-center justify-center'>
 				<div
 					onClick={() => navigate(-1)}
-					className='absolute top-3 left-10 p-4 w-14 h-14 flex items-center justify-center hover:bg-neutral-100 cursor-pointer rounded-full'>
+					className='absolute top-3 left-10 p-4 w-14 h-14 flex items-center justify-center hover:bg-neutral-100 ease-linear duration-200 cursor-pointer rounded-full'>
 					<svg
 						className='Hn_ gUZ R19 U9O kVc'
 						height='20'

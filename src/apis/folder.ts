@@ -7,13 +7,14 @@ export const getAllFolderByUserId = (id: string) => {
 type CreateDirectory = {
 	userId: number;
 	newDir: string;
+	projectId: number;
 };
 
-
-export const createFolderFromDirectory = ({ newDir, userId }: CreateDirectory) => {
+export const createFolderFromDirectory = ({ newDir, userId, projectId }: CreateDirectory) => {
 	return unauth().post(`/directory/add`, {
 		userId,
 		newDir,
+		projectId,
 	});
 };
 type DeleteDirectory = {
@@ -40,6 +41,6 @@ export const moveFolderFromDirectory = ({ oldDirectory, newDirectory, userId }: 
 	});
 };
 
-export const getChildFolderByFolderParentId = (uid: string,dirId:string) => {
+export const getChildFolderByFolderParentId = (uid: string, dirId: string) => {
 	return unauth().get(`/directory/get-child?userId=${uid}&dirId=${dirId}`);
 };

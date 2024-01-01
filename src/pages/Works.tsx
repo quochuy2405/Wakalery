@@ -9,13 +9,14 @@ import { useEffect, useState } from "react";
 
 const Works = () => {
 	const [project, setProject] = useState<ProjectType[]>([]);
+	const [refresh, setRefresh] = useState<boolean>(false);
 	const [newProject, setNewProject] = useState<boolean>(false);
-  useEffect(() => {
-    if(!newProject)
-		getAllProjectByUserId("1").then(({ data }) => {
-			setProject(data);
-		});
-	}, [newProject]);
+	useEffect(() => {
+		if (!newProject)
+			getAllProjectByUserId("1").then(({ data }) => {
+				setProject(data);
+			});
+	}, [newProject, refresh]);
 	return (
 		<div className='w-full h-screen overflow-y-auto flex'>
 			<SideBar page='works' />
@@ -46,7 +47,7 @@ const Works = () => {
 				</div>
 				<section className='py-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 overflow-y-auto'>
 					{project.map((item) => {
-						return <ProjectItem data={item} />;
+						return <ProjectItem refresh={() => setRefresh((e) => !e)} data={item} />;
 					})}
 				</section>
 				<ModalCreateProject open={newProject} onClose={() => setNewProject(false)} />

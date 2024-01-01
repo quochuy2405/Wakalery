@@ -118,7 +118,7 @@ const PreviewImage = () => {
 				<div className='flex-1 relative w-full bg-white p-4 flex flex-col items-center justify-center'>
 					<div
 						onClick={() => navigate(-1)}
-						className='absolute top-3 left-10 p-4 w-14 h-14 flex items-center justify-center hover:bg-neutral-100 cursor-pointer rounded-full'>
+						className='absolute top-3 left-10 p-4 w-14 h-14 flex items-center justify-center hover:bg-neutral-100 ease-linear duration-200 cursor-pointer rounded-full'>
 						<svg
 							className='Hn_ gUZ R19 U9O kVc'
 							height='20'
@@ -186,7 +186,7 @@ const PreviewImage = () => {
 							<div className='flex items-center justify-between'>
 								<div className='flex items-center gap-4'>
 									<ModalShare />
-									<div className='p-4 w-14 h-14 flex items-center justify-center hover:bg-neutral-100 cursor-pointer rounded-full'>
+									<div className='p-4 w-14 ease-linear duration-200 h-14 flex items-center justify-center hover:bg-neutral-100 cursor-pointer rounded-full'>
 										<svg
 											className='gUZ R19 U9O kVc'
 											height='20'
@@ -203,7 +203,7 @@ const PreviewImage = () => {
 									<Button
 										icon={<DownloadOutlined size={40} />}
 										onClick={() => onDownload(src, onProgress)}
-										className='bg-red-500 rounded-full h-12 !text-white font-semibold w-[120px] !border-none !outline-none hover:bg-red-600'>
+										className='bg-red-500 ease-linear duration-200 rounded-full h-12 !text-white font-semibold w-[120px] !border-none !outline-none hover:bg-red-600'>
 										Save
 									</Button>
 								</div>

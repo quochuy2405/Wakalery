@@ -36,11 +36,11 @@ const FolderItem: React.FC<FolderItemProps> = ({ data }) => {
 			<img src={FolderBg} className='w-full h-full object-cover absolute z-1' />
 			<p className='p-2 font-bold text-sm text-gray-600 leading-8'>{data.photoName}</p>
 			<div className='absolute top-3 right-3 flex gap-2'>
-				<div className='p-3 w-9 h-9 flex items-center justify-center hover:bg-neutral-100 cursor-pointer rounded-full'>
+				<div className='p-3 w-9 h-9 ease-linear duration-200 flex items-center justify-center hover:bg-neutral-100 cursor-pointer rounded-full'>
 					<Rate count={1} defaultValue={data.favorite ? 1 : 0} />
 				</div>
 				<Dropdown menu={menuProps}>
-					<div className='p-3 w-9 h-9 flex items-center justify-center hover:bg-neutral-100 cursor-pointer rounded-full'>
+					<div className='p-3 w-9 h-9 ease-linear duration-200 flex items-center justify-center hover:bg-neutral-100 cursor-pointer rounded-full'>
 						<svg
 							className='gUZ R19 U9O kVc'
 							height='20'
@@ -70,7 +70,7 @@ const FolderItem: React.FC<FolderItemProps> = ({ data }) => {
 			</div>
 			<Link
 				to={`/works/project/1${(path["*"] ? "/" + path["*"] : "") + "/"}${data.photoName}`}
-				className='p-3 font-bold text-sm text-gray-600 absolute bottom-0 hover:bg-white z-10 right-0 cursor-pointer z-2 hover:text-black w-[40%] h-[20%] flex items-center justify-center'>
+				className='p-3 font-bold text-sm text-gray-600 absolute bottom-0 hover:bg-white z-10 right-0 cursor-pointer z-2 ease-linear duration-200 hover:text-black w-[40%] h-[20%] flex items-center justify-center'>
 				Open
 			</Link>
 		</div>

@@ -37,7 +37,7 @@ const ModalShare: React.FC = () => {
 					onClick={async () => {
 						modal.info(config);
 					}}
-					className='p-4 w-14 h-14 flex items-center justify-center hover:bg-neutral-100 cursor-pointer rounded-full'>
+					className='p-4 w-14 h-14  ease-linear duration-200 flex items-center justify-center hover:bg-neutral-100 cursor-pointer rounded-full'>
 					<svg
 						className='gUZ R19 U9O kVc'
 						height='20'
