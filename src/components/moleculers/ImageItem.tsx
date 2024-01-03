@@ -71,7 +71,7 @@ const ImageItem: React.FC<ImageItemProps> = ({ onQuickPreview, image }) => {
 			</div>
 
 			<Link
-				to={`/preview/${image.photoName}`}
+				to={`/preview?name=${image.photoName}`}
 				className='p-3 font-bold text-sm text-white absolute bottom-0 hover:bg-white z-2 right-0 cursor-pointer rounded-tl-2xl ease-linear duration-200 hover:text-black w-[40%] h-[20%] flex items-center justify-center'>
 				Preview
 			</Link>

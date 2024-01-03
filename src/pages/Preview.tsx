@@ -7,6 +7,7 @@ import { SideBar } from "@/components/organims";
 import { closeLoading, startLoading } from "@/redux/features/loading";
 import { ImageType, PhotoDirectory } from "@/types/image";
 import { canvasPreviewToBlob, getRandomColor, onDownload } from "@/utils/common";
+import { DownloadOutlined } from "@ant-design/icons";
 import { Button, Col, Divider, Empty, Popconfirm, Progress, Row, Space, Tag } from "antd";
 import { useEffect, useRef, useState } from "react";
 import ReactCrop, { Crop, PixelCrop } from "react-image-crop";
@@ -14,9 +15,8 @@ import "react-image-crop/dist/ReactCrop.css";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { IMAGE_PREFIX } from "../constants";
-import { DownloadOutlined } from "@ant-design/icons";
 
 interface DescriptionItemProps {
 	title: string;
@@ -30,7 +30,8 @@ const DescriptionItem = ({ title, content }: DescriptionItemProps) => (
 );
 
 const PreviewImage = () => {
-	const { photoName } = useParams();
+	const [params] = useSearchParams();
+	const photoName = params.get("name");
 	const [crop, setCrop] = useState<Crop>({
 		unit: "%", // Can be 'px' or '%'
 		x: 12,
@@ -60,7 +61,7 @@ const PreviewImage = () => {
 	};
 	useEffect(() => {
 		if (photoName) {
-			getImageDetails("1", photoName.split('.')[0])
+			getImageDetails("1", photoName)
 				.then(({ data }) => {
 					setDetailsImage(data);
 				})
@@ -130,7 +131,7 @@ const PreviewImage = () => {
 							<path d='M8.415 4.586a2 2 0 1 1 2.828 2.828L8.657 10H21a2 2 0 0 1 0 4H8.657l2.586 2.586a2 2 0 1 1-2.828 2.828L1 12l7.415-7.414z'></path>
 						</svg>
 					</div>
-					<div className='flex h-screen w-[90%] ml-auto rounded-lg shadow-[0_0_10px_0px_#0000002b]'>
+					<div className='flex min-h-screen w-[90%] justify-center items-center ml-auto rounded-lg shadow-[0_0_10px_0px_#0000002b]'>
 						<Popconfirm
 							title='Search Image Similar Face'
 							description='Are you sure to search this face?'
@@ -140,7 +141,7 @@ const PreviewImage = () => {
 							okText='Search'
 							open={isSearch && openConfirm}
 							cancelText='Cancel'>
-							<div className='w-full h-full img-fit overflow-hidden relative bg-neutral-50'>
+							<div className='w-full flex items-center justify-center h-full img-fit overflow-hidden relative bg-neutral-50'>
 								{!isSearch && (
 									<LazyLoadImage
 										className='!h-full cursor-pointer w-full !rounded-lg overflow-hidden !object-contain'
@@ -170,7 +171,7 @@ const PreviewImage = () => {
 								</div>
 							</div>
 						</Popconfirm>
-						<div className='w-full h-full p-8 relative'>
+						<div className='w-full h-full min-h-fit p-8 relative'>
 							<canvas ref={previewCanvasRef} hidden />
 							{!!dowload && (
 								<div className='w-full absolute top-2 h-fit flex items-center justify-between'>
@@ -210,7 +211,7 @@ const PreviewImage = () => {
 							</div>
 							<div>
 								<p className='font-semibold' style={{ marginBottom: 24 }}>
-									Photo name: {detailsImage?.photoName}
+									Photo name: {detailsImage?.photo_name}
 								</p>
 								<p className='font-semibold'>Models detect</p>
 								<Row>
@@ -243,7 +244,7 @@ const PreviewImage = () => {
 								<Row className='gap-2'>
 									<DescriptionItem title='Models name' content='' />
 									<Space size={[0, 8]} wrap>
-										{detailsImage?.modelName?.split(",").map((item) => (
+										{detailsImage?.model_name?.split(",").map((item) => (
 											<Tag
 												color={getRandomColor()}
 												key={item}
@@ -322,7 +323,7 @@ const PreviewImage = () => {
 									<Col span={24}>
 										<DescriptionItem title='Deep clothing' content='' />
 										<Space size={[0, 8]} wrap>
-											{detailsImage?.deepClothing?.split(",").map((item) => (
+											{detailsImage?.deep_clothing?.split(",").map((item) => (
 												<Tag
 													color={getRandomColor()}
 													key={item}

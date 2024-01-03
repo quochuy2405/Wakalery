@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { unauth } from "@/apis/axios";
 import { PhotoDirectory } from "@/types/image";
+import axios from "axios";
 import { PixelCrop } from "react-image-crop";
 import { FOLDER_PREFIX } from "../constants";
 
@@ -74,7 +74,7 @@ export const refactorPath = (directory: string, name: string) => {
 	return dir.replaceAll(regex, "/");
 };
 export const onDownload = async (src: string, onProgress: (percent: number) => void) => {
-	await unauth()
+	await axios
 		.get(src, {
 			responseType: "arraybuffer",
 			onDownloadProgress: function (progressEvent: any) {
@@ -140,8 +140,6 @@ export async function canvasPreviewToBlob(
 	const centerX = image.naturalWidth / 2;
 	const centerY = image.naturalHeight / 2;
 
-	ctx.save();
-
 	ctx.translate(-cropX, -cropY);
 	ctx.translate(centerX, centerY);
 	ctx.translate(-centerX, -centerY);
@@ -165,7 +163,7 @@ export async function canvasPreviewToBlob(
 				throw new Error("Failed to convert canvas to blob");
 			}
 			resolve(b);
-		}, "image/png");
+		}, "image/jpeg");
 	});
 
 	return blob;
@@ -179,7 +177,6 @@ export function getUniqueItems(startWidth: string, materials: PhotoDirectory[]) 
 		if (material.photoDirectory.startsWith(startWidth)) {
 			const parts = material.photoDirectory.substring(startWidth.length).split("/");
 			const afterPath = parts[1];
-			console.log("parts", parts);
 			if (resultHashmap[afterPath]) continue;
 			if (afterPath.includes(".") || !afterPath) {
 				// Nếu có dấu chấm, coi là tệp tin (file)

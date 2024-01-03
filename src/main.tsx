@@ -89,7 +89,7 @@ const router = createBrowserRouter([
 				errorElement: <Error />,
 			},
 			{
-				path: "/discovery/:photoName",
+				path: "/discovery/preview",
 				element: <PreviewImage />,
 				errorElement: <Error />,
 			},
@@ -99,7 +99,7 @@ const router = createBrowserRouter([
 				errorElement: <Error />,
 			},
 			{
-				path: "/preview/:photoName",
+				path: "/preview",
 				element: <Preview />,
 				errorElement: <Error />,
 			},

@@ -19,12 +19,12 @@ const GridImages: React.FC<DiscoveryProps> = memo(({ images }) => {
 					.filter((_, index) => index % columns === i)
 					.map((photo, index) => (
 						<Link
-							to={`/discovery/${photo.photoName.replace(".jpg", "")}`}
+							to={`/discovery/preview?name=${photo.photoName}`}
 							key={index}
 							className='rounded-lg overflow-hidden h-fit cursor-pointer'>
 							<LazyLoadImage
 								className='h-fit cursor-pointer w-full !rounded-lg overflow-hidden object-cover'
-								src={IMAGE_PREFIX + "1/" + photo.photoName.replace(".jpg", "")}
+								src={IMAGE_PREFIX + "1/" + photo.photoName}
 								alt={`Image ${index + 1}`}
 								effect='blur'
 								loading='lazy'

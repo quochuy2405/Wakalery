@@ -7,7 +7,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import { Link } from "react-router-dom";
 
 interface DiscoveryProps {
-	photoName: string | undefined;
+	photoName: string | null | undefined;
 }
 const SimilarGrid: React.FC<DiscoveryProps> = memo(({ photoName }) => {
 	const [images, setImages] = useState<PhotoDirectory[]>([]);
@@ -21,12 +21,12 @@ const SimilarGrid: React.FC<DiscoveryProps> = memo(({ photoName }) => {
 						.filter((_, index) => index % columns === i)
 						.map((photo, index) => (
 							<Link
-								to={`/discovery/${photo?.photoName?.replace(".jpg", "")}`}
+								to={`/discovery/preview?name=${photo?.photoName}`}
 								key={index}
 								className='rounded-lg overflow-hidden h-fit cursor-pointer'>
 								<LazyLoadImage
 									className='h-fit cursor-pointer w-full !rounded-lg overflow-hidden object-cover'
-									src={IMAGE_PREFIX + "1/" + photo.photoName.replace(".jpg", "")}
+									src={IMAGE_PREFIX + "1/" + photo.photoName}
 									alt={`Image ${index + 1}`}
 									effect='blur'
 									loading='lazy'
@@ -41,8 +41,7 @@ const SimilarGrid: React.FC<DiscoveryProps> = memo(({ photoName }) => {
 
 	useEffect(() => {
 		if (!photoName) return;
-		getImageSimilar("1", photoName.split('.')[0]).then(({ data }) => {
-			console.log("data", data);
+		getImageSimilar("1", photoName).then(({ data }) => {
 			setImages(data);
 		});
 	}, [photoName]);

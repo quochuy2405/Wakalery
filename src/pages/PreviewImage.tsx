@@ -15,7 +15,7 @@ import "react-image-crop/dist/ReactCrop.css";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { IMAGE_PREFIX } from "../constants";
 
 interface DescriptionItemProps {
@@ -30,7 +30,8 @@ const DescriptionItem = ({ title, content }: DescriptionItemProps) => (
 );
 
 const PreviewImage = () => {
-	const { photoName } = useParams();
+	const [params] = useSearchParams();
+	const photoName = params.get("name");
 	const [crop, setCrop] = useState<Crop>({
 		unit: "%", // Can be 'px' or '%'
 		x: 12,
@@ -134,8 +135,8 @@ const PreviewImage = () => {
 						title='Search Image Similar Face'
 						description='Are you sure to search this face?'
 						onConfirm={confirm}
-            onCancel={cancel}
-            placement="right"
+						onCancel={cancel}
+						placement='right'
 						okText='Search'
 						open={isSearch && openConfirm}
 						cancelText='Cancel'>
@@ -209,7 +210,7 @@ const PreviewImage = () => {
 						</div>
 						<div>
 							<p className='font-semibold' style={{ marginBottom: 24 }}>
-								Photo name: {detailsImage?.photoName}
+								Photo name: {detailsImage?.photo_name}
 							</p>
 							<p className='font-semibold'>Models detect</p>
 							<Row>
@@ -242,7 +243,7 @@ const PreviewImage = () => {
 							<Row className='gap-2'>
 								<DescriptionItem title='Models name' content='' />
 								<Space size={[0, 8]} wrap>
-									{detailsImage?.modelName?.split(",").map((item) => (
+									{detailsImage?.model_name?.split(",").map((item) => (
 										<Tag
 											color={getRandomColor()}
 											key={item}
@@ -321,7 +322,7 @@ const PreviewImage = () => {
 								<Col span={24}>
 									<DescriptionItem title='Deep clothing' content='' />
 									<Space size={[0, 8]} wrap>
-										{detailsImage?.deepClothing?.split(",").map((item) => (
+										{detailsImage?.deep_clothing?.split(",").map((item) => (
 											<Tag
 												color={getRandomColor()}
 												key={item}
@@ -350,7 +351,9 @@ const PreviewImage = () => {
 			</div>
 			{imageSearch && (
 				<div className='h-fit w-[80%] m-auto'>
-					<h2 className='font-semibold text-emerald-500 text-2xl text-left w-[80%] p-4'>Search Results</h2>
+					<h2 className='font-semibold text-emerald-500 text-2xl text-left w-[80%] p-4'>
+						Search Results
+					</h2>
 					<div className='grid grid-cols-4 gap-4 bg-white'>
 						<GridImages images={imageSearch} />
 						{imageSearch.length === 0 && <Empty></Empty>}
@@ -358,7 +361,9 @@ const PreviewImage = () => {
 				</div>
 			)}
 			<div className='h-fit w-[80%] m-auto bg-white'>
-				<h2 className='font-semibold text-emerald-500 text-2xl text-left w-[80%] p-4'>Similars Imagex</h2>
+				<h2 className='font-semibold text-emerald-500 text-2xl text-left w-[80%] p-4'>
+					Similars Imagex
+				</h2>
 				<div className='grid grid-cols-4 gap-4'>
 					<SimilarGrid photoName={photoName} />
 				</div>

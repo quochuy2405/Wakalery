@@ -2,7 +2,7 @@
 import { getImageByFaceUploadCropAI } from "@/apis/face";
 import { getAllMaterialtByProjectId } from "@/apis/project";
 import { FloatButton } from "@/components/atoms";
-import { FolderItem, ImageItem, LoadMoveFolder } from "@/components/moleculers";
+import { FolderItem, ImageItem, LoadMoveFolder, UploadFileModal } from "@/components/moleculers";
 import { SideBar } from "@/components/organims";
 import { setProject } from "@/redux/features/project";
 import { RootState } from "@/redux/store";
@@ -24,6 +24,7 @@ const Project = () => {
 	const imgRef = useRef<HTMLImageElement>(null);
 	const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
 	const [openConfirm, setOpenConfirm] = useState<boolean>(false);
+	const [isUpload, setIsUpload] = useState<boolean>(false);
 
 	const [crop, setCrop] = useState<Crop>({
 		unit: "%", // Can be 'px' or '%'
@@ -107,7 +108,9 @@ const Project = () => {
 						<Button className='font-normal items-center flex justify-center text-xs !rounded-lg'>
 							Create folder
 						</Button>
-						<Button className='font-normal items-center flex justify-center text-xs !rounded-lg'>
+						<Button
+							onClick={() => setIsUpload(true)}
+							className='font-normal items-center flex justify-center text-xs !rounded-lg'>
 							Upload
 						</Button>
 					</div>
@@ -127,7 +130,7 @@ const Project = () => {
 						className='h-[90%] w-full rounded-lg overflow-hidden p-4'
 						onComplete={onCompleteCrop}>
 						<section className='py-6 grid grid-cols-2 md:grid-cols-3  h-full mt-4 rounded-md lg:grid-cols-4 overflow-y-auto gap-10'>
-							{items.map((item:any) => {
+							{items.map((item: any) => {
 								if (item.isFolder) {
 									return <FolderItem key={item.photoSerialId} data={item} />;
 								}
@@ -156,7 +159,7 @@ const Project = () => {
 					}}
 				/>
 			)}
-
+			<UploadFileModal open={false} onClose={() => setIsUpload(false)} />
 			<LoadMoveFolder />
 			<FloatButton onSearch={onSearch} isPrivate />
 		</div>
