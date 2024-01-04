@@ -7,9 +7,10 @@ import { IMAGE_PREFIX } from "@/constants/index";
 import { Empty } from "antd";
 
 interface DiscoveryProps {
-	images: Array<PhotoDirectory>;
+  images: Array<PhotoDirectory>;
+  current:string
 }
-const GridImages: React.FC<DiscoveryProps> = memo(({ images }) => {
+const GridImages: React.FC<DiscoveryProps> = memo(({ images, current }) => {
 	const columns = 7; // Adjust the number of columns as needed
 	const grid = [];
 	for (let i = 0; i < columns; i++) {
@@ -19,7 +20,7 @@ const GridImages: React.FC<DiscoveryProps> = memo(({ images }) => {
 					.filter((_, index) => index % columns === i)
 					.map((photo, index) => (
 						<Link
-							to={`/discovery/preview?name=${photo.photoName}`}
+							to={`/${current}/preview?name=${photo.photoName}`}
 							key={index}
 							className='rounded-lg overflow-hidden h-fit cursor-pointer'>
 							<LazyLoadImage

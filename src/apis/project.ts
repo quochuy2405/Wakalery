@@ -14,12 +14,13 @@ export const createNewProject = ({
 	return unauth().post("/project/save", { projectName, userId });
 };
 
-export const deleteProject = (data: {
+export const updateProject = (data: {
 	projectId: number;
 	projectName: string;
 	favorite: boolean;
+	deleted: boolean;
 }) => {
-	return unauth().put("/project/update", { ...data, deleted: true });
+	return unauth().put("/project/update", data);
 };
 
 export const getAllMaterialtByProjectId = (uid: string, id: string) => {

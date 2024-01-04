@@ -131,7 +131,7 @@ const PreviewImage = () => {
 							<path d='M8.415 4.586a2 2 0 1 1 2.828 2.828L8.657 10H21a2 2 0 0 1 0 4H8.657l2.586 2.586a2 2 0 1 1-2.828 2.828L1 12l7.415-7.414z'></path>
 						</svg>
 					</div>
-					<div className='flex min-h-screen w-[90%] justify-center items-center ml-auto rounded-lg shadow-[0_0_10px_0px_#0000002b]'>
+					<div className='flex min-h-screen w-[80%] justify-center items-center m-auto rounded-lg shadow-[0_0_10px_0px_#0000002b]'>
 						<Popconfirm
 							title='Search Image Similar Face'
 							description='Are you sure to search this face?'
@@ -159,7 +159,7 @@ const PreviewImage = () => {
 										className='h-full w-full'
 										onComplete={onCompleteCrop}>
 										<img
-											className='!h-full !w-full !object-contain'
+											className='!h-2/3 !w-2/3 m-auto rounded-2xl !object-contain'
 											src={src}
 											alt={`Image ${photoName}`}
 											loading='lazy'
@@ -186,7 +186,7 @@ const PreviewImage = () => {
 							)}
 							<div className='flex items-center justify-between'>
 								<div className='flex items-center gap-4'>
-									<ModalShare />
+									<ModalShare photoName={photoName} from='private' />
 									<div className='p-4 w-14 ease-linear duration-200 h-14 flex items-center justify-center hover:bg-neutral-100 cursor-pointer rounded-full'>
 										<svg
 											className='gUZ R19 U9O kVc'
@@ -361,16 +361,16 @@ const PreviewImage = () => {
 							</div>
 						)}
 						<div className='grid grid-cols-4 gap-4'>
-							<GridImages images={imageSearch} />
+							<GridImages current='project' images={imageSearch} />
 						</div>
 					</div>
 				)}
 				<div className='h-fit w-[80%] m-auto bg-white'>
-					<h2 className='font-semibold  text-2xl text-left w-[80%] p-4 text-emerald-500'>
+					<h2 className='font-semibold  text-xl text-left w-[80%] py-4 text-emerald-500'>
 						Similars Images
 					</h2>
 					<div className='grid grid-cols-4 gap-4'>
-						<SimilarGrid photoName={photoName} />
+						<SimilarGrid current='project' photoName={photoName} />
 					</div>
 				</div>
 			</div>

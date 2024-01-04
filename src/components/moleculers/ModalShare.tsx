@@ -1,35 +1,53 @@
+import { applyPhotoPublic } from "@/apis/public";
 import { CopyOutlined } from "@ant-design/icons";
-import { Button, Col, Modal, QRCode, Space } from "antd";
+import { Button, Col, Modal, QRCode, Space, message } from "antd";
 import React, { createContext } from "react";
 
 const ReachableContext = createContext<string | null>(null);
 const UnreachableContext = createContext<string | null>(null);
 
-const config = {
-	title: "Sharing",
-	content: (
-		<div className="flex flex-col gap-2">
-			<div className='flex items-center gap-3'>
-				<p> Public URL: http://localhost:3000/discovery/cat</p>{" "}
-				<Button icon={<CopyOutlined />}></Button>
-			</div>
-      <Col span={12} className="flex flex-col gap-2">
-        <h2>Can QRCode</h2>
-				<Space direction='vertical' align='center'>
-					<QRCode
-						value={"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" || "-"}
-						// status="expired"
-						onRefresh={() => console.log("refresh")}
-					/>
-				</Space>
-			</Col>
-		</div>
-	),
-};
+interface ModalShareProps {
+	from?: "private" | "public";
+	photoName: string | null;
+}
 
-const ModalShare: React.FC = () => {
+const ModalShare: React.FC<ModalShareProps> = ({ from = "public", photoName }) => {
 	const [modal, contextHolder] = Modal.useModal();
+	const handlePublic = () => {
+		if (!photoName) return;
+		const data = {
+			userId: "1",
+			photoName,
+			sharers: [2],
+			hiddenMsg: "9291",
+		};
+		applyPhotoPublic(data).then(() => {
+			message.success("Published");
+		});
+	};
+	const config = {
+		title: "Sharing",
+		content: (
+			<div className='flex flex-col gap-2'>
+				{from == "private" && <Button onClick={handlePublic}>Public to world</Button>}
 
+				<div className='flex items-center gap-3'>
+					<p> Public URL: http://localhost:3000/discovery/cat</p>{" "}
+					<Button icon={<CopyOutlined />}></Button>
+				</div>
+				<Col span={12} className='flex flex-col gap-2'>
+					<h2>Can QRCode</h2>
+					<Space direction='vertical' align='center'>
+						<QRCode
+							value={"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" || "-"}
+							// status="expired"
+							onRefresh={() => console.log("refresh")}
+						/>
+					</Space>
+				</Col>
+			</div>
+		),
+	};
 	return (
 		<ReachableContext.Provider value='Light'>
 			<Space>

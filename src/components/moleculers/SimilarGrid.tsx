@@ -1,15 +1,19 @@
 import { getImageSimilar } from "@/apis/get_image";
 import { IMAGE_PREFIX } from "@/constants/index";
 import { PhotoDirectory } from "@/types/image";
-import { memo, useEffect, useMemo, useState } from "react";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
+import { useEffect, useMemo, useState } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { Link } from "react-router-dom";
 
 interface DiscoveryProps {
 	photoName: string | null | undefined;
+	current: string;
 }
-const SimilarGrid: React.FC<DiscoveryProps> = memo(({ photoName }) => {
+const SimilarGrid: React.FC<DiscoveryProps> = ({ photoName, current }) => {
+	const [loading, setLoading] = useState(false);
 	const [images, setImages] = useState<PhotoDirectory[]>([]);
 	const columns = 4; // Adjust the number of columns as needed
 	const grid = useMemo(() => {
@@ -21,7 +25,7 @@ const SimilarGrid: React.FC<DiscoveryProps> = memo(({ photoName }) => {
 						.filter((_, index) => index % columns === i)
 						.map((photo, index) => (
 							<Link
-								to={`/discovery/preview?name=${photo?.photoName}`}
+								to={`/${current}/preview?name=${photo?.photoName}`}
 								key={index}
 								className='rounded-lg overflow-hidden h-fit cursor-pointer'>
 								<LazyLoadImage
@@ -41,10 +45,19 @@ const SimilarGrid: React.FC<DiscoveryProps> = memo(({ photoName }) => {
 
 	useEffect(() => {
 		if (!photoName) return;
-		getImageSimilar("1", photoName).then(({ data }) => {
-			setImages(data);
-		});
+		setLoading(true);
+		getImageSimilar("1", photoName)
+			.then(({ data }) => {
+				setImages(data);
+			})
+			.finally(() => setLoading(false));
 	}, [photoName]);
+	if (loading)
+		return (
+			<div className='flex items-center justify-center col-span-12 p-8'>
+				<Spin indicator={<LoadingOutlined style={{ fontSize: 33, color: "black" }} spin />} />;
+			</div>
+		);
 	return grid;
-});
+};
 export default SimilarGrid;

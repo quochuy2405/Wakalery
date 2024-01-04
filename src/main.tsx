@@ -16,6 +16,7 @@ import {
   Profile,
   Project,
   Recycle,
+  SearchResult,
   Settings,
   SignUp,
   UploadImage,
@@ -99,8 +100,13 @@ const router = createBrowserRouter([
 				errorElement: <Error />,
 			},
 			{
-				path: "/preview",
+				path: "/project/preview",
 				element: <Preview />,
+				errorElement: <Error />,
+			},
+			{
+				path: "/project/search",
+				element: <SearchResult />,
 				errorElement: <Error />,
 			},
 			{

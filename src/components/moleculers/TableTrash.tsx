@@ -19,8 +19,10 @@ const IconColor = {
 	video: "text-[#E1AA74]",
 	folder: "text-yellow-600",
 };
-
-const TableTrash = () => {
+interface TableTrashProps {
+	data: any;
+}
+const TableTrash: React.FC<TableTrashProps> = ({ data }) => {
 	const dataSource = [
 		{
 			key: "1",
@@ -264,7 +266,7 @@ const TableTrash = () => {
 		},
 	];
 
-	return <Table dataSource={dataSource} scroll={{ y: 560 }} columns={columns} />;
+	return <Table dataSource={data} scroll={{ y: 560 }} columns={columns} />;
 };
 
 export default TableTrash;

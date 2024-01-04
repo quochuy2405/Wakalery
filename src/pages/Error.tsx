@@ -5,7 +5,7 @@ const Error = () => {
   return (
 		<div className='w-screen h-screen overflow-hidden flex items-center justify-center'>
 			<div className='relative z-30'>
-				<Button href='/thesis' className='!font-medium mt-6 flex items-center justify-center !bg-emerald-400 !text-white border-none px-8 !w-[140px]'>
+				<Button href='/' className='!font-medium mt-6 flex items-center justify-center !bg-emerald-400 !text-white border-none px-8 !w-[140px]'>
 					Go Home
 				</Button>
 			</div>

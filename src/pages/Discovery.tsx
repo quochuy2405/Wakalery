@@ -45,7 +45,7 @@ const Public = () => {
 					</Button>
 				</div>
 				<div className='grid lg:grid-cols-4 xl:grid-cols-7 gap-3 relative'>
-					<GridImages images={images} />
+					<GridImages current="discovery" images={images} />
 
 					{capture && <Image src={capture} />}
 				</div>

@@ -185,7 +185,7 @@ const PreviewImage = () => {
 						)}
 						<div className='flex items-center justify-between'>
 							<div className='flex items-center gap-4'>
-								<ModalShare />
+								<ModalShare photoName={photoName} />
 								<div className='p-4 w-14 h-14 flex items-center justify-center hover:bg-neutral-100 cursor-pointer rounded-full'>
 									<svg
 										className='gUZ R19 U9O kVc'
@@ -355,17 +355,17 @@ const PreviewImage = () => {
 						Search Results
 					</h2>
 					<div className='grid grid-cols-4 gap-4 bg-white'>
-						<GridImages images={imageSearch} />
+						<GridImages current='discovery' images={imageSearch} />
 						{imageSearch.length === 0 && <Empty></Empty>}
 					</div>
 				</div>
 			)}
 			<div className='h-fit w-[80%] m-auto bg-white'>
-				<h2 className='font-semibold text-emerald-500 text-2xl text-left w-[80%] p-4'>
-					Similars Imagex
+				<h2 className='bg-white font-semibold text-emerald-500 text-2xl text-left w-[80%] p-4'>
+					Similar Images
 				</h2>
 				<div className='grid grid-cols-4 gap-4'>
-					<SimilarGrid photoName={photoName} />
+					<SimilarGrid current='discovery' photoName={photoName} />
 				</div>
 			</div>
 

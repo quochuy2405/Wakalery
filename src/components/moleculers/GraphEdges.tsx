@@ -87,11 +87,11 @@ const GraphEdges = () => {
 										<circle cx='15' cy='15' r={isNode ? "15" : "18"} />
 									</clipPath>
 								</defs>
-								<image
+								{/* <image
 									href={url}
 									className='object-contain rounded-full overflow-hidden w-full h-full'
 									clipPath={`url(#circleClip${index})`}
-								/>
+								/> */}
 							</symbol>
 						),
 					},
@@ -125,8 +125,6 @@ const GraphEdges = () => {
 
 				return edge;
 			});
-			console.log("edges", edges);
-
 			setGraph({ edges, nodes });
 		});
 	};
@@ -145,7 +143,8 @@ const GraphEdges = () => {
 				minZoom={0}
 				nodeTypes={config}
 				nodeSubtypes={NodeSubtypes}
-				edgeTypes={EdgeTypes}
+        edgeTypes={EdgeTypes}
+        
 			/>
 		</div>
 	);

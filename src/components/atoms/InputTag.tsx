@@ -7,7 +7,7 @@ interface InputTagProps {
 	values?: Array<string>;
 }
 const InputTag: React.FC<InputTagProps> = ({ onChange }) => {
-	const [items, setItems] = useState(["clothing", "jacket", "sea", "rock"]);
+	const [items, setItems] = useState(["dog", "cat", "people", "hat"]);
 	const [name, setName] = useState("");
 	const inputRef = useRef<InputRef>(null);
 
@@ -19,7 +19,6 @@ const InputTag: React.FC<InputTagProps> = ({ onChange }) => {
 		e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>
 	) => {
 		e.preventDefault();
-		console.log("[...items, name]", [...items, name]);
 		setItems([...items, name]);
 		setName("");
 		setTimeout(() => {

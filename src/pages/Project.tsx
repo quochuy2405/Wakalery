@@ -4,18 +4,21 @@ import { getAllMaterialtByProjectId } from "@/apis/project";
 import { FloatButton } from "@/components/atoms";
 import { FolderItem, ImageItem, LoadMoveFolder, UploadFileModal } from "@/components/moleculers";
 import { SideBar } from "@/components/organims";
+import { closeLoading, startLoading } from "@/redux/features/loading";
 import { setProject } from "@/redux/features/project";
+import { setSearch } from "@/redux/features/search";
 import { RootState } from "@/redux/store";
 import { PhotoDirectory } from "@/types/image";
 import { canvasPreviewToBlob, getUniqueItems } from "@/utils/common";
-import { Breadcrumb, Button, Image, Popconfirm } from "antd";
+import { Breadcrumb, Button, Image } from "antd";
 import { useEffect, useMemo, useRef, useState } from "react";
-import ReactCrop, { Crop, PixelCrop } from "react-image-crop";
+import { Crop, PixelCrop } from "react-image-crop";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const Project = () => {
 	const { id } = useParams();
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const material = useSelector((state: RootState) => state.project.data);
 	const [quickPreview, setQuickPreview] = useState<PhotoDirectory | null>(null);
@@ -56,15 +59,18 @@ const Project = () => {
 	const confirm = async () => {
 		if (!imgRef.current || !previewCanvasRef.current || !completedCrop) return;
 		// Assuming onCropBlob returns a Promise<Blob>
+		dispatch(startLoading());
 		const blob = await canvasPreviewToBlob(imgRef.current, previewCanvasRef.current, completedCrop);
 
 		const file = new File([blob], "crop_ai.png", { type: blob.type });
 		// Now you can use the 'file' object as needed
+
 		getImageByFaceUploadCropAI("1", file)
 			.then(({ data }) => {
-				console.log("data", data);
+				dispatch(setSearch(data));
+				navigate("/project/search?name='ABC'");
 			})
-			.catch((e) => console.log("e", e));
+			.finally(() => dispatch(closeLoading()));
 	};
 
 	const cancel = () => {
@@ -115,7 +121,7 @@ const Project = () => {
 						</Button>
 					</div>
 				</div>
-				<Popconfirm
+				{/* <Popconfirm
 					title='Search Image Similar Face'
 					description='Are you sure to search this face?'
 					onConfirm={confirm}
@@ -123,12 +129,12 @@ const Project = () => {
 					okText='Search'
 					placement='leftTop'
 					open={isSearch && openConfirm}
-					cancelText='Cancel'>
-					<ReactCrop
+					cancelText='Cancel'> */}
+					{/* <ReactCrop
 						crop={(isSearch ? crop : null) as any}
 						onChange={onChangeCrop}
 						className='h-[90%] w-full rounded-lg overflow-hidden p-4'
-						onComplete={onCompleteCrop}>
+						onComplete={onCompleteCrop}> */}
 						<section className='py-6 grid grid-cols-2 md:grid-cols-3  h-full mt-4 rounded-md lg:grid-cols-4 overflow-y-auto gap-10'>
 							{items.map((item: any) => {
 								if (item.isFolder) {
@@ -143,8 +149,8 @@ const Project = () => {
 								);
 							})}
 						</section>
-					</ReactCrop>
-				</Popconfirm>
+					{/* </ReactCrop>
+				</Popconfirm> */}
 			</div>
 			{!!quickPreview && (
 				<Image
@@ -159,7 +165,7 @@ const Project = () => {
 					}}
 				/>
 			)}
-			<UploadFileModal open={false} onClose={() => setIsUpload(false)} />
+			<UploadFileModal open={isUpload} onClose={() => setIsUpload(false)} />
 			<LoadMoveFolder />
 			<FloatButton onSearch={onSearch} isPrivate />
 		</div>

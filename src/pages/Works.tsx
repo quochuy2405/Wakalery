@@ -3,20 +3,28 @@ import FolderIcon from "@/assets/folder-icon.svg";
 import Storage from "@/assets/storage.svg";
 import { ModalCreateProject, ProjectItem } from "@/components/moleculers";
 import { SideBar } from "@/components/organims";
+import { closeLoading, startLoading } from "@/redux/features/loading";
 import { ProjectType } from "@/types/project";
 import { Button } from "antd";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
 const Works = () => {
 	const [project, setProject] = useState<ProjectType[]>([]);
 	const [refresh, setRefresh] = useState<boolean>(false);
 	const [newProject, setNewProject] = useState<boolean>(false);
+	const dispatch = useDispatch();
+
 	useEffect(() => {
-		if (!newProject)
-			getAllProjectByUserId("1").then(({ data }) => {
+		if (!newProject) dispatch(startLoading());
+		getAllProjectByUserId("1")
+			.then(({ data }) => {
 				setProject(data);
+			})
+			.finally(() => {
+				dispatch(closeLoading());
 			});
-	}, [newProject, refresh]);
+	}, [dispatch, newProject, refresh]);
 	return (
 		<div className='w-full h-screen overflow-y-auto flex'>
 			<SideBar page='works' />

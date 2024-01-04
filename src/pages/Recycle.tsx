@@ -5,13 +5,12 @@ import { PhotoDirectory } from "@/types/image";
 import { useEffect, useState } from "react";
 
 const Deleted = () => {
-	const [favorite, setFavorite] = useState<PhotoDirectory[]>([]);
+	const [trash, setTrash] = useState<PhotoDirectory[]>([]);
 	useEffect(() => {
 		getDeletedByUserId("1").then(({ data }) => {
-			setFavorite(data);
+			setTrash(data);
 		});
 	}, []);
-	console.log("favorite", favorite);
 
 	return (
 		<div className='w-full h-screen overflow-y-auto flex'>
@@ -32,7 +31,7 @@ const Deleted = () => {
 					<p>Recycle</p>
 				</div>
 				<section className='mt-2'>
-					<TableTrash />
+					<TableTrash data={trash} />
 				</section>
 			</div>
 		</div>

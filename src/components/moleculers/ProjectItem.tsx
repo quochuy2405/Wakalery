@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { AiFillDelete } from "react-icons/ai";
 import { ProjectType } from "@/types/project";
 import moment from "moment";
-import { deleteProject } from "@/apis/project";
+import { updateProject } from "@/apis/project";
 import { useState } from "react";
 interface ProjectItemProps {
 	data: ProjectType;
@@ -24,9 +24,21 @@ const ProjectItem: React.FC<ProjectItemProps> = ({ data, refresh }) => {
 		},
 	];
 	const onDeleted = () => {
-		deleteProject(data)
+		updateProject({ ...data, deleted: true })
 			.then(() => {
 				message.success("Successfully!");
+				refresh();
+			})
+			.catch(() => {
+				message.error("Error!");
+			});
+		setIsDeleted(false);
+	};
+
+	const onFavorite = (value: boolean) => {
+		updateProject({ ...data, favorite: value })
+			.then(() => {
+				message.success(`${value?'Adding in':'Remove out'} favorites!`);
 				refresh();
 			})
 			.catch(() => {
@@ -44,7 +56,13 @@ const ProjectItem: React.FC<ProjectItemProps> = ({ data, refresh }) => {
 			<p className='p-2 font-bold text-sm text-gray-600 leading-8'>{data?.projectName}</p>
 			<div className='absolute top-3 right-3 flex gap-2'>
 				<div className='p-3 ease-linear duration-200 w-9 h-9 flex items-center justify-center hover:bg-neutral-100 cursor-pointer rounded-full'>
-					<Rate count={1} defaultValue={data?.favorite ? 1 : 0} />
+					<Rate
+						count={1}
+						defaultValue={data?.favorite ? 1 : 0}
+						onChange={(value) => {
+							onFavorite(!!value);
+						}}
+					/>
 				</div>
 				<Popconfirm
 					title='Delete Project'
@@ -52,8 +70,7 @@ const ProjectItem: React.FC<ProjectItemProps> = ({ data, refresh }) => {
 					onConfirm={onDeleted}
 					onCancel={() => setIsDeleted(false)}
 					okText='OK'
-          placement='top'
-        
+					placement='top'
 					open={isDelete}
 					cancelText='Cancel'>
 					<Dropdown menu={menuProps}>

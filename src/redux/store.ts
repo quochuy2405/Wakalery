@@ -11,6 +11,7 @@ import guide from "./features/guide";
 import filemove from "./features/filemove";
 import robot from "./features/robot";
 import project from "./features/project";
+import search from "./features/search";
 
 export const store = configureStore({
 	reducer: {
@@ -26,6 +27,7 @@ export const store = configureStore({
 		filemove,
 		robot,
 		project,
+		search,
 	},
 	middleware: getDefaultMiddleware({
 		serializableCheck: false,
