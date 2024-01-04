@@ -4,7 +4,7 @@ import { FloatButton } from "@/components/atoms";
 import { FolderItem, ImageItem, LoadMoveFolder } from "@/components/moleculers";
 import { SideBar } from "@/components/organims";
 import { RootState } from "@/redux/store";
-import { PhotoDirectory } from "@/types/image";
+import { ImageType } from "@/types/image";
 import { canvasPreviewToBlob, getUniqueItems } from "@/utils/common";
 import { Breadcrumb, Button, Image, Popconfirm } from "antd";
 import { useMemo, useRef, useState } from "react";
@@ -16,7 +16,7 @@ import { IMAGE_PREFIX } from "../constants";
 const Project = () => {
 	const path = useParams();
 	const material = useSelector((state: RootState) => state.project.data);
-	const [quickPreview, setQuickPreview] = useState<PhotoDirectory | null>(null);
+	const [quickPreview, setQuickPreview] = useState<ImageType | null>(null);
 	const [isSearch, setIsSearch] = useState(false);
 	const previewCanvasRef = useRef<HTMLCanvasElement>(null);
 	const imgRef = useRef<HTMLImageElement>(null);
@@ -119,7 +119,7 @@ const Project = () => {
 						onChange={onChangeCrop}
 						className='h-[90%] w-full rounded-lg overflow-hidden p-4'
 						onComplete={onCompleteCrop}>
-						<section className='py-6 grid grid-cols-2 md:grid-cols-3  h-full mt-4 rounded-md lg:grid-cols-4 overflow-y-auto gap-10'>
+						<section className='py-6 grid grid-cols-2  h-full mt-4 rounded-md lg:grid-cols-4 overflow-y-auto gap-10'>
 							{items.map((item: any) => {
 								if (item.isFolder) {
 									return <FolderItem key={item.photoSerialId} data={item} />;
@@ -139,10 +139,10 @@ const Project = () => {
 			{!!quickPreview && (
 				<Image
 					style={{ display: "none" }}
-					src={IMAGE_PREFIX + "1/" + quickPreview.photoName.replace(".jpg", "")}
+					src={IMAGE_PREFIX + "1/" + (quickPreview.photo_name || quickPreview.photoName)}
 					preview={{
 						visible: true,
-						src: IMAGE_PREFIX + "1/" + quickPreview.photoName.replace(".jpg", ""),
+						src: IMAGE_PREFIX + "1/" + (quickPreview.photo_name || quickPreview.photoName),
 						onVisibleChange: (value) => {
 							if (!value) setQuickPreview(null);
 						},

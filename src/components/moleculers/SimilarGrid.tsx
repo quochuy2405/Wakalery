@@ -58,6 +58,6 @@ const SimilarGrid: React.FC<DiscoveryProps> = ({ columns = 4, photoName, current
 				<Spin indicator={<LoadingOutlined style={{ fontSize: 33, color: "black" }} spin />} />;
 			</div>
 		);
-	return grid;
+	return <>{grid}</>;
 };
 export default SimilarGrid;

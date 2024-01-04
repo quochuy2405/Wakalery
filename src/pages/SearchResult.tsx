@@ -8,6 +8,7 @@ import { Image } from "antd";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
+import { IMAGE_PREFIX } from "../constants";
 
 const SearchResult = () => {
 	const [param] = useSearchParams();
@@ -42,10 +43,10 @@ const SearchResult = () => {
 			{!!quickPreview && (
 				<Image
 					style={{ display: "none" }}
-					src={`https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png`}
+					src={IMAGE_PREFIX + "1/" + (quickPreview.photo_name || quickPreview.photoName)}
 					preview={{
 						visible: true,
-						src: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
+						src: IMAGE_PREFIX + "1/" + (quickPreview.photo_name || quickPreview.photoName),
 						onVisibleChange: (value) => {
 							if (!value) setQuickPreview(null);
 						},

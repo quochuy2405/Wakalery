@@ -2,7 +2,8 @@ export interface ImageType {
 	result_id: number;
 	photo_id: number;
 	user_id: string;
-	photo_name: string;
+	photo_name?: string;
+	photoName?: string;
 	photo_directory: string;
 	is_detected: boolean;
 	model_id: number;

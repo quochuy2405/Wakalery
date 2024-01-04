@@ -1,82 +1,78 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { getImageByFaceUploadCropAI } from "@/apis/face";
 import { getAllMaterialtByProjectId } from "@/apis/project";
-import { FloatButton } from "@/components/atoms";
 import { FolderItem, ImageItem, LoadMoveFolder, UploadFileModal } from "@/components/moleculers";
 import { SideBar } from "@/components/organims";
-import { closeLoading, startLoading } from "@/redux/features/loading";
 import { setProject } from "@/redux/features/project";
-import { setSearch } from "@/redux/features/search";
 import { RootState } from "@/redux/store";
-import { PhotoDirectory } from "@/types/image";
-import { canvasPreviewToBlob, getUniqueItems } from "@/utils/common";
+import { ImageType } from "@/types/image";
+import { getUniqueItems } from "@/utils/common";
 import { Breadcrumb, Button, Image } from "antd";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { Crop, PixelCrop } from "react-image-crop";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { IMAGE_PREFIX } from "../constants";
 
 const Project = () => {
 	const { id } = useParams();
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const material = useSelector((state: RootState) => state.project.data);
-	const [quickPreview, setQuickPreview] = useState<PhotoDirectory | null>(null);
-	const [isSearch, setIsSearch] = useState(false);
-	const previewCanvasRef = useRef<HTMLCanvasElement>(null);
-	const imgRef = useRef<HTMLImageElement>(null);
-	const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
-	const [openConfirm, setOpenConfirm] = useState<boolean>(false);
+	const [quickPreview, setQuickPreview] = useState<ImageType | null>(null);
+	// const [isSearch, setIsSearch] = useState(false);
+	// const previewCanvasRef = useRef<HTMLCanvasElement>(null);
+	// const imgRef = useRef<HTMLImageElement>(null);
+	// const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
+	// const [openConfirm, setOpenConfirm] = useState<boolean>(false);
 	const [isUpload, setIsUpload] = useState<boolean>(false);
 
-	const [crop, setCrop] = useState<Crop>({
-		unit: "%", // Can be 'px' or '%'
-		x: 12,
-		y: 12,
-		width: 30,
-		height: 30,
-	});
+	// const [crop, setCrop] = useState<Crop>({
+	// 	unit: "%", // Can be 'px' or '%'
+	// 	x: 12,
+	// 	y: 12,
+	// 	width: 30,
+	// 	height: 30,
+	// });
 
-	const onSearch = () => {
-		setIsSearch(true);
-	};
+	// const onSearch = () => {
+	// 	setIsSearch(true);
+	// };
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const onChangeCrop = (c: any) => {
-		setCrop(c);
-		if (openConfirm) {
-			setOpenConfirm(false);
-		}
-	};
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const onCompleteCrop = (c: any) => {
-		setCompletedCrop(c);
-		if (!openConfirm) {
-			setOpenConfirm(true);
-		}
-	};
+	// // eslint-disable-next-line @typescript-eslint/no-explicit-any
+	// const onChangeCrop = (c: any) => {
+	// 	setCrop(c);
+	// 	if (openConfirm) {
+	// 		setOpenConfirm(false);
+	// 	}
+	// };
+	// // eslint-disable-next-line @typescript-eslint/no-explicit-any
+	// const onCompleteCrop = (c: any) => {
+	// 	setCompletedCrop(c);
+	// 	if (!openConfirm) {
+	// 		setOpenConfirm(true);
+	// 	}
+	// };
 
-	const confirm = async () => {
-		if (!imgRef.current || !previewCanvasRef.current || !completedCrop) return;
-		// Assuming onCropBlob returns a Promise<Blob>
-		dispatch(startLoading());
-		const blob = await canvasPreviewToBlob(imgRef.current, previewCanvasRef.current, completedCrop);
+	// const confirm = async () => {
+	// 	if (!imgRef.current || !previewCanvasRef.current || !completedCrop) return;
+	// 	// Assuming onCropBlob returns a Promise<Blob>
+	// 	dispatch(startLoading());
+	// 	const blob = await canvasPreviewToBlob(imgRef.current, previewCanvasRef.current, completedCrop);
 
-		const file = new File([blob], "crop_ai.png", { type: blob.type });
-		// Now you can use the 'file' object as needed
+	// 	const file = new File([blob], "crop_ai.png", { type: blob.type });
+	// 	// Now you can use the 'file' object as needed
 
-		getImageByFaceUploadCropAI("1", file)
-			.then(({ data }) => {
-				dispatch(setSearch(data));
-				navigate("/project/search?name='ABC'");
-			})
-			.finally(() => dispatch(closeLoading()));
-	};
+	// 	getImageByFaceUploadCropAI("1", file)
+	// 		.then(({ data }) => {
+	// 			dispatch(setSearch(data));
+	// 			navigate("/project/search?name='ABC'");
+	// 		})
+	// 		.finally(() => dispatch(closeLoading()));
+	// };
 
-	const cancel = () => {
-		setOpenConfirm(false);
-		setIsSearch(false);
-	};
+	// const cancel = () => {
+	// 	setOpenConfirm(false);
+	// 	setIsSearch(false);
+	// };
 
 	const items = useMemo(() => {
 		return getUniqueItems("/home/isphoto", material);
@@ -88,7 +84,7 @@ const Project = () => {
 				dispatch(setProject(data));
 			});
 	}, [id]);
-
+	console.log("quickPreview", quickPreview);
 	return (
 		<div className='w-full h-screen overflow-y-auto flex'>
 			<SideBar page='works' />
@@ -130,35 +126,37 @@ const Project = () => {
 					placement='leftTop'
 					open={isSearch && openConfirm}
 					cancelText='Cancel'> */}
-					{/* <ReactCrop
+				{/* <ReactCrop
 						crop={(isSearch ? crop : null) as any}
 						onChange={onChangeCrop}
 						className='h-[90%] w-full rounded-lg overflow-hidden p-4'
 						onComplete={onCompleteCrop}> */}
-						<section className='py-6 grid grid-cols-2 md:grid-cols-3  h-full mt-4 rounded-md lg:grid-cols-4 overflow-y-auto gap-10'>
-							{items.map((item: any) => {
-								if (item.isFolder) {
-									return <FolderItem key={item.photoSerialId} data={item} />;
-								}
-								return (
-									<ImageItem
-										key={item.photoSerialId}
-										image={item}
-										onQuickPreview={(image) => setQuickPreview(image)}
-									/>
-								);
-							})}
-						</section>
-					{/* </ReactCrop>
+				<section className='py-6 grid grid-cols-2 h-full mt-4 rounded-md lg:grid-cols-4 overflow-y-auto gap-10'>
+					{items.map((item: any) => {
+						if (item.isFolder) {
+							return <FolderItem key={item.photoSerialId} data={item} />;
+						}
+						return (
+							<ImageItem
+								key={item.photoSerialId}
+								image={item}
+								onQuickPreview={(image) => {
+									setQuickPreview(image);
+								}}
+							/>
+						);
+					})}
+				</section>
+				{/* </ReactCrop>
 				</Popconfirm> */}
 			</div>
 			{!!quickPreview && (
 				<Image
 					style={{ display: "none" }}
-					src={`https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png`}
+					src={IMAGE_PREFIX + "1/" + (quickPreview.photo_name || quickPreview.photoName)}
 					preview={{
 						visible: true,
-						src: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
+						src: IMAGE_PREFIX + "1/" + (quickPreview.photo_name || quickPreview.photoName),
 						onVisibleChange: (value) => {
 							if (!value) setQuickPreview(null);
 						},
@@ -167,7 +165,7 @@ const Project = () => {
 			)}
 			<UploadFileModal open={isUpload} onClose={() => setIsUpload(false)} />
 			<LoadMoveFolder />
-			<FloatButton onSearch={onSearch} isPrivate />
+			{/* <FloatButton onSearch={onSearch} isPrivate /> */}
 		</div>
 	);
 };

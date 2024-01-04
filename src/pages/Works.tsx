@@ -53,7 +53,7 @@ const Works = () => {
 						New Project
 					</Button>
 				</div>
-				<section className='py-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 overflow-y-auto'>
+				<section className='py-6 grid grid-cols-2 lg:grid-cols-4 gap-10 overflow-y-auto'>
 					{project.map((item) => {
 						return <ProjectItem refresh={() => setRefresh((e) => !e)} data={item} />;
 					})}

@@ -39,7 +39,7 @@ const ImageItem: React.FC<ImageItemProps> = ({ onQuickPreview, image }) => {
 				src={IMAGE_PREFIX + "1/" + (image.photo_name || image.photoName)}
 				className='w-full h-full object-cover object-top absolute z-1'
 			/>
-			<p className='p-2 font-semibold bg-white text-[10px] text-black max-w-[220px] truncate leading-2 rounded-br-xl z-9 relative shadow-sm'>
+			<p className='p-2 font-semibold bg-white text-[10px] text-black max-w-[60%] truncate leading-2 rounded-br-xl z-9 relative shadow-sm'>
 				{image.photo_name || image.photoName}
 			</p>
 			<div className='absolute top-3 right-3 flex gap-1'>

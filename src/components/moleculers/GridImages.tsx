@@ -7,8 +7,8 @@ import { IMAGE_PREFIX } from "@/constants/index";
 import { Empty } from "antd";
 
 interface DiscoveryProps {
-  images: Array<PhotoDirectory>;
-  current:string
+	images: Array<PhotoDirectory>;
+	current: string;
 }
 const GridImages: React.FC<DiscoveryProps> = memo(({ images, current }) => {
 	const columns = 7; // Adjust the number of columns as needed
@@ -35,11 +35,13 @@ const GridImages: React.FC<DiscoveryProps> = memo(({ images, current }) => {
 			</div>
 		);
 	}
-	if (!images.length) return;
-	<div className='flex items-center justify-center'>
-		<Empty className='m-auto' />
-	</div>;
+	if (!images.length)
+		return (
+			<div className='flex items-center justify-center'>
+				<Empty className='m-auto' />
+			</div>
+		);
 
-	return grid;
+	return <>{grid}</>;
 });
 export default GridImages;
