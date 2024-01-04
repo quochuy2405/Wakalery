@@ -6,22 +6,9 @@ import { FOLDER_PREFIX } from "../constants";
 
 const lightColorPalette = [
 	"#F9B572",
-	"#FFDFDF",
 	"#B3A492",
-	"#00A9FF",
-	"#89CFF3",
-	"#2192FF",
-	"#45FFCA",
 	"#FF8787",
-	"#7EAA92",
-	"#9ED2BE",
-	"#FFD9B7",
 	"#967E76",
-	"#9BABB8",
-	"#EEE3CB",
-	"#D7C0AE",
-	"#C4DFDF",
-	"#FF6969",
 	"#3A98B9",
 ];
 

@@ -11,11 +11,11 @@ import { Link } from "react-router-dom";
 interface DiscoveryProps {
 	photoName: string | null | undefined;
 	current: string;
+	columns?: number;
 }
-const SimilarGrid: React.FC<DiscoveryProps> = ({ photoName, current }) => {
+const SimilarGrid: React.FC<DiscoveryProps> = ({ columns = 4, photoName, current }) => {
 	const [loading, setLoading] = useState(false);
 	const [images, setImages] = useState<PhotoDirectory[]>([]);
-	const columns = 4; // Adjust the number of columns as needed
 	const grid = useMemo(() => {
 		const grid = [];
 		for (let i = 0; i < columns; i++) {

@@ -36,11 +36,11 @@ const ImageItem: React.FC<ImageItemProps> = ({ onQuickPreview, image }) => {
 	return (
 		<div className='min-w-[180px] shadow-xl max-w-[400px] h-[24vh] bg-gray-200 rounded-2xl overflow-hidden relative'>
 			<img
-				src={IMAGE_PREFIX + "1/" + image.photo_name}
+				src={IMAGE_PREFIX + "1/" + (image.photo_name || image.photoName)}
 				className='w-full h-full object-cover object-top absolute z-1'
 			/>
 			<p className='p-2 font-semibold bg-white text-[10px] text-black max-w-[220px] truncate leading-2 rounded-br-xl z-9 relative shadow-sm'>
-				{image.photo_name}
+				{image.photo_name || image.photoName}
 			</p>
 			<div className='absolute top-3 right-3 flex gap-1'>
 				<div className='box-border w-6 h-6 flex items-center justify-center cursor-pointer rounded-full bg-neutral-100 ease-linear duration-200 '>
@@ -71,7 +71,7 @@ const ImageItem: React.FC<ImageItemProps> = ({ onQuickPreview, image }) => {
 			</div>
 
 			<Link
-				to={`/project/preview?name=${image.photo_name}`}
+				to={`/project/preview?name=${image.photo_name || image.photoName}`}
 				className='p-3 font-bold text-sm text-white absolute bottom-0 hover:bg-white z-2 right-0 cursor-pointer rounded-tl-2xl ease-linear duration-200 hover:text-black w-[40%] h-[20%] flex items-center justify-center'>
 				Preview
 			</Link>
