@@ -9,7 +9,7 @@ import { ImageType, PhotoDirectory } from "@/types/image";
 import { canvasPreviewToBlob, getRandomColor, onDownload } from "@/utils/common";
 import { DownloadOutlined } from "@ant-design/icons";
 import { Button, Col, Divider, Empty, Popconfirm, Progress, Row, Space, Tag } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import ReactCrop, { Crop, PixelCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import { LazyLoadImage } from "react-lazy-load-image-component";
@@ -17,6 +17,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import { useDispatch } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { IMAGE_PREFIX } from "../constants";
+import { Controller, useForm } from "react-hook-form";
 
 interface DescriptionItemProps {
 	title: string;
@@ -28,6 +29,18 @@ const DescriptionItem = ({ title, content }: DescriptionItemProps) => (
 		<p className='text-xs'> {content}</p>
 	</div>
 );
+const RenderTagFromString: React.FC<{ values: string }> = memo(({ values }) => {
+	const color = getRandomColor();
+	return (
+		<Space size={[0, 8]} wrap>
+			{values?.split(",").map((item) => (
+				<Tag color={color} key={item} className='flex items-center gap-1 capitalize'>
+					{item}
+				</Tag>
+			))}
+		</Space>
+	);
+});
 
 const PreviewImage = () => {
 	const [params] = useSearchParams();
@@ -41,7 +54,11 @@ const PreviewImage = () => {
 	});
 
 	const dispatch = useDispatch();
-	const [detailsImage, setDetailsImage] = useState<ImageType>();
+  const form = useForm<ImageType>({
+		defaultValues: {
+			tag: "",
+		},
+	});
 	const [imageSearch, setImageSearch] = useState<PhotoDirectory[] | null>(null);
 	const [dowload, setDownload] = useState(0);
 	const [isSearch, setIsSearch] = useState(false);
@@ -63,7 +80,7 @@ const PreviewImage = () => {
 		if (photoName) {
 			getImageDetails("1", photoName)
 				.then(({ data }) => {
-					setDetailsImage(data);
+          form.reset(data);
 				})
 				.catch((e) => console.log("e", e));
 		}
@@ -209,132 +226,116 @@ const PreviewImage = () => {
 									</Button>
 								</div>
 							</div>
-							<div>
-								<p className='font-semibold' style={{ marginBottom: 24 }}>
-									Photo name: {detailsImage?.photo_name}
-								</p>
-								<p className='font-semibold'>Models detect</p>
-								<Row>
-									<Col span={12}>
-										<DescriptionItem title='Type' content='Image/png' />
-									</Col>
-									<Col span={12}>
-										<DescriptionItem title='Descriptions' content={detailsImage?.description} />
-									</Col>
-								</Row>
+              <div>
+							<p className='font-semibold' style={{ marginBottom: 24 }}>
+								Photo name: {form.getValues("photo_name")}
+							</p>
+							<p className='font-semibold'>Models detect</p>
+							<Row>
+								<Col span={12}>
+									<DescriptionItem title='Type' content='Image/png' />
+								</Col>
+								<Col span={12}>
+									<DescriptionItem title='Descriptions' content={form.getValues("description")} />
+								</Col>
+							</Row>
 
-								<Divider />
-								<p className='font-semibold'>Model detections</p>
-								<Row className='gap-2'>
-									<DescriptionItem title='Tags' content='' />
-									<Space size={[0, 8]} wrap>
-										{detailsImage?.tag
-											?.split(",")
+							<Divider />
+							<p className='font-semibold'>Model detections</p>
+							<Row className='gap-2'>
+								<DescriptionItem title='Tags' content='' />
 
-											.map((item) => (
-												<Tag
-													color={getRandomColor()}
-													key={item}
-													className='flex items-center gap-1 capitalize'>
-													{item}
-												</Tag>
-											))}
-									</Space>
-								</Row>
-								<Row className='gap-2'>
-									<DescriptionItem title='Models name' content='' />
-									<Space size={[0, 8]} wrap>
-										{detailsImage?.model_name?.split(",").map((item) => (
-											<Tag
-												color={getRandomColor()}
-												key={item}
-												className='flex items-center gap-1 capitalize'>
-												{item}
-											</Tag>
-										))}
-									</Space>
-								</Row>
-								<Divider />
-								<p className='font-semibold'>Details Model</p>
+								<Controller
+									name='tag'
+									defaultValue={""}
+									control={form.control}
+									render={({ field }) => {
+										return <RenderTagFromString values={field.value} />;
+									}}
+								/>
+							</Row>
+							<Row className='gap-2'>
+								<DescriptionItem title='Models name' content='' />
+								<Controller
+									name='model_name'
+									defaultValue={""}
+									control={form.control}
+									render={({ field }) => {
+										return <RenderTagFromString values={field.value} />;
+									}}
+								/>
+							</Row>
+							<Divider />
+							<p className='font-semibold'>Details Model</p>
 
-								<Row className='gap-2'>
-									<Col span={24}>
-										<DescriptionItem title='Clothes' content='' />
-										<Space size={[0, 8]} wrap>
-											{detailsImage?.clothes?.split(",").map((item) => (
-												<Tag
-													color={getRandomColor()}
-													key={item}
-													className='flex items-center gap-1 capitalize'>
-													{item}
-												</Tag>
-											))}
-										</Space>
-									</Col>
-								</Row>
-								<Row className='gap-2'>
-									<Col span={24}>
-										<DescriptionItem title='Clothings' content='' />
-										<Space size={[0, 8]} wrap>
-											{detailsImage?.clothing?.split(",").map((item) => (
-												<Tag
-													color={getRandomColor()}
-													key={item}
-													className='flex items-center gap-1 capitalize'>
-													{item}
-												</Tag>
-											))}
-										</Space>
-									</Col>
-								</Row>
-								<Row className='gap-2'>
-									<Col span={24}>
-										<DescriptionItem title='Prospects' content='' />
-										<Space size={[0, 8]} wrap>
-											{detailsImage?.prospect?.split(",").map((item) => (
-												<Tag
-													color={getRandomColor()}
-													key={item}
-													className='flex items-center gap-1 capitalize'>
-													{item}
-												</Tag>
-											))}
-										</Space>
-									</Col>
-								</Row>
+							<Row className='gap-2'>
+								<Col span={24}>
+									<DescriptionItem title='Clothes' content='' />
+									<Controller
+										name='clothes'
+										defaultValue={""}
+										control={form.control}
+										render={({ field }) => {
+											return <RenderTagFromString values={field.value} />;
+										}}
+									/>
+								</Col>
+							</Row>
+							<Row className='gap-2'>
+								<Col span={24}>
+									<DescriptionItem title='Clothings' content='' />
+									<Controller
+										name='clothing'
+										defaultValue={""}
+										control={form.control}
+										render={({ field }) => {
+											return <RenderTagFromString values={field.value} />;
+										}}
+									/>
+								</Col>
+							</Row>
+							<Row className='gap-2'>
+								<Col span={24}>
+									<DescriptionItem title='Prospects' content='' />
+									<Controller
+										name='prospect'
+										defaultValue={""}
+										control={form.control}
+										render={({ field }) => {
+											return <RenderTagFromString values={field.value} />;
+										}}
+									/>
+								</Col>
+							</Row>
 
-								<Row className='gap-2'>
-									<Col span={24}>
-										<DescriptionItem title='Person' content='' />
-										<Space size={[0, 8]} wrap>
-											{detailsImage?.person?.split(",").map((item) => (
-												<Tag
-													color={getRandomColor()}
-													key={item}
-													className='flex items-center gap-1 capitalize'>
-													{item}
-												</Tag>
-											))}
-										</Space>
-									</Col>
-								</Row>
+							<Row className='gap-2'>
+								<Col span={24}>
+									<DescriptionItem title='Person' content='' />
+									<Controller
+										name='person'
+										defaultValue={""}
+										control={form.control}
+										render={({ field }) => {
+											return <RenderTagFromString values={field.value} />;
+										}}
+									/>
+								</Col>
+							</Row>
 
-								<Row className='gap-2'>
-									<Col span={24}>
-										<DescriptionItem title='Deep clothing' content='' />
-										<Space size={[0, 8]} wrap>
-											{detailsImage?.deep_clothing?.split(",").map((item) => (
-												<Tag
-													color={getRandomColor()}
-													key={item}
-													className='flex items-center gap-1 capitalize'>
-													{item}
-												</Tag>
-											))}
-										</Space>
-									</Col>
-								</Row>
-								{/* <Row className='gap-2'>
+							<Row className='gap-2'>
+								<Col span={24}>
+									<DescriptionItem title='Deep clothing' content='' />
+									<Controller
+										name='deep_clothing'
+										defaultValue={""}
+										control={form.control}
+										render={({ field }) => {
+											return <RenderTagFromString values={field.value} />;
+										}}
+									/>
+								</Col>
+							</Row>
+							{/* <Row className='gap-2'>
 								<Col span={12}>
 									<DescriptionItem title='Digital Signature' content='' />
 									<Space direction='vertical' align='center'>
@@ -346,7 +347,7 @@ const PreviewImage = () => {
 									</Space>
 								</Col>
 							</Row> */}
-							</div>
+						</div>
 						</div>
 					</div>
 				</div>
