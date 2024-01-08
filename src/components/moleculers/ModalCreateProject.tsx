@@ -6,6 +6,10 @@ interface ModalCreateProjectProps {
 }
 const ModalCreateProject: React.FC<ModalCreateProjectProps> = ({ onClose, open }) => {
 	const onSubmit = (data: { name: string }) => {
+		if (!data.name) {
+			message.error("Project name can't null.");
+			return;
+		}
 		createNewProject({
 			projectName: data.name,
 			userId: "1",

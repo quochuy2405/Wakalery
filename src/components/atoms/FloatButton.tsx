@@ -10,6 +10,7 @@ import { getImageByTagsContains, getImageByTagsMatchAll } from "@/apis/get_image
 import { setSearch } from "@/redux/features/search";
 import { useNavigate } from "react-router-dom";
 import { closeLoading, startLoading } from "@/redux/features/loading";
+import { resetRobot } from "@/redux/features/robot";
 interface FloatProps {
 	onSearch: () => void;
 	isPrivate?: boolean;
@@ -48,25 +49,23 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 			}
 		}
 	};
+
 	return (
 		<>
-			<FloatButton.Group shape='square' style={{ right: 94 }}>
+			<FloatButton.Group shape='square' style={{ right: 94 ,zIndex:999 }}>
 				{isPrivate && (
 					<Popconfirm
 						title={robot.title}
 						placement='left'
 						description={robot.body}
 						open={robot.show}
-						// description={
-						// 	<>
-						// 		<Form.Item labelCol={{ span: 6 }} wrapperCol={{ span: 100 }} className='w-full'>
-						// 			<Form.Item label='Enter Required' name='required'>
-						// 				<Input />
-						// 			</Form.Item>
-						// 		</Form.Item>
-						// 	</>
-						// }
-
+						showCancel={!!robot.submit}
+						okText={!robot.submit ? "Close" : "Ok"}
+						onConfirm={() => {
+							if (!robot.submit) {
+								dispatch(resetRobot());
+							}
+						}}
 						forceRender={true}>
 						<FloatButton icon={<BsRobot />} />
 					</Popconfirm>

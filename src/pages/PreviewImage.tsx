@@ -148,7 +148,7 @@ const PreviewImage = () => {
 						<path d='M8.415 4.586a2 2 0 1 1 2.828 2.828L8.657 10H21a2 2 0 0 1 0 4H8.657l2.586 2.586a2 2 0 1 1-2.828 2.828L1 12l7.415-7.414z'></path>
 					</svg>
 				</div>
-				<div className='flex h-screen w-[80%] m-auto rounded-lg shadow-[0_0_10px_0px_#0000002b]'>
+				<div className='flex h-fit w-[80%] m-auto rounded-lg shadow-[0_0_10px_0px_#0000002b]'>
 					<Popconfirm
 						title='Search Image Similar Face'
 						description='Are you sure to search this face?'

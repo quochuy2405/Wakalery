@@ -1,9 +1,11 @@
 import { getAllProjectByUserId } from "@/apis/project";
 import FolderIcon from "@/assets/folder-icon.svg";
 import Storage from "@/assets/storage.svg";
+import { FloatButton } from "@/components/atoms";
 import { ModalCreateProject, ProjectItem } from "@/components/moleculers";
 import { SideBar } from "@/components/organims";
 import { closeLoading, startLoading } from "@/redux/features/loading";
+import { setRobot } from "@/redux/features/robot";
 import { ProjectType } from "@/types/project";
 import { Button } from "antd";
 import { useEffect, useState } from "react";
@@ -25,6 +27,15 @@ const Works = () => {
 				dispatch(closeLoading());
 			});
 	}, [dispatch, newProject, refresh]);
+	useEffect(() => {
+		dispatch(
+			setRobot({
+				title: "Welcome to project",
+				body: <h2> I'm Warkary bot</h2>,
+				show: true,
+			})
+		);
+	}, []);
 	return (
 		<div className='w-full h-screen overflow-y-auto flex'>
 			<SideBar page='works' />
@@ -47,7 +58,7 @@ const Works = () => {
 				</section>
 				<div className='flex justify-between items-center gap-2 shadow-lg p-4 font-semibold text-md mt-6 bg-white rounded-xl'>
 					<div className='flex gap-3'>
-						<img src={FolderIcon} /> <p>Projects</p>
+						<img aria-label='icon' src={FolderIcon} /> <p>Projects</p>
 					</div>
 					<Button onClick={() => setNewProject(true)} className='font-semibold'>
 						New Project
@@ -60,6 +71,7 @@ const Works = () => {
 				</section>
 				<ModalCreateProject open={newProject} onClose={() => setNewProject(false)} />
 			</div>
+			<FloatButton onSearch={() => null} isPrivate />
 		</div>
 	);
 };

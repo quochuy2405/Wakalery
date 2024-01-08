@@ -51,8 +51,8 @@ const ProjectItem: React.FC<ProjectItemProps> = ({ data, refresh }) => {
 	};
 
 	return (
-		<div className='min-w-[180px] shadow-xl max-w-[400px] h-[24vh] bg-gray-200 rounded-2xl overflow-hidden relative'>
-			<img src={FolderBg} className='w-full h-full object-cover absolute z-1' />
+		<div className='min-w-[180px] shadow-xl max-w-[400px] h-[200px] bg-gray-200 rounded-2xl overflow-hidden relative'>
+			<img aria-label="bg" src={FolderBg} className='w-full h-full object-cover absolute z-1' />
 			<p className='p-2 font-bold text-sm text-gray-600 leading-8'>{data?.projectName}</p>
 			<div className='absolute top-3 right-3 flex gap-2'>
 				<div className='p-3 ease-linear duration-200 w-9 h-9 flex items-center justify-center hover:bg-neutral-100 cursor-pointer rounded-full'>

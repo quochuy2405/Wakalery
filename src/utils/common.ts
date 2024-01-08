@@ -4,13 +4,7 @@ import axios from "axios";
 import { PixelCrop } from "react-image-crop";
 import { FOLDER_PREFIX } from "../constants";
 
-const lightColorPalette = [
-	"#F9B572",
-	"#B3A492",
-	"#FF8787",
-	"#967E76",
-	"#3A98B9",
-];
+const lightColorPalette = ["#F9B572", "#B3A492", "#FF8787", "#967E76", "#3A98B9"];
 
 export function getRandomColor() {
 	return lightColorPalette[Math.floor(Math.random() * lightColorPalette.length)];
@@ -181,3 +175,19 @@ export function getUniqueItems(startWidth: string, materials: PhotoDirectory[]) 
 	const resultArray = Object.values(resultHashmap);
 	return resultArray;
 }
+
+export const removeAscent: (str: any) => string = (str) => {
+	if (str === null || str === undefined) return str;
+	str = str.toLowerCase();
+	str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+	str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+	str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+	str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+	str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+	str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+	str = str.replace(/đ/g, "d");
+	return str;
+};
+export const checkIsNonAscent = (value: string) => {
+	return value.toLowerCase() === removeAscent(value);
+};

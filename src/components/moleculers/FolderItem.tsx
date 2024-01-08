@@ -1,7 +1,7 @@
 import FolderBg from "@/assets/folder.svg";
 import { openMove } from "@/redux/features/onmove";
 import { PhotoDirectory } from "@/types/image";
-import { Dropdown, MenuProps, Rate } from "antd";
+import { Dropdown, MenuProps } from "antd";
 import moment from "moment";
 import { AiFillDelete } from "react-icons/ai";
 import { GiMove } from "react-icons/gi";
@@ -32,13 +32,11 @@ const FolderItem: React.FC<FolderItemProps> = ({ data }) => {
 	};
 
 	return (
-		<div className='min-w-[180px] shadow-xl max-w-[400px] h-[24vh] bg-gray-200 rounded-2xl overflow-hidden relative'>
-			<img src={FolderBg} className='w-full h-full object-cover absolute z-1' />
+		<div className='min-w-[180px] shadow-xl max-w-[400px] h-[200px] bg-gray-200 rounded-2xl overflow-hidden relative'>
+			<img aria-label="bg" src={FolderBg} className='w-full h-full object-cover absolute z-1' />
 			<p className='p-2 font-bold text-sm text-gray-600 leading-8'>{data.photoName}</p>
 			<div className='absolute top-3 right-3 flex gap-2'>
-				<div className='p-3 w-9 h-9 ease-linear duration-200 flex items-center justify-center hover:bg-neutral-100 cursor-pointer rounded-full'>
-					<Rate count={1} defaultValue={data.favorite ? 1 : 0} />
-				</div>
+			
 				<Dropdown menu={menuProps}>
 					<div className='p-3 w-9 h-9 ease-linear duration-200 flex items-center justify-center hover:bg-neutral-100 cursor-pointer rounded-full'>
 						<svg

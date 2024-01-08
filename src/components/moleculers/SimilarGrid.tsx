@@ -55,7 +55,7 @@ const SimilarGrid: React.FC<DiscoveryProps> = ({ columns = 4, photoName, current
 	if (loading)
 		return (
 			<div className='flex items-center justify-center col-span-12 p-8'>
-				<Spin indicator={<LoadingOutlined style={{ fontSize: 33, color: "black" }} spin />} />;
+				<Spin indicator={<LoadingOutlined style={{ fontSize: 33, color: "black" }} spin />} />
 			</div>
 		);
 	return <>{grid}</>;

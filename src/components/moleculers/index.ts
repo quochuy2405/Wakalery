@@ -11,3 +11,4 @@ export { default as ImageItem } from "./ImageItem";
 export { default as TableTrash } from "./TableTrash";
 export { default as ModalCreateProject } from "./ModalCreateProject";
 export { default as UploadFileModal } from "./UploadFileModal";
+export { default as UploadFace } from "./UploadFace";

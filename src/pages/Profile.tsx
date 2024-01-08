@@ -114,12 +114,13 @@ const Profile = () => {
 									<TextField title='First name' />
 									<TextField title='Last name' />
 								</div>
-								<TextField title='Level' />
+								<label className='font-medium text-xs w-full'> Level</label>
 								<Select
 									labelInValue
 									defaultValue={{ value: "lucy", label: "Lucy (101)" } as any}
-									className='w-full h-12'
-									onChange={handleChange}
+									className='w-full h-12 !text-xs'
+                  onChange={handleChange}
+                
 									options={[
 										{
 											value: "jack",

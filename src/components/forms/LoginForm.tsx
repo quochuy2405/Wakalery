@@ -4,16 +4,32 @@ import { Button } from "antd";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import { Link, NavLink } from "react-router-dom";
+import { Controller, useForm } from "react-hook-form";
 
 const LoginForm: React.FC = () => {
+	const form = useForm({
+		defaultValues: {
+			username: "",
+			password: "",
+		},
+	});
 	return (
 		<div className='flex flex-col gap-4 h-full flex-1 w-4/5 m-auto justify-center items-center'>
 			<h1 className='font-bold text-center text-4xl mb-5'>Sign in</h1>
 
 			<div className='flex w-full h-fit flex-col'>
 				<div className='flex flex-col gap-4 justify-center items-center w-full'>
-					<TextField title='Username' />
-					<TextFieldPassword title='Password' />
+					<Controller
+						name='username'
+						control={form.control}
+						render={({ field }) => <TextField title='Username' {...field} />}
+					/>
+					<Controller
+						name='password'
+						control={form.control}
+						render={({ field }) => <TextFieldPassword title='Password' {...field} />}
+					/>
+
 					<NavLink
 						to='/sign'
 						className='text-xs font-semibold w-full text-right text-black/70 hover:text-emerald-500'>
@@ -44,7 +60,9 @@ const LoginForm: React.FC = () => {
 				</div>
 				<span className='text-xs font-semibold text-center text-black/70 h-10 mt-5'>
 					{"If you haven't an account. Let's"}
-					<Link to='/signup' className='px-1 text-main hover:underline cursor-pointer'>register</Link>
+					<Link to='/signup' className='px-1 text-main hover:underline cursor-pointer'>
+						register
+					</Link>
 					{"now."}
 				</span>
 			</div>

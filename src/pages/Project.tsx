@@ -1,8 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { getAllMaterialtByProjectId } from "@/apis/project";
+import { FloatButton } from "@/components/atoms";
 import { FolderItem, ImageItem, LoadMoveFolder, UploadFileModal } from "@/components/moleculers";
 import { SideBar } from "@/components/organims";
+import { botComponents } from "@/constants/botflow";
 import { setProject } from "@/redux/features/project";
+import { resetRobot, setRobot } from "@/redux/features/robot";
 import { RootState } from "@/redux/store";
 import { ImageType } from "@/types/image";
 import { getUniqueItems } from "@/utils/common";
@@ -14,65 +17,10 @@ import { IMAGE_PREFIX } from "../constants";
 
 const Project = () => {
 	const { id } = useParams();
-	// const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const material = useSelector((state: RootState) => state.project.data);
 	const [quickPreview, setQuickPreview] = useState<ImageType | null>(null);
-	// const [isSearch, setIsSearch] = useState(false);
-	// const previewCanvasRef = useRef<HTMLCanvasElement>(null);
-	// const imgRef = useRef<HTMLImageElement>(null);
-	// const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
-	// const [openConfirm, setOpenConfirm] = useState<boolean>(false);
 	const [isUpload, setIsUpload] = useState<boolean>(false);
-
-	// const [crop, setCrop] = useState<Crop>({
-	// 	unit: "%", // Can be 'px' or '%'
-	// 	x: 12,
-	// 	y: 12,
-	// 	width: 30,
-	// 	height: 30,
-	// });
-
-	// const onSearch = () => {
-	// 	setIsSearch(true);
-	// };
-
-	// // eslint-disable-next-line @typescript-eslint/no-explicit-any
-	// const onChangeCrop = (c: any) => {
-	// 	setCrop(c);
-	// 	if (openConfirm) {
-	// 		setOpenConfirm(false);
-	// 	}
-	// };
-	// // eslint-disable-next-line @typescript-eslint/no-explicit-any
-	// const onCompleteCrop = (c: any) => {
-	// 	setCompletedCrop(c);
-	// 	if (!openConfirm) {
-	// 		setOpenConfirm(true);
-	// 	}
-	// };
-
-	// const confirm = async () => {
-	// 	if (!imgRef.current || !previewCanvasRef.current || !completedCrop) return;
-	// 	// Assuming onCropBlob returns a Promise<Blob>
-	// 	dispatch(startLoading());
-	// 	const blob = await canvasPreviewToBlob(imgRef.current, previewCanvasRef.current, completedCrop);
-
-	// 	const file = new File([blob], "crop_ai.png", { type: blob.type });
-	// 	// Now you can use the 'file' object as needed
-
-	// 	getImageByFaceUploadCropAI("1", file)
-	// 		.then(({ data }) => {
-	// 			dispatch(setSearch(data));
-	// 			navigate("/project/search?name='ABC'");
-	// 		})
-	// 		.finally(() => dispatch(closeLoading()));
-	// };
-
-	// const cancel = () => {
-	// 	setOpenConfirm(false);
-	// 	setIsSearch(false);
-	// };
 
 	const items = useMemo(() => {
 		return getUniqueItems("/home/isphoto", material);
@@ -84,7 +32,42 @@ const Project = () => {
 				dispatch(setProject(data));
 			});
 	}, [id]);
-	console.log("quickPreview", quickPreview);
+	function* flowWark() {
+		dispatch(setRobot(botComponents.hello));
+
+		yield "2";
+		dispatch(setRobot(botComponents.face));
+
+		yield "3";
+		dispatch(setRobot(botComponents.searchText));
+
+		yield "4";
+		dispatch(setRobot(botComponents.waiting));
+
+		yield "5";
+		dispatch(setRobot(botComponents.finish));
+	}
+
+	useEffect(() => {
+		const flow = flowWark();
+
+		const iterateFlow = () => {
+			new Promise((resolve) => {
+				dispatch(resetRobot());
+				setTimeout(() => {
+					resolve(1);
+				}, 2000 );
+			}).then(() => {
+				const result = flow.next();
+				if (!result.done) {
+					setTimeout(iterateFlow, 4000);
+				}
+			});
+		};
+
+		iterateFlow();
+	}, []);
+
 	return (
 		<div className='w-full h-screen overflow-y-auto flex'>
 			<SideBar page='works' />
@@ -117,20 +100,7 @@ const Project = () => {
 						</Button>
 					</div>
 				</div>
-				{/* <Popconfirm
-					title='Search Image Similar Face'
-					description='Are you sure to search this face?'
-					onConfirm={confirm}
-					onCancel={cancel}
-					okText='Search'
-					placement='leftTop'
-					open={isSearch && openConfirm}
-					cancelText='Cancel'> */}
-				{/* <ReactCrop
-						crop={(isSearch ? crop : null) as any}
-						onChange={onChangeCrop}
-						className='h-[90%] w-full rounded-lg overflow-hidden p-4'
-						onComplete={onCompleteCrop}> */}
+
 				<section className='py-6 grid grid-cols-2 h-full mt-4 rounded-md lg:grid-cols-4 overflow-y-auto gap-10'>
 					{items.map((item: any) => {
 						if (item.isFolder) {
@@ -147,8 +117,6 @@ const Project = () => {
 						);
 					})}
 				</section>
-				{/* </ReactCrop>
-				</Popconfirm> */}
 			</div>
 			{!!quickPreview && (
 				<Image
@@ -165,7 +133,7 @@ const Project = () => {
 			)}
 			<UploadFileModal open={isUpload} onClose={() => setIsUpload(false)} />
 			<LoadMoveFolder />
-			{/* <FloatButton onSearch={onSearch} isPrivate /> */}
+			<FloatButton onSearch={() => null} isPrivate />
 		</div>
 	);
 };

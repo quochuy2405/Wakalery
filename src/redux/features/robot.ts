@@ -1,12 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-interface RobotProps {
+import { ReactNode } from "react";
+export type RobotType = {
 	title: string;
-	body: string;
-	submit: (data: object) => void;
-	show: boolean;
-}
+	body: ReactNode;
+	submit?: (data: object) => void;
+	show?: boolean;
+};
 
-const initialState: RobotProps = {
+const initialState: RobotType = {
 	title: "",
 	body: "",
 	submit: () => 1,
@@ -17,17 +18,18 @@ export const robotSlice = createSlice({
 	initialState,
 	reducers: {
 		setRobot: (state, { payload }) => {
-			state.body = payload.body;
-			state.show = payload.show;
-			state.submit = payload.submit;
-			state.title = payload.title;
+			state.body = payload?.body;
+			state.show = payload?.show;
+			state.submit = payload?.submit;
+			state.title = payload?.title;
+			console.log("run");
 			return state;
 		},
-		closeRobot: () => {
+		resetRobot: () => {
 			return initialState;
 		},
 	},
 });
 
-export const { setRobot, closeRobot } = robotSlice.actions;
+export const { setRobot, resetRobot } = robotSlice.actions;
 export default robotSlice.reducer;
