@@ -5,6 +5,7 @@ export type RobotType = {
 	body: ReactNode;
 	submit?: (data: object) => void;
 	show?: boolean;
+	type?: "face" | "record";
 };
 
 const initialState: RobotType = {
@@ -22,7 +23,7 @@ export const robotSlice = createSlice({
 			state.show = payload?.show;
 			state.submit = payload?.submit;
 			state.title = payload?.title;
-			console.log("run");
+			state.type = payload?.type;
 			return state;
 		},
 		resetRobot: () => {

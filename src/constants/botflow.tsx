@@ -40,16 +40,18 @@ export const botComponents = ({ onMethods }: { onMethods?: any }) => ({
 			</Form.Item>
 		),
 		show: true,
+		type: "record",
 	},
 
 	face: {
 		title: "I need your face.",
 		body: (
-			<Form.Item labelCol={{ span: 6 }} wrapperCol={{ span: 100 }} className='w-full'>
+			<Form.Item labelCol={{ span: 6 }} name={"face"} wrapperCol={{ span: 100 }} className='w-full'>
 				<UploadFace />
 			</Form.Item>
 		),
 		show: true,
+		type: "face",
 	},
 	waiting: {
 		title: "Waiting...",

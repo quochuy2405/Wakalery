@@ -115,7 +115,7 @@ export async function canvasPreviewToBlob(
 	ctx.scale(pixelRatio, pixelRatio);
 	ctx.imageSmoothingQuality = "high";
 
-	const cropX = crop.x * scaleX;
+	const cropX = scaleX;
 	const cropY = crop.y * scaleY;
 
 	const centerX = image.naturalWidth / 2;
@@ -149,6 +149,67 @@ export async function canvasPreviewToBlob(
 
 	return blob;
 }
+
+export async function PngToBlob(file: File, canvas: HTMLCanvasElement): Promise<Blob> {
+	const reader = new FileReader();
+
+	// Attach an event listener for when the file is loaded
+	const fileLoaded = new Promise<string>((resolve) => {
+		reader.onloadend = () => resolve(reader.result as string);
+	});
+
+	reader.readAsDataURL(file);
+
+	const dataUrl = await fileLoaded;
+
+	const img = new Image();
+
+	img.src = dataUrl;
+
+	await new Promise<void>((resolve) => {
+		img.onload = () => resolve();
+	});
+
+	const ctx = canvas.getContext("2d");
+
+	if (!ctx) {
+		throw new Error("No 2d context");
+	}
+
+	const pixelRatio = window.devicePixelRatio;
+
+	canvas.width = Math.floor(img.naturalWidth * pixelRatio);
+	canvas.height = Math.floor(img.naturalHeight * pixelRatio);
+
+	ctx.scale(pixelRatio, pixelRatio);
+	ctx.imageSmoothingQuality = "high";
+
+	ctx.drawImage(
+		img,
+		0,
+		0,
+		img.naturalWidth,
+		img.naturalHeight,
+		0,
+		0,
+		img.naturalWidth,
+		img.naturalHeight
+	);
+
+	const blob = await new Promise<Blob>((resolve) => {
+		canvas.toBlob((b) => {
+			if (!b) {
+				throw new Error("Failed to convert canvas to blob");
+			}
+			resolve(b);
+		}, "image/jpeg");
+	});
+
+	return blob;
+}
+
+
+
 
 export function getUniqueItems(startWidth: string, materials: PhotoDirectory[]) {
 	const resultHashmap: any = {};

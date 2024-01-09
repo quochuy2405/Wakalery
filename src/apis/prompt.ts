@@ -1,4 +1,5 @@
-import { UploadFile } from "antd";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { PngToBlob } from "@/utils/common";
 import { unauth } from "./axios";
 
 export const sendPrompt = (record: string) => {
@@ -7,9 +8,11 @@ export const sendPrompt = (record: string) => {
 		record,
 	});
 };
-export const confirmPropmt = (file: UploadFile, data: object) => {
+export const confirmPropmt = async (file: any, data?: object, canvas?: any) => {
 	const form = new FormData();
-	form.append("files", file.originFileObj as never);
+	const blob = await PngToBlob(file.originFileObj, canvas);
+	const fileCurrent = new File([blob],'crop_ai.png')
+	form.append("files", fileCurrent as never);
 	form.append("data", JSON.stringify(data));
 	return unauth().post(`/promt-process-upload/1`, form);
 };

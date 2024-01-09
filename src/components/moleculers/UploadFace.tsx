@@ -1,20 +1,24 @@
-import React, { useState } from "react";
 import { UploadOutlined } from "@ant-design/icons";
-import { Button, Upload } from "antd";
-import type { UploadFile } from "antd/es/upload/interface";
-
-const UploadFace: React.FC = () => {
-	const [fileList, setFileList] = useState<UploadFile[]>([]);
+import { Button, Upload, UploadFile } from "antd";
+import React from "react";
+interface UploadFaceProps {
+	value?: UploadFile[];
+	id?: string;
+	onChange?: (files: UploadFile[]) => void;
+}
+const UploadFace: React.FC<UploadFaceProps> = (props) => {
+	console.log("value", props);
 	return (
 		<Upload
-			action='https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188'
+			id={props.id}
+			beforeUpload={() => false}
 			listType='picture'
-			defaultFileList={[...fileList]}
+			defaultFileList={props?.value}
 			onChange={({ fileList }) => {
-				setFileList(fileList);
+				props?.onChange?.(fileList);
 			}}
 			maxCount={1}>
-			{!fileList.length && <Button icon={<UploadOutlined />}>Upload</Button> }
+			{!props?.value?.length && <Button icon={<UploadOutlined />}>Upload</Button>}
 		</Upload>
 	);
 };
