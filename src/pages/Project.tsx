@@ -3,9 +3,7 @@ import { getAllMaterialtByProjectId } from "@/apis/project";
 import { FloatButton } from "@/components/atoms";
 import { FolderItem, ImageItem, LoadMoveFolder, UploadFileModal } from "@/components/moleculers";
 import { SideBar } from "@/components/organims";
-import { botComponents } from "@/constants/botflow";
 import { setProject } from "@/redux/features/project";
-import { resetRobot, setRobot } from "@/redux/features/robot";
 import { RootState } from "@/redux/store";
 import { ImageType } from "@/types/image";
 import { getUniqueItems } from "@/utils/common";
@@ -32,41 +30,6 @@ const Project = () => {
 				dispatch(setProject(data));
 			});
 	}, [id]);
-	function* flowWark() {
-		dispatch(setRobot(botComponents.hello));
-
-		yield "2";
-		dispatch(setRobot(botComponents.face));
-
-		yield "3";
-		dispatch(setRobot(botComponents.searchText));
-
-		yield "4";
-		dispatch(setRobot(botComponents.waiting));
-
-		yield "5";
-		dispatch(setRobot(botComponents.finish));
-	}
-
-	useEffect(() => {
-		const flow = flowWark();
-
-		const iterateFlow = () => {
-			new Promise((resolve) => {
-				dispatch(resetRobot());
-				setTimeout(() => {
-					resolve(1);
-				}, 2000 );
-			}).then(() => {
-				const result = flow.next();
-				if (!result.done) {
-					setTimeout(iterateFlow, 4000);
-				}
-			});
-		};
-
-		iterateFlow();
-	}, []);
 
 	return (
 		<div className='w-full h-screen overflow-y-auto flex'>

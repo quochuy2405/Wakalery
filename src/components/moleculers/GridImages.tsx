@@ -22,9 +22,9 @@ const GridImages: React.FC<DiscoveryProps> = memo(({ images, current }) => {
 						<Link
 							to={`/${current}/preview?name=${photo.photoName}`}
 							key={index}
-							className='rounded-lg overflow-hidden h-fit cursor-pointer'>
+							className='rounded-lg overflow-hidden cursor-pointer'>
 							<LazyLoadImage
-								className='h-fit cursor-pointer w-full !rounded-lg overflow-hidden object-cover'
+								className='cursor-pointer !m-auto !rounded-lg overflow-hidden object-cover'
 								src={IMAGE_PREFIX + "1/" + photo.photoName}
 								alt={`Image ${index + 1}`}
 								effect='blur'

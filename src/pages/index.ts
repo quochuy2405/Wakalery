@@ -6,7 +6,7 @@ export { default as Info } from "./Info";
 export { default as LandingPage } from "./LandingPage";
 export { default as Login } from "./Login";
 export { default as Materials } from "./Materials";
-export { default as Preview } from "./Preview";
+export { default as PreviewProject } from "./PreviewProject";
 export { default as PreviewImage } from "./PreviewImage";
 export { default as Profile } from "./Profile";
 export { default as Project } from "./Project";

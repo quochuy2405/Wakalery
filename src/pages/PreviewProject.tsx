@@ -8,16 +8,15 @@ import { closeLoading, startLoading } from "@/redux/features/loading";
 import { ImageType, PhotoDirectory } from "@/types/image";
 import { canvasPreviewToBlob, getRandomColor, onDownload } from "@/utils/common";
 import { DownloadOutlined } from "@ant-design/icons";
-import { Button, Col, Divider, Empty, Popconfirm, Progress, Row, Space, Tag } from "antd";
+import { Button, Col, Divider, Popconfirm, Progress, Row, Space, Tag } from "antd";
 import { memo, useEffect, useRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import ReactCrop, { Crop, PixelCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { useDispatch } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { IMAGE_PREFIX } from "../constants";
-import { Controller, useForm } from "react-hook-form";
 
 interface DescriptionItemProps {
 	title: string;
@@ -54,7 +53,7 @@ const PreviewImage = () => {
 	});
 
 	const dispatch = useDispatch();
-  const form = useForm<ImageType>({
+	const form = useForm<ImageType>({
 		defaultValues: {
 			tag: "",
 		},
@@ -80,7 +79,7 @@ const PreviewImage = () => {
 		if (photoName) {
 			getImageDetails("1", photoName)
 				.then(({ data }) => {
-          form.reset(data);
+					form.reset(data);
 				})
 				.catch((e) => console.log("e", e));
 		}
@@ -132,23 +131,23 @@ const PreviewImage = () => {
 		<div className='w-full h-screen flex'>
 			<SideBar page='works' />
 
-			<div className='flex-1 bg-white border-l h-full overflow-y-auto'>
-				<div className='flex-1 relative w-full bg-white p-4 flex flex-col items-center justify-center'>
-					<div
-						onClick={() => navigate(-1)}
-						className='absolute top-3 left-10 p-4 w-14 h-14 flex items-center justify-center hover:bg-neutral-100 ease-linear duration-200 cursor-pointer rounded-full'>
-						<svg
-							className='Hn_ gUZ R19 U9O kVc'
-							height='20'
-							width='20'
-							viewBox='0 0 24 24'
-							aria-hidden='true'
-							aria-label=''
-							role='img'>
-							<path d='M8.415 4.586a2 2 0 1 1 2.828 2.828L8.657 10H21a2 2 0 0 1 0 4H8.657l2.586 2.586a2 2 0 1 1-2.828 2.828L1 12l7.415-7.414z'></path>
-						</svg>
-					</div>
-					<div className='flex min-h-screen w-[80%] justify-center items-center m-auto rounded-lg shadow-[0_0_10px_0px_#0000002b]'>
+			<div className='flex-1 relative bg-white border-l h-full overflow-y-auto'>
+				<div
+					onClick={() => navigate(-1)}
+					className='absolute top-3 left-10 p-4 w-14 h-14 flex items-center justify-center hover:bg-neutral-100 ease-linear duration-200 cursor-pointer rounded-full'>
+					<svg
+						className='Hn_ gUZ R19 U9O kVc'
+						height='20'
+						width='20'
+						viewBox='0 0 24 24'
+						aria-hidden='true'
+						aria-label=''
+						role='img'>
+						<path d='M8.415 4.586a2 2 0 1 1 2.828 2.828L8.657 10H21a2 2 0 0 1 0 4H8.657l2.586 2.586a2 2 0 1 1-2.828 2.828L1 12l7.415-7.414z'></path>
+					</svg>
+				</div>
+				<div className='flex-1 relative w-[80%] m-auto bg-white p-4 flex flex-col items-center justify-center'>
+					<div className='flex justify-center items-center m-auto rounded-lg shadow-[0_0_10px_0px_#0000002b]'>
 						<Popconfirm
 							title='Search Image Similar Face'
 							description='Are you sure to search this face?'
@@ -156,27 +155,27 @@ const PreviewImage = () => {
 							onCancel={cancel}
 							placement='right'
 							okText='Search'
-							open={isSearch && openConfirm}
+							open={isSearch || openConfirm}
 							cancelText='Cancel'>
-							<div className='w-full flex items-center justify-center h-full img-fit overflow-hidden relative bg-neutral-50'>
+							<div className='w-full flex items-center justify-center overflow-hidden relative bg-neutral-50'>
 								{!isSearch && (
-									<LazyLoadImage
-										className='!h-full cursor-pointer w-full !rounded-lg overflow-hidden !object-contain'
-										src={src}
-										alt={`Image ${photoName}`}
-										effect='blur'
-										loading='lazy'
-									/>
+									<div aria-label='1' className='w-full h-full'>
+										<img
+											className='cursor-pointer !rounded-lg !w-full !object-contain'
+											src={src}
+											alt={`Image ${photoName}`}
+											loading='lazy'
+										/>
+									</div>
 								)}
-
-								<div className='w-full h-full overflow-hidden' hidden={!isSearch}>
+								<div className='w-full h-full overflow-hidden img-fit' hidden={!isSearch}>
 									<ReactCrop
 										crop={(isSearch ? crop : null) as any}
 										onChange={onChangeCrop}
-										className='h-full w-full'
+										className='!h-full !w-full'
 										onComplete={onCompleteCrop}>
 										<img
-											className='!h-2/3 !w-2/3 m-auto rounded-2xl !object-contain'
+											className='!w-full rounded-2xl !object-cover'
 											src={src}
 											alt={`Image ${photoName}`}
 											loading='lazy'
@@ -226,116 +225,116 @@ const PreviewImage = () => {
 									</Button>
 								</div>
 							</div>
-              <div>
-							<p className='font-semibold' style={{ marginBottom: 24 }}>
-								Photo name: {form.getValues("photo_name")}
-							</p>
-							<p className='font-semibold'>Models detect</p>
-							<Row>
-								<Col span={12}>
-									<DescriptionItem title='Type' content='Image/png' />
-								</Col>
-								<Col span={12}>
-									<DescriptionItem title='Descriptions' content={form.getValues("description")} />
-								</Col>
-							</Row>
+							<div>
+								<p className='font-semibold' style={{ marginBottom: 24 }}>
+									Photo name: {form.getValues("photo_name")}
+								</p>
+								<p className='font-semibold'>Models detect</p>
+								<Row>
+									<Col span={12}>
+										<DescriptionItem title='Type' content='Image/png' />
+									</Col>
+									<Col span={12}>
+										<DescriptionItem title='Descriptions' content={form.getValues("description")} />
+									</Col>
+								</Row>
 
-							<Divider />
-							<p className='font-semibold'>Model detections</p>
-							<Row className='gap-2'>
-								<DescriptionItem title='Tags' content='' />
+								<Divider />
+								<p className='font-semibold'>Model detections</p>
+								<Row className='gap-2'>
+									<DescriptionItem title='Tags' content='' />
 
-								<Controller
-									name='tag'
-									defaultValue={""}
-									control={form.control}
-									render={({ field }) => {
-										return <RenderTagFromString values={field.value} />;
-									}}
-								/>
-							</Row>
-							<Row className='gap-2'>
-								<DescriptionItem title='Models name' content='' />
-								<Controller
-									name='model_name'
-									defaultValue={""}
-									control={form.control}
-									render={({ field }) => {
-										return <RenderTagFromString values={field.value} />;
-									}}
-								/>
-							</Row>
-							<Divider />
-							<p className='font-semibold'>Details Model</p>
-
-							<Row className='gap-2'>
-								<Col span={24}>
-									<DescriptionItem title='Clothes' content='' />
 									<Controller
-										name='clothes'
+										name='tag'
 										defaultValue={""}
 										control={form.control}
 										render={({ field }) => {
 											return <RenderTagFromString values={field.value} />;
 										}}
 									/>
-								</Col>
-							</Row>
-							<Row className='gap-2'>
-								<Col span={24}>
-									<DescriptionItem title='Clothings' content='' />
+								</Row>
+								<Row className='gap-2'>
+									<DescriptionItem title='Models name' content='' />
 									<Controller
-										name='clothing'
+										name='model_name'
 										defaultValue={""}
 										control={form.control}
 										render={({ field }) => {
 											return <RenderTagFromString values={field.value} />;
 										}}
 									/>
-								</Col>
-							</Row>
-							<Row className='gap-2'>
-								<Col span={24}>
-									<DescriptionItem title='Prospects' content='' />
-									<Controller
-										name='prospect'
-										defaultValue={""}
-										control={form.control}
-										render={({ field }) => {
-											return <RenderTagFromString values={field.value} />;
-										}}
-									/>
-								</Col>
-							</Row>
+								</Row>
+								<Divider />
+								<p className='font-semibold'>Details Model</p>
 
-							<Row className='gap-2'>
-								<Col span={24}>
-									<DescriptionItem title='Person' content='' />
-									<Controller
-										name='person'
-										defaultValue={""}
-										control={form.control}
-										render={({ field }) => {
-											return <RenderTagFromString values={field.value} />;
-										}}
-									/>
-								</Col>
-							</Row>
+								<Row className='gap-2'>
+									<Col span={24}>
+										<DescriptionItem title='Clothes' content='' />
+										<Controller
+											name='clothes'
+											defaultValue={""}
+											control={form.control}
+											render={({ field }) => {
+												return <RenderTagFromString values={field.value} />;
+											}}
+										/>
+									</Col>
+								</Row>
+								<Row className='gap-2'>
+									<Col span={24}>
+										<DescriptionItem title='Clothings' content='' />
+										<Controller
+											name='clothing'
+											defaultValue={""}
+											control={form.control}
+											render={({ field }) => {
+												return <RenderTagFromString values={field.value} />;
+											}}
+										/>
+									</Col>
+								</Row>
+								<Row className='gap-2'>
+									<Col span={24}>
+										<DescriptionItem title='Prospects' content='' />
+										<Controller
+											name='prospect'
+											defaultValue={""}
+											control={form.control}
+											render={({ field }) => {
+												return <RenderTagFromString values={field.value} />;
+											}}
+										/>
+									</Col>
+								</Row>
 
-							<Row className='gap-2'>
-								<Col span={24}>
-									<DescriptionItem title='Deep clothing' content='' />
-									<Controller
-										name='deep_clothing'
-										defaultValue={""}
-										control={form.control}
-										render={({ field }) => {
-											return <RenderTagFromString values={field.value} />;
-										}}
-									/>
-								</Col>
-							</Row>
-							{/* <Row className='gap-2'>
+								<Row className='gap-2'>
+									<Col span={24}>
+										<DescriptionItem title='Person' content='' />
+										<Controller
+											name='person'
+											defaultValue={""}
+											control={form.control}
+											render={({ field }) => {
+												return <RenderTagFromString values={field.value} />;
+											}}
+										/>
+									</Col>
+								</Row>
+
+								<Row className='gap-2'>
+									<Col span={24}>
+										<DescriptionItem title='Deep clothing' content='' />
+										<Controller
+											name='deep_clothing'
+											defaultValue={""}
+											control={form.control}
+											render={({ field }) => {
+												return <RenderTagFromString values={field.value} />;
+											}}
+										/>
+									</Col>
+								</Row>
+								{/* <Row className='gap-2'>
 								<Col span={12}>
 									<DescriptionItem title='Digital Signature' content='' />
 									<Space direction='vertical' align='center'>
@@ -347,7 +346,7 @@ const PreviewImage = () => {
 									</Space>
 								</Col>
 							</Row> */}
-						</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -356,11 +355,7 @@ const PreviewImage = () => {
 						<h2 className='font-semibold  text-2xl text-left w-[80%] p-4 text-emerald-500'>
 							Search Results
 						</h2>
-						{imageSearch.length === 0 && (
-							<div className='flex items-center justify-center'>
-								<Empty className='m-auto' />
-							</div>
-						)}
+
 						<div className='grid grid-cols-4 gap-4'>
 							<GridImages current='project' images={imageSearch} />
 						</div>

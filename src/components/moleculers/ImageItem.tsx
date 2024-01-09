@@ -6,6 +6,7 @@ import { Dropdown, MenuProps, Rate, Tooltip } from "antd";
 import { AiFillDelete } from "react-icons/ai";
 import { BsEyeFill } from "react-icons/bs";
 import { GiMove } from "react-icons/gi";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 interface ImageItemProps {
@@ -35,7 +36,7 @@ const ImageItem: React.FC<ImageItemProps> = ({ onQuickPreview, image }) => {
 
 	return (
 		<div className='min-w-[180px] shadow-xl max-w-[400px] h-[24vh] bg-gray-200 rounded-2xl overflow-hidden relative'>
-			<img
+			<LazyLoadImage
 				src={IMAGE_PREFIX + "1/" + (image.photo_name || image.photoName)}
 				className='w-full h-full object-cover object-top absolute z-1'
 			/>

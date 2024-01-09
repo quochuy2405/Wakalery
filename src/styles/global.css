@@ -480,3 +480,7 @@
 	width: 100% !important;
 	margin: 0;
 }
+.ant-btn.ant-btn-dashed.ant-btn-background-ghost {
+	border-color: #212121 ;
+  color: #212121;
+}

@@ -12,6 +12,7 @@ import ReactCrop, { Crop, PixelCrop } from "react-image-crop";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { IMAGE_PREFIX } from "../constants";
+import clsx from "clsx";
 
 const Project = () => {
 	const path = useParams();
@@ -117,7 +118,9 @@ const Project = () => {
 					<ReactCrop
 						crop={(isSearch ? crop : null) as any}
 						onChange={onChangeCrop}
-						className='h-[90%] w-full rounded-lg overflow-hidden p-4'
+						className={clsx("h-[90%] w-full rounded-lg overflow-hidden ", {
+							"!cursor-default": !isSearch,
+						})}
 						onComplete={onCompleteCrop}>
 						<section className='py-6 grid grid-cols-2  h-full mt-4 rounded-md lg:grid-cols-4 overflow-y-auto gap-10'>
 							{items.map((item: any) => {

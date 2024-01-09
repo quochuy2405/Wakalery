@@ -27,15 +27,7 @@ const Works = () => {
 				dispatch(closeLoading());
 			});
 	}, [dispatch, newProject, refresh]);
-	useEffect(() => {
-		dispatch(
-			setRobot({
-				title: "Welcome to project",
-				body: <h2> I'm Warkary bot</h2>,
-				show: true,
-			})
-		);
-	}, []);
+
 	return (
 		<div className='w-full h-screen overflow-y-auto flex'>
 			<SideBar page='works' />
