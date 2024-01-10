@@ -1,4 +1,4 @@
-import { getImageSimilar } from "@/apis/get_image";
+import { getImageSimilar } from "@/apis/image";
 import { IMAGE_PREFIX } from "@/constants/index";
 import { PhotoDirectory } from "@/types/image";
 import { LoadingOutlined } from "@ant-design/icons";

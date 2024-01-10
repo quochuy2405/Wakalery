@@ -225,7 +225,7 @@ export function getUniqueItems(startWidth: string, materials: PhotoDirectory[]) 
 				resultHashmap[afterPath] = { photoName: afterPath, isFolder: true };
 			}
 		} else {
-			resultHashmap[material.photoName] = { ...material, isFolder: false };
+			if (material.photoName) resultHashmap[material.photoName] = { ...material, isFolder: false };
 		}
 	}
 

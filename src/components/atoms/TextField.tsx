@@ -7,7 +7,6 @@ interface TextFieldProps extends InputProps {
 	error?: FieldError;
 }
 const TextField: React.FC<TextFieldProps> = (props) => {
-	console.log("props.error", props.error);
 	return (
 		<div className='w-full flex flex-col gap-2 relative'>
 			<label className='font-medium text-xs w-full'> {props.title}</label>

@@ -1,29 +1,30 @@
 export interface ImageType {
-	result_id: number;
-	photo_id: number;
-	user_id: string;
-	photo_name?: string;
+	resultId: number;
+	photoId: number;
+	userId: string;
 	photoName?: string;
-	photo_directory: string;
-	is_detected: boolean;
-	model_id: number;
-	model_name: string;
+	photoDirectory: string;
+	isDetected: boolean;
+	modelId: number;
+	modelName: string;
 	description: string;
 	tag: string;
-	have_face: boolean;
-	face_of: string;
-	have_clothes: boolean;
+	haveFace: boolean;
+	faceOf: string;
+	haveClothes: boolean;
 	clothes: string;
 	clothing: string;
 	prospect: string;
 	person: string;
-	deep_clothing: string;
-	photo_serialId: string;
+	deepClothing: string;
+	photoSerialId: string;
 }
 
 export interface PhotoDirectory {
-	photoSerialId: number;
-	photoName: string;
+	photoSerialId?: number;
+	userDirectoryId?: number;
+	photoName?: string;
+	folderName?: string;
 	photoDirectory: string;
 	userId: number;
 	createAt: Date;

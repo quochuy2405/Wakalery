@@ -59,7 +59,7 @@ const GraphEdges = () => {
 
 	const fetch = async () => {
 		await getGraphRNN("1").then(({ data }: any) => {
-			console.log("data", data);
+
 			const radius = data.nodes.length * 25; // Adjust the radius of the circle as needed
 			const centerX = data.nodes.length * 100; // Adjust the x-coordinate of the circle center
 			const centerY = data.nodes.length * 100; // Adjust the y-coordinate of the circle center

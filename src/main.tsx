@@ -115,7 +115,7 @@ const router = createBrowserRouter([
 				errorElement: <Error />,
 			},
 			{
-				path: "/works/project/:projectId/*",
+				path: "/works/project/:projectId/:userDirectoryId",
 				element: <Materials />,
 				errorElement: <Error />,
 			},

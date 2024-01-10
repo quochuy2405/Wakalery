@@ -31,11 +31,12 @@ const FolderItem: React.FC<FolderItemProps> = ({ data }) => {
 	];
 	const menuProps = {
 		items,
-	};
+  };
+  console.log('data', data)
 	return (
 		<div className='min-w-[180px] shadow-xl max-w-[400px] h-[220px] bg-gray-200 rounded-2xl overflow-hidden relative'>
 			<img aria-label='bg' src={FolderBg} className='w-full h-full object-cover absolute z-1' />
-			<p className='p-2 font-bold text-sm text-gray-600 leading-8 h-16'>{data.photoName}</p>
+			<p className='p-2 font-bold text-sm text-gray-600 leading-8 h-16'>{data.folderName}</p>
 			<div className='absolute top-3 right-3 flex gap-2'>
 				<Dropdown menu={menuProps}>
 					<div className='p-3 w-9 h-9 ease-linear duration-200 flex items-center justify-center hover:bg-neutral-100 cursor-pointer rounded-full'>
@@ -67,7 +68,7 @@ const FolderItem: React.FC<FolderItemProps> = ({ data }) => {
 				</div>
 			</div>
 			<Link
-				to={`/works/project/1${(path["*"] ? "/" + path["*"] : "") + "/"}${data.photoName}`}
+				to={`/works/project/1${(path["*"] ? "/" + path["*"] : "") + "/"}${data.userDirectoryId}`}
 				className='p-3 font-bold text-sm text-gray-600 absolute bottom-0 hover:bg-white z-10 right-0 cursor-pointer z-2 ease-linear duration-200 hover:text-black w-[40%] h-[20%] flex items-center justify-center'>
 				Open
 			</Link>

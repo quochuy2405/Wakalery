@@ -9,7 +9,7 @@ interface ModalCreateFolderProps {
 	refresh: () => void;
 }
 const ModalCreateFolder: React.FC<ModalCreateFolderProps> = ({ onClose, refresh, open }) => {
-	const { projectId } = useParams();
+	const { projectId, userDirectoryId } = useParams();
 	const onSubmit = (data: { name: string }) => {
 		if (!data.name) {
 			message.error("Folder name can't null.");
@@ -19,8 +19,8 @@ const ModalCreateFolder: React.FC<ModalCreateFolderProps> = ({ onClose, refresh,
 		createFolderByParentyId({
 			folderName: data.name,
 			userId: 1,
-			projectId: parseInt(projectId),
-			folderId: 0,
+			projectId: Number (projectId),
+			folderId: Number(userDirectoryId) || 0,
 		})
 			.then(() => {
 				onClose();

@@ -1,23 +1,29 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { getImageByFaceUploadCropAI } from "@/apis/face";
+import { getChildByProjectId } from "@/apis/project";
 import { FloatButton } from "@/components/atoms";
-import { LoadMoveFolder } from "@/components/moleculers";
+import { BreadcrumbProject, FolderItem, ImageItem, LoadMoveFolder } from "@/components/moleculers";
 import { SideBar } from "@/components/organims";
-import { ImageType } from "@/types/image";
+import { closeLoading, startLoading } from "@/redux/features/loading";
+import { ImageType, PhotoDirectory } from "@/types/image";
 import { canvasPreviewToBlob } from "@/utils/common";
-import { Breadcrumb, Button, Image, Popconfirm } from "antd";
+import { Image, Popconfirm } from "antd";
 import clsx from "clsx";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ReactCrop, { Crop, PixelCrop } from "react-image-crop";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import { IMAGE_PREFIX } from "../constants";
 
 const Project = () => {
-	// const path = useParams();
+	const { projectId, userDirectoryId } = useParams();
 	const [quickPreview, setQuickPreview] = useState<ImageType | null>(null);
 	const [isSearch, setIsSearch] = useState(false);
 	const previewCanvasRef = useRef<HTMLCanvasElement>(null);
 	const imgRef = useRef<HTMLImageElement>(null);
+	const [materials, setMaterial] = useState<PhotoDirectory[]>([]);
+	const [refresh, setRefresh] = useState<boolean>(false);
+	const dispatch = useDispatch();
 	const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
 	const [openConfirm, setOpenConfirm] = useState<boolean>(false);
 
@@ -67,36 +73,35 @@ const Project = () => {
 		setIsSearch(false);
 	};
 
+	useEffect(() => {
+		if (projectId && userDirectoryId) {
+			dispatch(startLoading());
+			getChildByProjectId({
+				folderId: userDirectoryId,
+				projectId: projectId,
+				userId: "1",
+			})
+				.then(({ data }) => {
+					setMaterial(data);
+				})
+				.catch(() => {
+					setMaterial([]);
+				})
+				.finally(() => {
+					dispatch(closeLoading());
+				});
+		}
+	}, [projectId, refresh, userDirectoryId]);
+
+	const refreshData = () => {
+		setRefresh((curr) => !curr);
+	};
 	return (
 		<div className='w-full h-screen overflow-y-auto flex'>
 			<SideBar page='works' />
 
 			<div className='flex-1 bg-neutral-100 h-full p-10'>
-				<div className='flex items-center justify-between bg-white w-full rounded-xl p-3 shadow-lg'>
-					<Breadcrumb
-						items={[
-							{
-								title: "Projects",
-								className:
-									"hover:cursor-pointer hover:bg-neutral-100 !font-semibold !rounded-md py-1 text-xs uppercase text-emerald-400",
-							},
-							{
-								title: <Link to='/'>Project 0001</Link>,
-								className:
-									"hover:cursor-pointer hover:bg-neutral-100 !font-semibold !rounded-md py-1 text-xs uppercase text-emerald-400",
-							},
-						]}
-					/>
-
-					<div className='flex items-center gap-4'>
-						<Button className='font-normal items-center flex justify-center text-xs !rounded-lg'>
-							Create folder
-						</Button>
-						<Button className='font-normal items-center flex justify-center text-xs !rounded-lg'>
-							Upload
-						</Button>
-					</div>
-				</div>
+				<BreadcrumbProject refresh={refreshData} />
 				<Popconfirm
 					title='Search Image Similar Face'
 					description='Are you sure to search this face?'
@@ -113,30 +118,38 @@ const Project = () => {
 							"!cursor-default": !isSearch,
 						})}
 						onComplete={onCompleteCrop}>
-						{/* <section className='py-6 grid grid-cols-2  h-full mt-4 rounded-md lg:grid-cols-4 overflow-y-auto gap-10'>
-							{items.map((item: any) => {
-								if (item.isFolder) {
-									return <FolderItem key={item.photoSerialId} data={item} />;
+						<section className='py-6 grid grid-cols-2 h-full mt-4 rounded-md lg:grid-cols-4 overflow-y-auto gap-10'>
+							{materials.map((item: any) => {
+								const fileExtension = item.photoName?.split(".")?.pop()?.toLowerCase();
+
+								// List of allowed image extensions (add more if needed)
+								const allowedExtensions = ["jpg", "jpeg", "png", "gif"];
+
+								if (!allowedExtensions.includes(fileExtension)) {
+									return <FolderItem key={item.userDirectoryId} data={item} />;
 								}
 								return (
 									<ImageItem
 										key={item.photoSerialId}
 										image={item}
-										onQuickPreview={(image) => setQuickPreview(image)}
+										refresh={() => setRefresh((curr) => !curr)}
+										onQuickPreview={(image) => {
+											setQuickPreview(image);
+										}}
 									/>
 								);
 							})}
-						</section> */}
+						</section>
 					</ReactCrop>
 				</Popconfirm>
 			</div>
 			{!!quickPreview && (
 				<Image
 					style={{ display: "none" }}
-					src={IMAGE_PREFIX + "1/" + (quickPreview.photo_name || quickPreview.photoName)}
+					src={IMAGE_PREFIX + "1/" + quickPreview.photoName}
 					preview={{
 						visible: true,
-						src: IMAGE_PREFIX + "1/" + (quickPreview.photo_name || quickPreview.photoName),
+						src: IMAGE_PREFIX + "1/" + quickPreview.photoName,
 						onVisibleChange: (value) => {
 							if (!value) setQuickPreview(null);
 						},

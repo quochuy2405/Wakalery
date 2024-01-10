@@ -48,15 +48,13 @@ const Project = () => {
 				<BreadcrumbProject refresh={refreshData} />
 				<section className='py-6 grid grid-cols-2 h-full mt-4 rounded-md lg:grid-cols-4 overflow-y-auto gap-10'>
 					{materials.map((item: any) => {
-						console.log("item.photoName", item.photoName);
 						const fileExtension = item.photoName?.split(".")?.pop()?.toLowerCase();
 
 						// List of allowed image extensions (add more if needed)
 						const allowedExtensions = ["jpg", "jpeg", "png", "gif"];
 
 						if (!allowedExtensions.includes(fileExtension)) {
-							console.log("item", item);
-							return <FolderItem key={item.photoSerialId} data={item} />;
+							return <FolderItem key={item.userDirectoryId} data={item} />;
 						}
 						return (
 							<ImageItem
@@ -73,10 +71,10 @@ const Project = () => {
 			{!!quickPreview && (
 				<Image
 					style={{ display: "none" }}
-					src={IMAGE_PREFIX + "1/" + (quickPreview.photo_name || quickPreview.photoName)}
+					src={IMAGE_PREFIX + "1/" + quickPreview.photoName}
 					preview={{
 						visible: true,
-						src: IMAGE_PREFIX + "1/" + (quickPreview.photo_name || quickPreview.photoName),
+						src: IMAGE_PREFIX + "1/" + quickPreview.photoName,
 						onVisibleChange: (value) => {
 							if (!value) setQuickPreview(null);
 						},

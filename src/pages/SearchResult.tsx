@@ -43,10 +43,10 @@ const SearchResult = () => {
 			{!!quickPreview && (
 				<Image
 					style={{ display: "none" }}
-					src={IMAGE_PREFIX + "1/" + (quickPreview.photo_name || quickPreview.photoName)}
+					src={IMAGE_PREFIX + "1/" + quickPreview.photoName}
 					preview={{
 						visible: true,
-						src: IMAGE_PREFIX + "1/" + (quickPreview.photo_name || quickPreview.photoName),
+						src: IMAGE_PREFIX + "1/" + quickPreview.photoName,
 						onVisibleChange: (value) => {
 							if (!value) setQuickPreview(null);
 						},

@@ -19,7 +19,7 @@ const Public = () => {
 		getAllPublicPhoto()
 			.then((res) => {
 				const data = res.data;
-				console.log("data", data);
+		
 				// Assuming the API response contains an array of image URLs
 				setImages(data || []);
 			})

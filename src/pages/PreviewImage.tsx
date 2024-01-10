@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { getImageByFaceUploadCropAI } from "@/apis/face";
-import { getImageDetails } from "@/apis/get_image";
+import { getImageDetails } from "@/apis/image";
 import { FloatButton } from "@/components/atoms";
 import { GridImages, ModalShare, SimilarGrid } from "@/components/moleculers";
 import { Header } from "@/components/organims";
@@ -228,7 +228,7 @@ const PreviewImage = () => {
 						</div>
 						<div>
 							<p className='font-semibold' style={{ marginBottom: 24 }}>
-								Photo name: {form.getValues("photo_name")}
+								Photo name: {form.getValues("photoName")}
 							</p>
 							<p className='font-semibold'>Models detect</p>
 							<Row>
@@ -257,7 +257,7 @@ const PreviewImage = () => {
 							<Row className='gap-2'>
 								<DescriptionItem title='Models name' content='' />
 								<Controller
-									name='model_name'
+									name='modelName'
 									defaultValue={""}
 									control={form.control}
 									render={({ field }) => {
@@ -326,7 +326,7 @@ const PreviewImage = () => {
 								<Col span={24}>
 									<DescriptionItem title='Deep clothing' content='' />
 									<Controller
-										name='deep_clothing'
+										name='deepClothing'
 										defaultValue={""}
 										control={form.control}
 										render={({ field }) => {

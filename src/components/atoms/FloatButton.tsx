@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { getImageByTagsContains, getImageByTagsMatchAll } from "@/apis/get_image";
+import { getImageByTagsContains, getImageByTagsMatchAll } from "@/apis/image";
 import { botComponents } from "@/constants/botflow";
 import { closeLoading, startLoading } from "@/redux/features/loading";
 import { resetRobot, setRobot } from "@/redux/features/robot";
