@@ -36,9 +36,9 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 	const previewCanvasRef = useRef<any>();
 
 	const onSubmit = ({ record, face }: FormPromtType) => {
-		dispatch(startLoading());
 		switch (robot?.type) {
 			case "face": {
+				dispatch(startLoading());
 				const dataFaceFind = {
 					record: refDataPromt.current?.record,
 					api: refDataPromt.current?.api,
@@ -60,6 +60,7 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 				break;
 			}
 			case "record": {
+				dispatch(startLoading());
 				sendPrompt(record).then(async ({ data }) => {
 					refDataPromt.current = data;
 					if (data.querySimilarImage) {
@@ -102,9 +103,9 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 		dispatch(setRobot(botComponents({ onMethods }).methods));
 	};
 	const onSearchByTag = async () => {
-		dispatch(startLoading());
 		switch (mode) {
 			case "contains": {
+				dispatch(startLoading());
 				await getImageByTagsContains(tags)
 					.then(({ data }) => {
 						dispatch(setSearch(data));
@@ -120,6 +121,7 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 				break;
 			}
 			case "all": {
+				dispatch(startLoading());
 				await getImageByTagsMatchAll(tags)
 					.then(({ data }) => {
 						dispatch(setSearch(data));
