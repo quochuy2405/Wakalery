@@ -110,12 +110,12 @@ const router = createBrowserRouter([
 				errorElement: <Error />,
 			},
 			{
-				path: "/works/project/:id",
+				path: "/works/project/:projectId",
 				element: <Project />,
 				errorElement: <Error />,
 			},
 			{
-				path: "/works/project/:id/*",
+				path: "/works/project/:projectId/*",
 				element: <Materials />,
 				errorElement: <Error />,
 			},

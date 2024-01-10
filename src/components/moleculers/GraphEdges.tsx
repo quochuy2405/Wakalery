@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GraphView } from "react-digraph";
 import { getGraphRNN } from "../../apis/graph-rnn";
-import { IMAGE_PREFIX, IMAGE_PREFIX_CROP } from "@/constants/index";
 
 const NODE_KEY = "id"; // Allows D3 to correctly update DOM
 const GraphEdges = () => {
@@ -73,7 +72,7 @@ const GraphEdges = () => {
 				const keyNode = isNode ? "nodemain" : "noderelated";
 				const typeText = isNode ? "Faces" : "Related image";
 
-				const url = isNode ? IMAGE_PREFIX_CROP + "1/" + item.node : IMAGE_PREFIX + "1/" + item.node;
+				// const url = isNode ? IMAGE_PREFIX_CROP + "1/" + item.node : IMAGE_PREFIX + "1/" + item.node;
 				NodeTypes = {
 					...NodeTypes,
 					[keyNode + index]: {
@@ -143,8 +142,7 @@ const GraphEdges = () => {
 				minZoom={0}
 				nodeTypes={config}
 				nodeSubtypes={NodeSubtypes}
-        edgeTypes={EdgeTypes}
-        
+				edgeTypes={EdgeTypes}
 			/>
 		</div>
 	);

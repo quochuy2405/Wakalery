@@ -3,11 +3,10 @@ import { IMAGE_PREFIX } from "@/constants/index";
 import { PhotoDirectory } from "@/types/image";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { Link } from "react-router-dom";
-
 interface DiscoveryProps {
 	photoName: string | null | undefined;
 	current: string;

@@ -1,22 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { getImageByFaceUploadCropAI } from "@/apis/face";
 import { FloatButton } from "@/components/atoms";
-import { FolderItem, ImageItem, LoadMoveFolder } from "@/components/moleculers";
+import { LoadMoveFolder } from "@/components/moleculers";
 import { SideBar } from "@/components/organims";
-import { RootState } from "@/redux/store";
 import { ImageType } from "@/types/image";
-import { canvasPreviewToBlob, getUniqueItems } from "@/utils/common";
+import { canvasPreviewToBlob } from "@/utils/common";
 import { Breadcrumb, Button, Image, Popconfirm } from "antd";
-import { useMemo, useRef, useState } from "react";
-import ReactCrop, { Crop, PixelCrop } from "react-image-crop";
-import { useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
-import { IMAGE_PREFIX } from "../constants";
 import clsx from "clsx";
+import React, { useRef, useState } from "react";
+import ReactCrop, { Crop, PixelCrop } from "react-image-crop";
+import { Link } from "react-router-dom";
+import { IMAGE_PREFIX } from "../constants";
 
 const Project = () => {
-	const path = useParams();
-	const material = useSelector((state: RootState) => state.project.data);
+	// const path = useParams();
 	const [quickPreview, setQuickPreview] = useState<ImageType | null>(null);
 	const [isSearch, setIsSearch] = useState(false);
 	const previewCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -70,12 +67,6 @@ const Project = () => {
 		setIsSearch(false);
 	};
 
-	const items = useMemo(() => {
-		const directory = path["*"];
-		console.log("first", "/home/isphoto/" + directory + "/");
-		return getUniqueItems("/home/isphoto/" + directory + "/", material);
-	}, [path, material]);
-
 	return (
 		<div className='w-full h-screen overflow-y-auto flex'>
 			<SideBar page='works' />
@@ -122,7 +113,7 @@ const Project = () => {
 							"!cursor-default": !isSearch,
 						})}
 						onComplete={onCompleteCrop}>
-						<section className='py-6 grid grid-cols-2  h-full mt-4 rounded-md lg:grid-cols-4 overflow-y-auto gap-10'>
+						{/* <section className='py-6 grid grid-cols-2  h-full mt-4 rounded-md lg:grid-cols-4 overflow-y-auto gap-10'>
 							{items.map((item: any) => {
 								if (item.isFolder) {
 									return <FolderItem key={item.photoSerialId} data={item} />;
@@ -135,7 +126,7 @@ const Project = () => {
 									/>
 								);
 							})}
-						</section>
+						</section> */}
 					</ReactCrop>
 				</Popconfirm>
 			</div>

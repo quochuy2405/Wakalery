@@ -6,6 +6,7 @@ export type RobotType = {
 	submit?: (data: object) => void;
 	show?: boolean;
 	type?: "face" | "record";
+  hiddenCancel?:boolean
 };
 
 const initialState: RobotType = {
@@ -13,6 +14,7 @@ const initialState: RobotType = {
 	body: "",
 	submit: () => 1,
 	show: false,
+	hiddenCancel:false
 };
 export const robotSlice = createSlice({
 	name: "robot",
@@ -24,6 +26,7 @@ export const robotSlice = createSlice({
 			state.submit = payload?.submit;
 			state.title = payload?.title;
 			state.type = payload?.type;
+			state.hiddenCancel = payload?.hiddenCancel;
 			return state;
 		},
 		resetRobot: () => {

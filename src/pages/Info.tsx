@@ -1,4 +1,5 @@
 import { Header } from "@/components/organims";
+import React from "react";
 
 const Info = () => {
 	return (

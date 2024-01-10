@@ -1,5 +1,6 @@
 import { Button } from "antd";
 import clsx from "clsx";
+import React from "react";
 import { Link } from "react-router-dom";
 interface HeaderProps {
 	page: "home" | "discovery" | "contact";

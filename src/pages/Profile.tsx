@@ -5,7 +5,7 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Segmented, Select, Upload, message } from "antd";
 import type { UploadChangeParam } from "antd/es/upload";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Form } from "react-router-dom";
 
 const getBase64 = (img: RcFile, callback: (url: string) => void) => {

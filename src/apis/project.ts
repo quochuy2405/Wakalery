@@ -23,8 +23,15 @@ export const updateProject = (data: {
 	return unauth().put("/project/update", data);
 };
 
-export const getAllMaterialtByProjectId = (uid: string, id: string) => {
-	return unauth().get(`/photo/${uid}/${id}`);
+type ChildQuery = {
+	userId: string;
+	projectId: string;
+	folderId: string;
+};
+export const getChildByProjectId = ({ userId, projectId, folderId }: ChildQuery) => {
+	return unauth().get(
+		`/directory/get-child?userId=${userId}&projectId=${projectId}&folderId=${folderId}`
+	);
 };
 export const getFavoriteByUserId = (uid: string) => {
 	return unauth().get(`/project/get-favorite/${uid}`);

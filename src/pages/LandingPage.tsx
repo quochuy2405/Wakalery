@@ -1,6 +1,7 @@
 import Submathing from "@/assets/sunbathing.svg";
 import { Header } from "@/components/organims";
 import { Button } from "antd";
+import React from "react";
 
 const LandingPage = () => {
 	return (

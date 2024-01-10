@@ -1,8 +1,10 @@
 import { IMAGE_PREFIX } from "@/constants/index";
 import { openMove } from "@/redux/features/onmove";
 import { ImageType } from "@/types/image";
-import { HeartFilled } from "@ant-design/icons";
+import { onDownload } from "@/utils/common";
+import { DownloadOutlined, HeartFilled } from "@ant-design/icons";
 import { Dropdown, MenuProps, Rate, Tooltip } from "antd";
+import React from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { BsEyeFill } from "react-icons/bs";
 import { GiMove } from "react-icons/gi";
@@ -15,6 +17,7 @@ interface ImageItemProps {
 }
 const ImageItem: React.FC<ImageItemProps> = ({ onQuickPreview, image }) => {
 	const dispatch = useDispatch();
+	const src = IMAGE_PREFIX + "1/" + (image.photo_name || image.photoName);
 
 	const items: MenuProps["items"] = [
 		{
@@ -22,6 +25,14 @@ const ImageItem: React.FC<ImageItemProps> = ({ onQuickPreview, image }) => {
 			key: "1",
 			icon: <GiMove />,
 			onClick: () => dispatch(openMove()),
+		},
+		{
+			label: "Dowload",
+			key: "2",
+			icon: <DownloadOutlined />,
+			onClick: () => {
+				onDownload(src);
+			},
 		},
 		{
 			label: "Delete",
@@ -36,10 +47,7 @@ const ImageItem: React.FC<ImageItemProps> = ({ onQuickPreview, image }) => {
 
 	return (
 		<div className='min-w-[180px] shadow-xl max-w-[400px] h-[24vh] bg-gray-200 rounded-2xl overflow-hidden relative'>
-			<LazyLoadImage
-				src={IMAGE_PREFIX + "1/" + (image.photo_name || image.photoName)}
-				className='w-full h-full object-cover object-top absolute z-1'
-			/>
+			<LazyLoadImage src={src} className='w-full h-full object-cover object-top absolute z-1' />
 			<p className='p-2 font-semibold bg-white text-[10px] text-black max-w-[60%] truncate leading-2 rounded-br-xl z-9 relative shadow-sm'>
 				{image.photo_name || image.photoName}
 			</p>

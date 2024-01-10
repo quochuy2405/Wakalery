@@ -6,15 +6,22 @@ export const getAllFolderByUserId = (id: string) => {
 
 type CreateDirectory = {
 	userId: number;
-	newDir: string;
+	folderName: string;
 	projectId: number;
+	folderId: number;
 };
 
-export const createFolderFromDirectory = ({ newDir, userId, projectId }: CreateDirectory) => {
+export const createFolderByParentyId = ({
+	folderName,
+	userId,
+	projectId,
+	folderId,
+}: CreateDirectory) => {
 	return unauth().post(`/directory/add`, {
 		userId,
-		newDir,
+		newDir: folderName,
 		projectId,
+		folderId,
 	});
 };
 type DeleteDirectory = {

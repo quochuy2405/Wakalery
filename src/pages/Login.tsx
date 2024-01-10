@@ -1,4 +1,5 @@
 import { LoginForm } from "@/components/forms";
+import React from "react";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
 const Login = () => {

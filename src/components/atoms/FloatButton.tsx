@@ -36,6 +36,7 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 	const previewCanvasRef = useRef<any>();
 
 	const onSubmit = ({ record, face }: FormPromtType) => {
+		dispatch(startLoading());
 		switch (robot?.type) {
 			case "face": {
 				const dataFaceFind = {
@@ -49,6 +50,9 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 					.then(({ data }) => {
 						dispatch(setSearch(data));
 						navigate("/project/search");
+					})
+					.catch(() => {
+						dispatch(setRobot(botComponents({}).notfound));
 					})
 					.finally(() => {
 						dispatch(closeLoading());
@@ -67,9 +71,12 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 						return;
 					}
 					await getImageByTagsContains(data.params)
-						.then(({ data }) => {
-							dispatch(setSearch(data));
-							navigate("/project/search?name=" + data.params.toString());
+						.then(({ data: photo }) => {
+							dispatch(setSearch(photo));
+							navigate("/project/search?name=" + data?.params.toString());
+						})
+						.catch(() => {
+							dispatch(setRobot(botComponents({}).notfound));
 						})
 						.finally(() => {
 							dispatch(closeLoading());
@@ -103,8 +110,12 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 						dispatch(setSearch(data));
 						navigate("/project/search?name=" + tags.toString());
 					})
+					.catch(() => {
+						dispatch(setRobot(botComponents({}).notfound));
+					})
 					.finally(() => {
 						dispatch(closeLoading());
+						setShowSearchTag(false);
 					});
 				break;
 			}
@@ -114,8 +125,12 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 						dispatch(setSearch(data));
 						navigate("/project/search?name=" + tags.toString());
 					})
+					.catch(() => {
+						dispatch(setRobot(botComponents({}).notfound));
+					})
 					.finally(() => {
 						dispatch(closeLoading());
+						setShowSearchTag(false);
 					});
 				break;
 			}
@@ -138,7 +153,11 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 							okText={"Ok"}
 							onConfirm={() => {
 								form.submit();
+								if (robot.hiddenCancel) {
+									dispatch(resetRobot());
+								}
 							}}
+							showCancel={!robot?.hiddenCancel}
 							forceRender={true}>
 							<FloatButton
 								onClick={() => {

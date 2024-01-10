@@ -1,6 +1,7 @@
 import { SideBar } from "@/components/organims";
 import { SettingFilled } from "@ant-design/icons";
 import { Card, Switch } from "antd";
+import React from "react";
 
 const Settings = () => {
 	return (

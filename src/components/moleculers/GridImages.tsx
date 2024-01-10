@@ -1,10 +1,10 @@
+import { IMAGE_PREFIX } from "@/constants/index";
 import { PhotoDirectory } from "@/types/image";
-import { memo } from "react";
-import { Link } from "react-router-dom";
+import { Empty } from "antd";
+import React, { memo } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import { IMAGE_PREFIX } from "@/constants/index";
-import { Empty } from "antd";
+import { Link } from "react-router-dom";
 
 interface DiscoveryProps {
 	images: Array<PhotoDirectory>;

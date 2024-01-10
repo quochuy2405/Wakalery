@@ -12,11 +12,13 @@ import { RootState } from "@/redux/store";
 import { PhotoDirectory } from "@/types/image";
 import { arrayToTree, refactorPath } from "@/utils/common";
 import { Breadcrumb, Button, Modal, Spin, message } from "antd";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { VscLoading } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllFolderByUserId, moveFolderFromDirectory } from "../../apis/folder";
 import DirectoryRowMove from "./DirectoryRowMove";
+
+
 const LoadMoveFolder = () => {
 	const [loading, setLoading] = useState(true);
 	const directoryMove = useSelector((state: RootState) => state.directorymove.currentPath);

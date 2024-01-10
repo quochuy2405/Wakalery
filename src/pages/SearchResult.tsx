@@ -5,7 +5,7 @@ import { SideBar } from "@/components/organims";
 import { RootState } from "@/redux/store";
 import { ImageType } from "@/types/image";
 import { Image } from "antd";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { IMAGE_PREFIX } from "../constants";

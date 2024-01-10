@@ -2,9 +2,10 @@ import { buildGraphGNN, cropFaces, prepareDataGraphGNN } from "@/apis/detect";
 import { closeTrain, startTrain } from "@/redux/features/detect";
 import { RootState } from "@/redux/store";
 import { Timeline, message } from "antd";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BiCheckCircle } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
+
 type StatusType = {
 	items: Array<{ title: string }>;
 	pending: string;

@@ -4,7 +4,7 @@ import { ProjectItem } from "@/components/moleculers";
 import { SideBar } from "@/components/organims";
 import { ProjectType } from "@/types/project";
 import clsx from "clsx";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const Favorites = () => {
 	const [favorite, setFavorite] = useState<ProjectType[]>([]);

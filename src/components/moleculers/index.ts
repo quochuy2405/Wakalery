@@ -12,3 +12,5 @@ export { default as TableTrash } from "./TableTrash";
 export { default as ModalCreateProject } from "./ModalCreateProject";
 export { default as UploadFileModal } from "./UploadFileModal";
 export { default as UploadFace } from "./UploadFace";
+export { default as BreadcrumbProject } from "./BreadcrumbProject";
+export { default as ModalCreateFolder } from "./ModalCreateFolder";

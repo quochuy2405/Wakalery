@@ -6,6 +6,7 @@ import manager from "@/assets/manager.svg";
 import search from "@/assets/search.svg";
 import { Avatar } from "antd";
 import clsx from "clsx";
+import React from "react";
 import { FaBell } from "react-icons/fa";
 import { Link } from "react-router-dom";
 interface SideBarProps {

@@ -12,7 +12,10 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
+import React from "react";
 import { Bar, Pie } from "react-chartjs-2";
+
+
 ChartJS.register(CategoryScale, ArcElement, LinearScale, BarElement, Title, Tooltip, Legend);
 let delayed = false;
 

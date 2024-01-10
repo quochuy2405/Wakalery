@@ -2,10 +2,12 @@
 
 import { Button, Table } from "antd";
 import moment from "moment";
+import React from "react";
 import { BiSolidVideos } from "react-icons/bi";
 import { BsFolder, BsImage } from "react-icons/bs";
 import { HiDocumentText } from "react-icons/hi2";
 import { MdDelete, MdRestore } from "react-icons/md";
+
 const IconByType = {
 	img: <BsImage size={18} />,
 	doc: <HiDocumentText size={20} />,

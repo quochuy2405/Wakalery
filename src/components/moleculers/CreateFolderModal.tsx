@@ -1,11 +1,13 @@
 import { InboxOutlined } from "@ant-design/icons";
 import { Form, Input, Modal } from "antd";
+import React from "react";
+
 interface CreateModalProps {
 	open: boolean;
 	onClose: () => void;
 }
 type FieldType = {
-  name?: string;
+	name?: string;
 };
 const CreateModal: React.FC<CreateModalProps> = ({ open, onClose }) => {
 	const onFinish = async () => {};

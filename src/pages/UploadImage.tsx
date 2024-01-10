@@ -1,8 +1,7 @@
 import upload from "@/assets/upload.svg";
 import { Header } from "@/components/organims";
 import { Button, Form, Input, Upload, UploadFile, UploadProps } from "antd";
-import { useState } from "react";
-
+import React, { useState } from "react";
 const { TextArea } = Input;
 const { Dragger } = Upload;
 
@@ -25,13 +24,13 @@ const UploadImage = () => {
 			}
 		},
 	};
-	const onSubmit = (data:object) => {
+	const onSubmit = (data: object) => {
 		console.log("fileList ", fileList);
 		console.log("form", data);
 	};
 	return (
 		<div className='h-screen flex flex-col'>
-			<Header page="discovery" />
+			<Header page='discovery' />
 			<div className='max-w-7xl m-auto w-full flex-1 flex items-center justify-center'>
 				<Dragger
 					{...props}

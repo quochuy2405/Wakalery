@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signupSchema } from "@/resolvers/signup";
+import React from "react";
+
 const defaultValues = {
 	firstName: "",
 	lastName: "",

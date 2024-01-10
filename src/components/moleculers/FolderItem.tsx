@@ -3,10 +3,12 @@ import { openMove } from "@/redux/features/onmove";
 import { PhotoDirectory } from "@/types/image";
 import { Dropdown, MenuProps } from "antd";
 import moment from "moment";
+import React from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { GiMove } from "react-icons/gi";
 import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+
 interface FolderItemProps {
 	data: PhotoDirectory;
 }
@@ -30,13 +32,11 @@ const FolderItem: React.FC<FolderItemProps> = ({ data }) => {
 	const menuProps = {
 		items,
 	};
-
 	return (
 		<div className='min-w-[180px] shadow-xl max-w-[400px] h-[220px] bg-gray-200 rounded-2xl overflow-hidden relative'>
-			<img aria-label="bg" src={FolderBg} className='w-full h-full object-cover absolute z-1' />
-			<p className='p-2 font-bold text-sm text-gray-600 leading-8'>{data.photoName}</p>
+			<img aria-label='bg' src={FolderBg} className='w-full h-full object-cover absolute z-1' />
+			<p className='p-2 font-bold text-sm text-gray-600 leading-8 h-16'>{data.photoName}</p>
 			<div className='absolute top-3 right-3 flex gap-2'>
-			
 				<Dropdown menu={menuProps}>
 					<div className='p-3 w-9 h-9 ease-linear duration-200 flex items-center justify-center hover:bg-neutral-100 cursor-pointer rounded-full'>
 						<svg

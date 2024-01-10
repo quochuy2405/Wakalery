@@ -4,8 +4,7 @@ import { Header } from "@/components/organims";
 import { closeLoading, startLoading } from "@/redux/features/loading";
 import { PhotoDirectory } from "@/types/image";
 import { Button, Image } from "antd";
-import { useEffect, useState } from "react";
-
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 const Public = () => {

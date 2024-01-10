@@ -54,7 +54,7 @@ export const refactorPath = (directory: string, name: string) => {
 	const regex = /\/+/g;
 	return dir.replaceAll(regex, "/");
 };
-export const onDownload = async (src: string, onProgress: (percent: number) => void) => {
+export const onDownload = async (src: string, onProgress?: (percent: number) => void) => {
 	await axios
 		.get(src, {
 			responseType: "arraybuffer",
@@ -64,7 +64,7 @@ export const onDownload = async (src: string, onProgress: (percent: number) => v
 					const percentage = (progressEvent.loaded / progressEvent.total) * 100;
 
 					// Call the provided onProgress callback with the percentage
-					onProgress(percentage);
+					onProgress?.(percentage);
 				}
 			},
 		})
@@ -207,9 +207,6 @@ export async function PngToBlob(file: File, canvas: HTMLCanvasElement): Promise<
 
 	return blob;
 }
-
-
-
 
 export function getUniqueItems(startWidth: string, materials: PhotoDirectory[]) {
 	const resultHashmap: any = {};

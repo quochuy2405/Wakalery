@@ -5,15 +5,16 @@ import { setProgress } from "@/redux/features/fileprogress";
 import { setStorage } from "@/redux/features/storage";
 import { InboxOutlined } from "@ant-design/icons";
 import { Modal, Upload, UploadFile, UploadProps, message } from "antd";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
 const { Dragger } = Upload;
 interface UploadFileModalProps {
 	open: boolean;
 	onClose: () => void;
+	refresh: () => void;
 }
-const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, onClose }) => {
+const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, refresh, onClose }) => {
 	const [files, setFiles] = useState<UploadFile[]>([]);
 	const dispatch = useDispatch();
 
@@ -28,7 +29,7 @@ const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, onClose }) => {
 		}
 
 		dispatch(setProgress(1));
-		await uploadFiles(files,'1', progressUpload).then(async () => {
+		await uploadFiles(files, "1", "0", progressUpload).then(async () => {
 			dispatch(startTrain());
 			await getUserInfo("1").then(({ data }) => {
 				dispatch(setStorage(data));
@@ -39,6 +40,7 @@ const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, onClose }) => {
 				content: "Upload successfuly.",
 				duration: 20,
 			});
+			refresh();
 			setFiles([]);
 			onClose();
 		});

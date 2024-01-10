@@ -2,7 +2,7 @@ import { getDeletedByUserId } from "@/apis/project";
 import { TableTrash } from "@/components/moleculers";
 import { SideBar } from "@/components/organims";
 import { PhotoDirectory } from "@/types/image";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const Deleted = () => {
 	const [trash, setTrash] = useState<PhotoDirectory[]>([]);

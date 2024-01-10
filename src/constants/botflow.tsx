@@ -1,6 +1,8 @@
 import { UploadFace } from "@/components/moleculers";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Spin } from "antd";
+import { PiRobotLight } from "react-icons/pi";
+import React from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const botComponents = ({ onMethods }: { onMethods?: any }) => ({
@@ -8,6 +10,7 @@ export const botComponents = ({ onMethods }: { onMethods?: any }) => ({
 		title: "Welcome to project",
 		body: <h2>I'm Warkary bot</h2>,
 		show: true,
+		hiddenCancel: false,
 	},
 	methods: {
 		title: "I'm Warkary",
@@ -29,6 +32,7 @@ export const botComponents = ({ onMethods }: { onMethods?: any }) => ({
 		),
 
 		show: true,
+		hiddenCancel: false,
 	},
 	searchText: {
 		title: "Using search image by Warkary bot",
@@ -41,6 +45,7 @@ export const botComponents = ({ onMethods }: { onMethods?: any }) => ({
 		),
 		show: true,
 		type: "record",
+		hiddenCancel: false,
 	},
 
 	face: {
@@ -67,10 +72,25 @@ export const botComponents = ({ onMethods }: { onMethods?: any }) => ({
 			</div>
 		),
 		show: true,
+		hiddenCancel: false,
 	},
 	finish: {
 		title: "Finish!",
 		body: <h2> Result is reponsed</h2>,
 		show: true,
+		hiddenCancel: true,
+	},
+	notfound: {
+		title: "Sorry!",
+		body: (
+			<div className='flex flex-col'>
+				<div className='flex gap-2 flex-col items-center'>
+					<PiRobotLight size={30} />
+					<h2 className='font-semibold'> Warkary don't find nothing in your data</h2>
+				</div>
+			</div>
+		),
+		show: true,
+		hiddenCancel: true,
 	},
 });

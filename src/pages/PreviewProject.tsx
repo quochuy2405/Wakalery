@@ -9,7 +9,7 @@ import { ImageType, PhotoDirectory } from "@/types/image";
 import { canvasPreviewToBlob, getRandomColor, onDownload } from "@/utils/common";
 import { DownloadOutlined } from "@ant-design/icons";
 import { Button, Col, Divider, Popconfirm, Progress, Row, Space, Tag } from "antd";
-import { memo, useEffect, useRef, useState } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import ReactCrop, { Crop, PixelCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";

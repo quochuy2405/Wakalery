@@ -5,10 +5,9 @@ import { FloatButton } from "@/components/atoms";
 import { ModalCreateProject, ProjectItem } from "@/components/moleculers";
 import { SideBar } from "@/components/organims";
 import { closeLoading, startLoading } from "@/redux/features/loading";
-import { setRobot } from "@/redux/features/robot";
 import { ProjectType } from "@/types/project";
 import { Button } from "antd";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 const Works = () => {
@@ -56,6 +55,7 @@ const Works = () => {
 						New Project
 					</Button>
 				</div>
+
 				<section className='py-6 grid grid-cols-2 lg:grid-cols-4 gap-10 overflow-y-auto'>
 					{project.map((item) => {
 						return <ProjectItem refresh={() => setRefresh((e) => !e)} data={item} />;

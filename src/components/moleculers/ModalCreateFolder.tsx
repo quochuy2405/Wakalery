@@ -1,31 +1,38 @@
-import { createNewProject } from "@/apis/project";
+import { createFolderByParentyId } from "@/apis/folder";
 import { Button, Form, Input, Modal, message } from "antd";
 import React from "react";
+import { useParams } from "react-router-dom";
 
-interface ModalCreateProjectProps {
+interface ModalCreateFolderProps {
 	open: boolean;
 	onClose: () => void;
+	refresh: () => void;
 }
-const ModalCreateProject: React.FC<ModalCreateProjectProps> = ({ onClose, open }) => {
+const ModalCreateFolder: React.FC<ModalCreateFolderProps> = ({ onClose, refresh, open }) => {
+	const { projectId } = useParams();
 	const onSubmit = (data: { name: string }) => {
 		if (!data.name) {
-			message.error("Project name can't null.");
+			message.error("Folder name can't null.");
 			return;
 		}
-		createNewProject({
-			projectName: data.name,
-			userId: "1",
+		if (!projectId) return;
+		createFolderByParentyId({
+			folderName: data.name,
+			userId: 1,
+			projectId: parseInt(projectId),
+			folderId: 0,
 		})
 			.then(() => {
 				onClose();
 				message.success("Successfully!");
+				refresh();
 			})
 			.catch(() => {
 				message.error("Error!");
 			});
 	};
 	return (
-		<Modal title='Create project' open={open} onCancel={onClose} footer={null}>
+		<Modal title='Create Folder' open={open} onCancel={onClose} footer={null}>
 			<Form
 				labelCol={{ span: 6 }}
 				wrapperCol={{ span: 100 }}
@@ -46,4 +53,4 @@ const ModalCreateProject: React.FC<ModalCreateProjectProps> = ({ onClose, open }
 	);
 };
 
-export default ModalCreateProject;
+export default ModalCreateFolder;
