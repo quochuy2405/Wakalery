@@ -18,7 +18,7 @@ const Favorites = () => {
 	return (
 		<div className='w-full h-screen overflow-y-auto flex'>
 			<SideBar page='favorites' />
-			<div className='flex-1 bg-neutral-100 h-full p-10'>
+			<div className='flex-1 bg-neutral-50 h-full p-10'>
 				<div className='flex items-center gap-2 font-semibold text-sm mt-6'>
 					<img src={favoriteIcon} alt='Home' className={clsx("w-7 h-7")} /> <p>Favorites</p>
 				</div>

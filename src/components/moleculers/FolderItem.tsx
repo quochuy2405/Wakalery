@@ -1,6 +1,8 @@
 import FolderBg from "@/assets/folder.svg";
 import { openMove } from "@/redux/features/onmove";
+import { RootState } from "@/redux/store";
 import { PhotoDirectory } from "@/types/image";
+import { ThunkDispatch } from "@reduxjs/toolkit";
 import { Dropdown, MenuProps } from "antd";
 import moment from "moment";
 import React from "react";
@@ -14,7 +16,8 @@ interface FolderItemProps {
 }
 const FolderItem: React.FC<FolderItemProps> = ({ data }) => {
 	const path = useParams();
-	const dispatch = useDispatch();
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
 	const items: MenuProps["items"] = [
 		{
 			label: "Move",
@@ -31,8 +34,8 @@ const FolderItem: React.FC<FolderItemProps> = ({ data }) => {
 	];
 	const menuProps = {
 		items,
-  };
-  console.log('data', data)
+	};
+	console.log("data", data);
 	return (
 		<div className='min-w-[180px] shadow-xl max-w-[400px] h-[220px] bg-gray-200 rounded-2xl overflow-hidden relative'>
 			<img aria-label='bg' src={FolderBg} className='w-full h-full object-cover absolute z-1' />

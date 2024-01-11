@@ -3,7 +3,7 @@ import FolderBg from "@/assets/folder.svg";
 import { ProjectType } from "@/types/project";
 import { Dropdown, MenuProps, Popconfirm, Rate, message } from "antd";
 import moment from "moment";
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { Link } from "react-router-dom";
 interface ProjectItemProps {
@@ -38,7 +38,7 @@ const ProjectItem: React.FC<ProjectItemProps> = ({ data, refresh }) => {
 	const onFavorite = (value: boolean) => {
 		updateProject({ ...data, favorite: value })
 			.then(() => {
-				message.success(`${value?'Adding in':'Remove out'} favorites!`);
+				message.success(`${value ? "Adding in" : "Remove out"} favorites!`);
 				refresh();
 			})
 			.catch(() => {
@@ -52,7 +52,7 @@ const ProjectItem: React.FC<ProjectItemProps> = ({ data, refresh }) => {
 
 	return (
 		<div className='min-w-[180px] shadow-xl max-w-[400px] h-[220px] bg-gray-200 rounded-2xl overflow-hidden relative'>
-			<img aria-label="bg" src={FolderBg} className='w-full h-full object-cover absolute z-1' />
+			<img aria-label='bg' src={FolderBg} className='w-full h-full object-cover absolute z-1' />
 			<p className='p-2 font-bold text-sm text-gray-600 leading-8'>{data?.projectName}</p>
 			<div className='absolute top-3 right-3 flex gap-2'>
 				<div className='p-3 ease-linear duration-200 w-9 h-9 flex items-center justify-center hover:bg-neutral-100 cursor-pointer rounded-full'>
@@ -112,4 +112,4 @@ const ProjectItem: React.FC<ProjectItemProps> = ({ data, refresh }) => {
 	);
 };
 
-export default ProjectItem;
+export default memo(ProjectItem);

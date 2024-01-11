@@ -1,9 +1,11 @@
 import { updateImage } from "@/apis/image";
 import { IMAGE_PREFIX } from "@/constants/index";
 import { openMove } from "@/redux/features/onmove";
+import { RootState } from "@/redux/store";
 import { ImageType } from "@/types/image";
 import { onDownload } from "@/utils/common";
-import { DownloadOutlined, HeartFilled } from "@ant-design/icons";
+import { DownloadOutlined, HeartFilled, LockOutlined } from "@ant-design/icons";
+import { ThunkDispatch } from "@reduxjs/toolkit";
 import { Dropdown, MenuProps, Popconfirm, Rate, Tooltip, message } from "antd";
 import React, { useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
@@ -16,9 +18,16 @@ interface ImageItemProps {
 	image: ImageType;
 	onQuickPreview: (image: ImageType) => void;
 	refresh?: () => void;
+	isPublicManage?: boolean;
 }
-const ImageItem: React.FC<ImageItemProps> = ({ onQuickPreview, refresh, image }) => {
-	const dispatch = useDispatch();
+const ImageItem: React.FC<ImageItemProps> = ({
+	onQuickPreview,
+	refresh,
+	image,
+	isPublicManage,
+}) => {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
 	const src = IMAGE_PREFIX + "1/" + image.photoName;
 	const [isDelete, setIsDeleted] = useState(false);
 	const onDeleted = () => {
@@ -65,8 +74,34 @@ const ImageItem: React.FC<ImageItemProps> = ({ onQuickPreview, refresh, image })
 			},
 		},
 	];
+	const itemsPublicManage = [
+		{
+			label: "Change Visibility",
+			key: "1",
+			icon: <LockOutlined />,
+			onClick: () => {},
+		},
+		{
+			label: "Download",
+			key: "2",
+			icon: <DownloadOutlined />,
+			onClick: () => {
+				onDownload(src);
+			},
+		},
+		{
+			label: "Delete",
+			key: "3",
+			icon: <AiFillDelete />,
+			danger: true,
+
+			onClick: () => {
+				setIsDeleted(true);
+			},
+		},
+	];
 	const menuProps = {
-		items,
+		items: isPublicManage ? itemsPublicManage : items,
 	};
 
 	return (

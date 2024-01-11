@@ -10,13 +10,16 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { IMAGE_PREFIX } from "../constants";
+import { ThunkDispatch } from "@reduxjs/toolkit";
+import { RootState } from "@/redux/store";
 
 const Project = () => {
 	const { projectId } = useParams();
 	const [quickPreview, setQuickPreview] = useState<ImageType | null>(null);
 	const [materials, setMaterial] = useState<PhotoDirectory[]>([]);
 	const [refresh, setRefresh] = useState<boolean>(false);
-	const dispatch = useDispatch();
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
 
 	useEffect(() => {
 		if (projectId) {

@@ -140,7 +140,9 @@ const GraphEdges = () => {
 				edges={graph.edges}
 				edgeArrowSize={1}
 				minZoom={0}
-				nodeTypes={config}
+        nodeTypes={config}
+        backgroundFillId="#000000"
+      
 				nodeSubtypes={NodeSubtypes}
 				edgeTypes={EdgeTypes}
 			/>

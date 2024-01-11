@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import InputTag from "./InputTag";
 import { useForm } from "antd/es/form/Form";
 import { confirmPropmt, sendPrompt } from "@/apis/prompt";
+import { ThunkDispatch } from "@reduxjs/toolkit";
 interface FloatProps {
 	onSearch: () => void;
 	isPrivate?: boolean;
@@ -26,12 +27,13 @@ type FormPromtType = {
 };
 const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 	const [form] = useForm();
+	const [formTag] = useForm();
 	const robot = useSelector((state: RootState) => state.robot);
 	const navigate = useNavigate();
-	const [tags, setTags] = useState<string[]>([]);
 	const [showSearchTag, setShowSearchTag] = useState(false);
 	const [mode, setMode] = useState<"all" | "contains">("contains");
-	const dispatch = useDispatch();
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
 	const refDataPromt = useRef<any>();
 	const previewCanvasRef = useRef<any>();
 
@@ -48,8 +50,12 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 				};
 				confirmPropmt(face[0], dataFaceFind, previewCanvasRef.current)
 					.then(({ data }) => {
-						dispatch(setSearch(data));
-						navigate("/project/search");
+						if (data?.length) {
+							dispatch(setSearch(data));
+							navigate("/project/search");
+						} else {
+							throw "error";
+						}
 					})
 					.catch(() => {
 						dispatch(setRobot(botComponents({}).notfound));
@@ -102,7 +108,7 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 	const onShowBot = () => {
 		dispatch(setRobot(botComponents({ onMethods }).methods));
 	};
-	const onSearchByTag = async () => {
+	const onSearchByTag = async ({ tags }: { tags: Array<string> }) => {
 		switch (mode) {
 			case "contains": {
 				dispatch(startLoading());
@@ -177,10 +183,10 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 						title={robot.title}
 						placement='left'
 						open={showSearchTag}
-						onConfirm={onSearchByTag}
+						onConfirm={() => formTag.submit()}
 						onCancel={() => setShowSearchTag(false)}
 						description={
-							<>
+							<Form form={formTag} onFinish={onSearchByTag}>
 								<Form.Item labelCol={{ span: 6 }} wrapperCol={{ span: 100 }} className='w-full'>
 									<Form.Item label='Mode'>
 										<Switch
@@ -198,11 +204,11 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 											className='bg-gray-500'
 										/>
 									</Form.Item>
-									<Form.Item name='required'>
-										<InputTag values={tags} onChange={(t) => setTags(t)} />
+									<Form.Item name='tags' rules={[{ required: true }]}>
+										<InputTag />
 									</Form.Item>
 								</Form.Item>
-							</>
+							</Form>
 						}
 						forceRender={true}>
 						<FloatButton icon={<TagsOutlined />} onClick={() => setShowSearchTag((e) => !e)} />

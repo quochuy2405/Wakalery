@@ -2,7 +2,7 @@
 import { getImageByFaceUploadCropAI } from "@/apis/face";
 import { getImageDetails } from "@/apis/image";
 import { FloatButton } from "@/components/atoms";
-import { GridImages, ModalShare, SimilarGrid } from "@/components/moleculers";
+import { GridImages, ModalShare, SimilarGrid, StegImage } from "@/components/moleculers";
 import { SideBar } from "@/components/organims";
 import { closeLoading, startLoading } from "@/redux/features/loading";
 import { ImageType, PhotoDirectory } from "@/types/image";
@@ -17,6 +17,8 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import { useDispatch } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { IMAGE_PREFIX } from "../constants";
+import { ThunkDispatch } from "@reduxjs/toolkit";
+import { RootState } from "@/redux/store";
 
 interface DescriptionItemProps {
 	title: string;
@@ -52,7 +54,8 @@ const PreviewImage = () => {
 		height: 30,
 	});
 
-	const dispatch = useDispatch();
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
 	const form = useForm<ImageType>({
 		defaultValues: {
 			tag: "",
@@ -100,7 +103,7 @@ const PreviewImage = () => {
 			})
 			.catch((e) => console.log("e", e))
 			.finally(() => {
-				setIsSearch(false);
+				cancel();
 				dispatch(closeLoading());
 			});
 	};
@@ -146,8 +149,8 @@ const PreviewImage = () => {
 						<path d='M8.415 4.586a2 2 0 1 1 2.828 2.828L8.657 10H21a2 2 0 0 1 0 4H8.657l2.586 2.586a2 2 0 1 1-2.828 2.828L1 12l7.415-7.414z'></path>
 					</svg>
 				</div>
-				<div className='flex-1 relative w-[80%] m-auto bg-white p-4 flex flex-col items-center justify-center'>
-					<div className='flex justify-center items-center m-auto rounded-lg shadow-[0_0_10px_0px_#0000002b]'>
+				<div className='flex-1 relative w-[80%] m-auto bg-white py-4 flex flex-col items-center justify-center'>
+					<div className='flex justify-center items-center w-full p-4 rounded-lg shadow-[0_0_10px_0px_#0000002b]'>
 						<Popconfirm
 							title='Search Image Similar Face'
 							description='Are you sure to search this face?'
@@ -157,7 +160,7 @@ const PreviewImage = () => {
 							okText='Search'
 							open={isSearch || openConfirm}
 							cancelText='Cancel'>
-							<div className='w-full flex items-center justify-center overflow-hidden relative bg-neutral-50'>
+							<div className='w-full flex-1 flex items-center justify-center overflow-hidden relative bg-neutral-50'>
 								{!isSearch && (
 									<div aria-label='1' className='w-full h-full'>
 										<img
@@ -187,7 +190,7 @@ const PreviewImage = () => {
 								</div>
 							</div>
 						</Popconfirm>
-						<div className='w-full h-full min-h-fit p-8 relative'>
+						<div className='w-full flex-1 h-full min-h-fit p-8 relative'>
 							<canvas ref={previewCanvasRef} hidden />
 							{!!dowload && (
 								<div className='w-full absolute top-2 h-fit flex items-center justify-between'>
@@ -226,9 +229,8 @@ const PreviewImage = () => {
 								</div>
 							</div>
 							<div>
-								<p className='font-semibold' style={{ marginBottom: 24 }}>
-									Photo name: {form.getValues("photoName")}
-								</p>
+								<p className='font-semibold mb-3'>Photo name: {form.getValues("photoName")}</p>
+								<StegImage photoName={photoName} />
 								<p className='font-semibold'>Models detect</p>
 								<Row>
 									<Col span={12}>

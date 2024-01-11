@@ -17,6 +17,7 @@ import { VscLoading } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllFolderByUserId, moveFolderFromDirectory } from "../../apis/folder";
 import DirectoryRowMove from "./DirectoryRowMove";
+import { ThunkDispatch } from "@reduxjs/toolkit";
 
 
 const LoadMoveFolder = () => {
@@ -28,7 +29,8 @@ const LoadMoveFolder = () => {
 	const refDirectories = useRef<object>({});
 	const show = useSelector((state: RootState) => state.onmove.show);
 
-	const dispatch = useDispatch();
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
 	const reset = async () => {
 		refDirectories.current = {};
 		dispatch(setDirectoriesCurrent({}));
@@ -88,7 +90,7 @@ const LoadMoveFolder = () => {
 			userId: 1,
 			oldDirectory: fileMoves,
 			newDirectory: newDirectory,
-    };
+		};
 		moveFolderFromDirectory(data).then(async () => {
 			dispatch(closeMove());
 			message.success("Move completed!");

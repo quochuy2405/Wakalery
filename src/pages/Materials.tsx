@@ -14,6 +14,8 @@ import ReactCrop, { Crop, PixelCrop } from "react-image-crop";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { IMAGE_PREFIX } from "../constants";
+import { RootState } from "@/redux/store";
+import { ThunkDispatch } from "@reduxjs/toolkit";
 
 const Project = () => {
 	const { projectId, userDirectoryId } = useParams();
@@ -23,7 +25,8 @@ const Project = () => {
 	const imgRef = useRef<HTMLImageElement>(null);
 	const [materials, setMaterial] = useState<PhotoDirectory[]>([]);
 	const [refresh, setRefresh] = useState<boolean>(false);
-	const dispatch = useDispatch();
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
 	const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
 	const [openConfirm, setOpenConfirm] = useState<boolean>(false);
 

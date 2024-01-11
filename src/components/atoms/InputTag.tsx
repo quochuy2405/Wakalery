@@ -1,12 +1,11 @@
-
 import { Button, Divider, Input, InputRef, Select, Space } from "antd";
 import React, { useRef, useState } from "react";
 import { BsPlus } from "react-icons/bs";
 interface InputTagProps {
-	onChange: (values: Array<string>) => void;
-	values?: Array<string>;
+	onChange?: (value: Array<string>) => void;
+	value?: Array<string>;
 }
-const InputTag: React.FC<InputTagProps> = ({ onChange }) => {
+const InputTag: React.FC<InputTagProps> = ({ value, onChange }) => {
 	const [items, setItems] = useState(["dog", "cat", "people", "hat"]);
 	const [name, setName] = useState("");
 	const inputRef = useRef<InputRef>(null);
@@ -15,9 +14,7 @@ const InputTag: React.FC<InputTagProps> = ({ onChange }) => {
 		setName(event.target.value);
 	};
 
-	const addItem = (
-		e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>
-	) => {
+	const addItem = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
 		e.preventDefault();
 		setItems([...items, name]);
 		setName("");
@@ -28,23 +25,24 @@ const InputTag: React.FC<InputTagProps> = ({ onChange }) => {
 	return (
 		<Select
 			style={{ width: 300 }}
-			placeholder="Enter tags"
-			mode="multiple"
+			placeholder='Enter tags'
+			mode='multiple'
 			onChange={onChange}
+			value={value}
 			dropdownRender={(menu) => (
 				<>
 					{menu}
 					<Divider style={{ margin: "8px 0" }} />
 					<Space style={{ padding: "0 8px 4px" }}>
 						<Input
-							placeholder="Please enter tag"
+							placeholder='Please enter tag'
 							ref={inputRef}
 							value={name}
 							onChange={onNameChange}
-							className="!border !border-emerald-400"
+							className='!border !border-emerald-400'
 							onKeyDown={(e) => e.stopPropagation()}
 						/>
-						<Button type="text" icon={<BsPlus />} onClick={addItem}>
+						<Button type='text' icon={<BsPlus />} onClick={addItem}>
 							Add item
 						</Button>
 					</Space>

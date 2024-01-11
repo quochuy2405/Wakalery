@@ -21,6 +21,7 @@ import {
 	SignUp,
 	UploadImage,
 	Works,
+	PublicManage,
 } from "./pages";
 import "./styles/global.css";
 const router = createBrowserRouter([
@@ -97,6 +98,11 @@ const router = createBrowserRouter([
 			{
 				path: "/works",
 				element: <Works />,
+				errorElement: <Error />,
+			},
+			{
+				path: "/public-manage",
+				element: <PublicManage />,
 				errorElement: <Error />,
 			},
 			{

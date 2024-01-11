@@ -16,3 +16,4 @@ export { default as SignUp } from "./SignUp";
 export { default as UploadImage } from "./UploadImage";
 export { default as Works } from "./Works";
 export { default as SearchResult } from "./SearchResult";
+export { default as PublicManage } from "./PublicManage";

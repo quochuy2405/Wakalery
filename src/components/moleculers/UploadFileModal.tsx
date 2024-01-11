@@ -3,7 +3,9 @@ import { getUserInfo } from "@/apis/user";
 import { startTrain } from "@/redux/features/detect";
 import { setProgress } from "@/redux/features/fileprogress";
 import { setStorage } from "@/redux/features/storage";
+import { RootState } from "@/redux/store";
 import { InboxOutlined } from "@ant-design/icons";
+import { ThunkDispatch } from "@reduxjs/toolkit";
 import { Modal, Upload, UploadFile, UploadProps, message } from "antd";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -18,7 +20,8 @@ interface UploadFileModalProps {
 const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, refresh, onClose }) => {
 	const [files, setFiles] = useState<UploadFile[]>([]);
 	const { userDirectoryId } = useParams();
-	const dispatch = useDispatch();
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
 
 	const handleUpload = async () => {
 		if (!files.length) {

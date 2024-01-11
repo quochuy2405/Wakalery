@@ -1,6 +1,7 @@
 import { buildGraphGNN, cropFaces, prepareDataGraphGNN } from "@/apis/detect";
 import { closeTrain, startTrain } from "@/redux/features/detect";
 import { RootState } from "@/redux/store";
+import { ThunkDispatch } from "@reduxjs/toolkit";
 import { Timeline, message } from "antd";
 import React, { useEffect, useState } from "react";
 import { BiCheckCircle } from "react-icons/bi";
@@ -12,7 +13,8 @@ type StatusType = {
 };
 const BuildGNN = () => {
 	const detect = useSelector((state: RootState) => state.detect);
-	const dispatch = useDispatch();
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
 	const [status, setStatus] = useState<StatusType>({
 		items: [],
 		pending: "",

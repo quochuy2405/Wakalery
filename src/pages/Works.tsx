@@ -5,7 +5,9 @@ import { FloatButton } from "@/components/atoms";
 import { ModalCreateProject, ProjectItem } from "@/components/moleculers";
 import { SideBar } from "@/components/organims";
 import { closeLoading, startLoading } from "@/redux/features/loading";
+import { RootState } from "@/redux/store";
 import { ProjectType } from "@/types/project";
+import { ThunkDispatch } from "@reduxjs/toolkit";
 import { Button } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -14,7 +16,8 @@ const Works = () => {
 	const [project, setProject] = useState<ProjectType[]>([]);
 	const [refresh, setRefresh] = useState<boolean>(false);
 	const [newProject, setNewProject] = useState<boolean>(false);
-	const dispatch = useDispatch();
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
 
 	useEffect(() => {
 		if (!newProject) dispatch(startLoading());

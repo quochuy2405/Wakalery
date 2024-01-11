@@ -2,7 +2,7 @@
 import { getImageByFaceUploadCropAI } from "@/apis/face";
 import { getImageDetails } from "@/apis/image";
 import { FloatButton } from "@/components/atoms";
-import { GridImages, ModalShare, SimilarGrid } from "@/components/moleculers";
+import { GridImages, ModalShare, SimilarGrid, StegImage } from "@/components/moleculers";
 import { Header } from "@/components/organims";
 import { closeLoading, startLoading } from "@/redux/features/loading";
 import { ImageType, PhotoDirectory } from "@/types/image";
@@ -18,6 +18,8 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import { useDispatch } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { IMAGE_PREFIX } from "../constants";
+import { ThunkDispatch } from "@reduxjs/toolkit";
+import { RootState } from "@/redux/store";
 
 interface DescriptionItemProps {
 	title: string;
@@ -54,7 +56,8 @@ const PreviewImage = () => {
 		height: 30,
 	});
 
-	const dispatch = useDispatch();
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
 	const [imageSearch, setImageSearch] = useState<PhotoDirectory[] | null>(null);
 	const [dowload, setDownload] = useState(0);
 	const [isSearch, setIsSearch] = useState(false);
@@ -102,7 +105,7 @@ const PreviewImage = () => {
 			})
 			.catch((e) => console.log("e", e))
 			.finally(() => {
-				setIsSearch(false);
+				cancel();
 				dispatch(closeLoading());
 			});
 	};
@@ -158,7 +161,7 @@ const PreviewImage = () => {
 						okText='Search'
 						open={isSearch && openConfirm}
 						cancelText='Cancel'>
-						<div className='w-full h-full img-fit overflow-hidden relative bg-neutral-50'>
+						<div className='flex-[3] h-full img-fit overflow-hidden relative bg-neutral-50'>
 							{!isSearch && (
 								<LazyLoadImage
 									className='!h-full cursor-pointer w-full !rounded-lg overflow-hidden !object-contain'
@@ -188,7 +191,7 @@ const PreviewImage = () => {
 							</div>
 						</div>
 					</Popconfirm>
-					<div className='w-full h-full p-8 relative'>
+					<div className='w-full flex-[2] h-full p-8 relative'>
 						<canvas ref={previewCanvasRef} hidden />
 						{!!dowload && (
 							<div className='w-full absolute top-2 h-fit flex items-center justify-between'>
@@ -227,9 +230,10 @@ const PreviewImage = () => {
 							</div>
 						</div>
 						<div>
-							<p className='font-semibold' style={{ marginBottom: 24 }}>
+							<p className='font-semibold mb-3'>
 								Photo name: {form.getValues("photoName")}
 							</p>
+							<StegImage photoName={photoName} />
 							<p className='font-semibold'>Models detect</p>
 							<Row>
 								<Col span={12}>
@@ -358,7 +362,7 @@ const PreviewImage = () => {
 					</h2>
 					<div className='grid grid-cols-4 gap-4 bg-white'>
 						<GridImages current='discovery' images={imageSearch} />
-						{imageSearch.length === 0 && <Empty className="m-auto col-span-5"></Empty>}
+						{imageSearch.length === 0 && <Empty className='m-auto col-span-5'></Empty>}
 					</div>
 				</div>
 			)}

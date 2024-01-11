@@ -14,3 +14,4 @@ export { default as UploadFileModal } from "./UploadFileModal";
 export { default as UploadFace } from "./UploadFace";
 export { default as BreadcrumbProject } from "./BreadcrumbProject";
 export { default as ModalCreateFolder } from "./ModalCreateFolder";
+export { default as StegImage } from "./StegImage";

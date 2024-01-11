@@ -4,6 +4,7 @@ import home from "@/assets/home.svg";
 import image from "@/assets/image.svg";
 import manager from "@/assets/manager.svg";
 import search from "@/assets/search.svg";
+import storage from "@/assets/storage.svg";
 import { Avatar } from "antd";
 import clsx from "clsx";
 import React from "react";
@@ -30,27 +31,34 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 					<Link
 						to='/'
 						className={
-							"border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 group hover:bg-blue-400 hover:text-white hover:border-2 hover:border-blue-300"
+							"border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 group hover:bg-blue-400 hover:text-white hover:border-blue-300"
 						}>
 						<img
 							src={home}
 							alt='Home'
-							className={clsx("w-7 h-7 group-hover:bg-white group-hover:border group-hover:rounded-md", {
-								"border rounded-md bg-white": page === "analytics",
-							})}
+							className={clsx(
+								"w-7 h-7 group-hover:bg-white group-hover:border group-hover:rounded-md",
+								{
+									"border rounded-md bg-white": page === "analytics",
+								}
+							)}
 						/>
 						<p className='font-semibold text-sm'>Home</p>
 					</Link>
 					<Link
 						to='/discovery'
-						className='border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 group hover:bg-red-400 hover:text-white hover:border-2 hover:border-red-300'>
-						<img src={image} alt='Home' className='w-7 h-7 group-hover:bg-white group-hover:border group-hover:rounded-md' />
+						className='border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 group hover:bg-red-400 hover:text-white hover:border-red-300'>
+						<img
+							src={image}
+							alt='Home'
+							className='w-7 h-7 group-hover:bg-white group-hover:border group-hover:rounded-md'
+						/>
 						<p className='font-semibold text-sm'>Discovery</p>
 					</Link>
 					<Link
 						to='/works'
 						className={clsx(
-							"border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 group hover:bg-blue-400 hover:text-white hover:border-2 hover:border-blue-300",
+							"border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 group hover:bg-blue-400 hover:text-white hover:border-blue-300",
 							{
 								"bg-blue-400 text-white border-2 border-blue-300": page === "works",
 							}
@@ -70,7 +78,7 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 					<Link
 						to='/favorites'
 						className={clsx(
-							"border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 group hover:bg-red-400 hover:text-white hover:border-2 hover:border-red-300",
+							"border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 group hover:bg-red-400 hover:text-white hover:border-red-300",
 							{
 								"bg-red-400 text-white border-2 border-red-300": page === "favorites",
 							}
@@ -90,7 +98,7 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 					<Link
 						to='/analytics'
 						className={clsx(
-							"border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 group hover:text-white hover:border-2 hover:border-emerald-400 hover:bg-emerald-500",
+							"border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 group hover:text-white hover:border-emerald-400 hover:bg-emerald-500",
 							{
 								"bg-emerald-400 text-white border-2 border-emerald-300": page === "analytics",
 							}
@@ -107,25 +115,26 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 						/>
 						<p className='font-semibold text-sm group-hover:text-white'>Analytics</p>
 					</Link>
-					{/* <div
+					<Link
+						to={"/public-manage"}
 						className={clsx(
-							"border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 hover:bg-blue-400 group hover:text-white hover:border-2 hover:border-blue-300",
+							"border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 cursor-pointer hover:bg-blue-400 group hover:text-white hover:border-blue-300",
 							{
-								"bg-blue-400 text-white border-2 border-blue-300": page === "favories",
+								"bg-blue-400 text-white border-2 border-blue-300": page === "mpublic",
 							}
 						)}>
 						<img
-							src={upload}
+							src={storage}
 							alt='Home'
 							className={clsx(
-								"w-7 h-7 group-hover:bg-white group-hover:border group-hover:rounded-md",
+								"w-7 h-7 bg-white group-hover:bg-white group-hover:border rounded-md ",
 								{
-									"border rounded-md bg-white": page === "analytics",
+									"border rounded-md ": page === "mpublic",
 								}
 							)}
 						/>
-						<p className='font-semibold text-sm group-hover:text-white'>New Project</p>
-					</div> */}
+						<p className='font-semibold text-sm group-hover:text-white'>Public Manage</p>
+					</Link>
 				</div>
 			</div>
 			<section>

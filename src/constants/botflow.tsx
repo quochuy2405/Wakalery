@@ -38,7 +38,7 @@ export const botComponents = ({ onMethods }: { onMethods?: any }) => ({
 		title: "Using search image by Warkary bot",
 		body: (
 			<Form.Item labelCol={{ span: 6 }} wrapperCol={{ span: 100 }} className='!w-[400px]'>
-				<Form.Item label='Script' name='record'>
+				<Form.Item label='Script' name='record' rules={[{ required: true }]}>
 					<Input width={300} />
 				</Form.Item>
 			</Form.Item>
