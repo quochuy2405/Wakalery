@@ -13,8 +13,7 @@ const ModalCreateProject: React.FC<ModalCreateProjectProps> = ({ onClose, open }
 			return;
 		}
 		createNewProject({
-			projectName: data.name,
-			userId: "1",
+			projectName: data.name
 		})
 			.then(() => {
 				onClose();

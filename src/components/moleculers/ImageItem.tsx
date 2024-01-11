@@ -33,7 +33,6 @@ const ImageItem: React.FC<ImageItemProps> = ({
 	const onDeleted = () => {
 		const deletePhotoModelList = [
 			{
-				userId: 1,
 				photoId: Number(image?.photoSerialId),
 			},
 		];

@@ -1,3 +1,4 @@
+import { getUserInfoCookie } from "@/utils/cookies";
 import { unauth } from "./axios";
 
 export const getImageByTagsMatchAll = async (tags: Array<string>) => {
@@ -7,25 +8,37 @@ export const getImageByTagsContains = async (tags: Array<string>) => {
 	return await unauth().post("results/findByTagsIn", { tags });
 };
 
-export const getImageAll = async (uid: string) => {
-	return await unauth().get(`/photo/${uid}`);
+export const getImageAll = async () => {
+	const user = getUserInfoCookie();
+	if (!user) throw "user not define";
+	return await unauth().get(`/photo/${user.user_id}`);
 };
 
-export const getImageDetails = async (uid: string, photoName: string) => {
-	return await unauth().get(`/photo/detail/${uid}/${photoName}`);
+export const getImageDetails = async (photoName: string) => {
+	const user = getUserInfoCookie();
+	if (!user) throw "user not define";
+	return await unauth().get(`/photo/detail/${user.user_id}/${photoName}`);
 };
 
-export const getCroppedPhoto = async (uid: string) => {
-	return await unauth().get(`/cropped-photo/${uid}`);
+export const getCroppedPhoto = async () => {
+	const user = getUserInfoCookie();
+	if (!user) throw "user not define";
+	return await unauth().get(`/cropped-photo/${user.user_id}`);
 };
 
-export const getImageSimilar = async (uid: string, photoName: string) => {
-	return await unauth().get(`/similar-images/detect/${uid}/${photoName}`);
+export const getImageSimilar = async (photoName: string) => {
+	const user = getUserInfoCookie();
+	if (!user) throw "user not define";
+	return await unauth().get(`/similar-images/detect/${user.user_id}/${photoName}`);
 };
 type DeletePhotoModelListItem = {
-	userId: number;
 	photoId: number;
 };
 export const updateImage = (data: { deletePhotoModelList: Array<DeletePhotoModelListItem> }) => {
-	return unauth().put("photo/delete", data);
+	const user = getUserInfoCookie();
+	if (!user) throw "user not define";
+	const deletePhotoModelList = data.deletePhotoModelList.map((item) => {
+		return { ...item, userId: user.user_id };
+	});
+	return unauth().put("photo/delete", { deletePhotoModelList });
 };

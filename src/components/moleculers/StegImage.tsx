@@ -18,8 +18,7 @@ const StegImage: React.FC<StegImageProps> = ({ photoName }) => {
 	useEffect(() => {
 		if (!photoName) return;
 		getDecodeSteg({
-			photoName,
-			userId: 1,
+			photoName
 		}).then(({ data }) => {
 			console.log("data", data);
 			setSteg(data);

@@ -9,7 +9,6 @@ import { ThunkDispatch } from "@reduxjs/toolkit";
 import { Modal, Upload, UploadFile, UploadProps, message } from "antd";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
 
 const { Dragger } = Upload;
 interface UploadFileModalProps {
@@ -19,7 +18,7 @@ interface UploadFileModalProps {
 }
 const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, refresh, onClose }) => {
 	const [files, setFiles] = useState<UploadFile[]>([]);
-	const { userDirectoryId } = useParams();
+
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
 
@@ -34,9 +33,9 @@ const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, refresh, onClos
 		}
 
 		dispatch(setProgress(1));
-		await uploadFiles(files, "1", userDirectoryId || "0", progressUpload).then(async () => {
+		await uploadFiles(files, "1", "0", progressUpload).then(async () => {
 			dispatch(startTrain());
-			await getUserInfo("1").then(({ data }) => {
+			await getUserInfo().then(({ data }) => {
 				dispatch(setStorage(data));
 			});
 

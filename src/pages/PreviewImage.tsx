@@ -82,7 +82,7 @@ const PreviewImage = () => {
 	};
 	useEffect(() => {
 		if (photoName) {
-			getImageDetails("1", photoName)
+			getImageDetails( photoName)
 				.then(({ data }) => {
 					form.reset(data);
 				})
@@ -98,7 +98,7 @@ const PreviewImage = () => {
 
 		const file = new File([blob], "crop_ai.png", { type: blob.type });
 		// Now you can use the 'file' object as needed
-		getImageByFaceUploadCropAI("1", file)
+		getImageByFaceUploadCropAI( file)
 			.then(({ data }) => {
 				const photos = data.map((item: any) => item.results).flat();
 				setImageSearch(photos);
@@ -161,7 +161,7 @@ const PreviewImage = () => {
 						okText='Search'
 						open={isSearch && openConfirm}
 						cancelText='Cancel'>
-						<div className='flex-[3] h-full img-fit overflow-hidden relative bg-neutral-50'>
+						<div className='flex-[3] h-full img-fit p-4 overflow-hidden relative bg-neutral-50'>
 							{!isSearch && (
 								<LazyLoadImage
 									className='!h-full cursor-pointer w-full !rounded-lg overflow-hidden !object-contain'
@@ -172,7 +172,7 @@ const PreviewImage = () => {
 								/>
 							)}
 
-							<div className='w-full h-full overflow-hidden' hidden={!isSearch}>
+							<div className='w-full h-full overflow-hidden p-4' hidden={!isSearch}>
 								<ReactCrop
 									crop={(isSearch ? crop : null) as any}
 									onChange={onChangeCrop}
@@ -230,9 +230,7 @@ const PreviewImage = () => {
 							</div>
 						</div>
 						<div>
-							<p className='font-semibold mb-3'>
-								Photo name: {form.getValues("photoName")}
-							</p>
+							<p className='font-semibold mb-3'>Photo name: {form.getValues("photoName")}</p>
 							<StegImage photoName={photoName} />
 							<p className='font-semibold'>Models detect</p>
 							<Row>
@@ -368,7 +366,7 @@ const PreviewImage = () => {
 			)}
 			<div className='h-fit w-[80%] m-auto bg-white'>
 				<h2 className='bg-white font-semibold text-emerald-500 text-xl text-left w-[80%] py-4'>
-					Similar Images
+					Maybe you like that!
 				</h2>
 				<div className='grid grid-cols-5 gap-4'>
 					<SimilarGrid current='discovery' columns={5} photoName={photoName} />

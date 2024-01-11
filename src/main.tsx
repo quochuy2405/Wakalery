@@ -24,10 +24,11 @@ import {
 	PublicManage,
 } from "./pages";
 import "./styles/global.css";
+import MainLayout from "./layouts/main";
 const router = createBrowserRouter([
 	{
 		path: "",
-		element: <AuthLayout />,
+		element: <MainLayout />,
 		errorElement: <Error />,
 		children: [
 			{
@@ -40,26 +41,13 @@ const router = createBrowserRouter([
 				element: <Discovery />,
 				errorElement: <Error />,
 			},
-			{
-				path: "/analytics",
-				element: <Analytics />,
-				errorElement: <Error />,
-			},
-			{
-				path: "/favories",
-				element: <Analytics />,
-				errorElement: <Error />,
-			},
+
 			{
 				path: "/upload",
 				element: <Analytics />,
 				errorElement: <Error />,
 			},
-			{
-				path: "/upload",
-				element: <Analytics />,
-				errorElement: <Error />,
-			},
+
 			{
 				path: "/upload-public",
 				element: <UploadImage />,
@@ -81,37 +69,34 @@ const router = createBrowserRouter([
 				errorElement: <Error />,
 			},
 			{
-				path: "/profile",
-				element: <Profile />,
-				errorElement: <Error />,
-			},
-			{
-				path: "/settings",
-				element: <Settings />,
-				errorElement: <Error />,
-			},
-			{
 				path: "/discovery/preview",
 				element: <PreviewImage />,
 				errorElement: <Error />,
 			},
+		],
+	},
+	{
+		path: "/works",
+		element: <AuthLayout />,
+		children: [
 			{
-				path: "/works",
+				index: true,
+				path: "",
 				element: <Works />,
 				errorElement: <Error />,
 			},
 			{
-				path: "/public-manage",
+				path: "/works/public-manage",
 				element: <PublicManage />,
 				errorElement: <Error />,
 			},
 			{
-				path: "/project/preview",
+				path: "/works/project/preview",
 				element: <PreviewProject />,
 				errorElement: <Error />,
 			},
 			{
-				path: "/project/search",
+				path: "/works/project/search",
 				element: <SearchResult />,
 				errorElement: <Error />,
 			},
@@ -126,18 +111,38 @@ const router = createBrowserRouter([
 				errorElement: <Error />,
 			},
 			{
-				path: "/upload",
+				path: "/works/upload",
 				element: <UploadImage />,
 				errorElement: <Error />,
 			},
 			{
-				path: "/favorites",
+				path: "/works/favorites",
 				element: <Favorites />,
 				errorElement: <Error />,
 			},
 			{
-				path: "/recycle",
+				path: "/works/recycle",
 				element: <Recycle />,
+				errorElement: <Error />,
+			},
+			{
+				path: "/works/analytics",
+				element: <Analytics />,
+				errorElement: <Error />,
+			},
+			{
+				path: "/works/favories",
+				element: <Analytics />,
+				errorElement: <Error />,
+			},
+			{
+				path: "/works/settings",
+				element: <Settings />,
+				errorElement: <Error />,
+			},
+			{
+				path: "/works/profile",
+				element: <Profile />,
 				errorElement: <Error />,
 			},
 		],

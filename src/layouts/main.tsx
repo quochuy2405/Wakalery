@@ -3,7 +3,7 @@ import AppProvider from "@/providers/AppProvider";
 import React from "react";
 import { Outlet } from "react-router-dom";
 
-const LayoutMain = () => {
+const MainLayout = () => {
 	return (
 		<AppProvider>
 			<Outlet />
@@ -12,4 +12,4 @@ const LayoutMain = () => {
 	);
 };
 
-export default LayoutMain;
+export default MainLayout;

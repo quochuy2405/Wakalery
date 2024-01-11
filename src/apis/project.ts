@@ -1,17 +1,16 @@
+import { getUserInfoCookie } from "@/utils/cookies";
 import { unauth } from "./axios";
 
-export const getAllProjectByUserId = (id: string) => {
-	return unauth().get(`/project/get-all/${id}`);
+export const getAllProjectByUserId = () => {
+	const user = getUserInfoCookie();
+	if (!user) throw "user not define";
+	return unauth().get(`/project/get-all/${user.user_id}`);
 };
 
-export const createNewProject = ({
-	projectName,
-	userId,
-}: {
-	projectName: string;
-	userId: string;
-}) => {
-	return unauth().post("/project/save", { projectName, userId });
+export const createNewProject = ({ projectName }: { projectName: string }) => {
+	const user = getUserInfoCookie();
+	if (!user) throw "user not define";
+	return unauth().post("/project/save", { projectName, userId: user.user_id });
 };
 
 export const updateProject = (data: {
@@ -24,18 +23,24 @@ export const updateProject = (data: {
 };
 
 type ChildQuery = {
-	userId: string;
 	projectId: string;
 	folderId: string;
 };
-export const getChildByProjectId = ({ userId, projectId, folderId }: ChildQuery) => {
+export const getChildByProjectId = ({ projectId, folderId }: ChildQuery) => {
+	const user = getUserInfoCookie();
+	if (!user) throw "user not define";
+
 	return unauth().get(
-		`/directory/get-child?userId=${userId}&projectId=${projectId}&folderId=${folderId}`
+		`/directory/get-child?userId=${user.user_id}&projectId=${projectId}&folderId=${folderId}`
 	);
 };
-export const getFavoriteByUserId = (uid: string) => {
-	return unauth().get(`/project/get-favorite/${uid}`);
+export const getFavoriteByUserId = () => {
+	const user = getUserInfoCookie();
+	if (!user) throw "user not define";
+	return unauth().get(`/project/get-favorite/${user.user_id}`);
 };
-export const getDeletedByUserId = (uid: string) => {
-	return unauth().get(`/project/get-deleted/${uid}`);
+export const getDeletedByUserId = () => {
+	const user = getUserInfoCookie();
+	if (!user) throw "user not define";
+	return unauth().get(`/project/get-deleted/${user.user_id}`);
 };

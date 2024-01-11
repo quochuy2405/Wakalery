@@ -18,7 +18,6 @@ const ModalCreateFolder: React.FC<ModalCreateFolderProps> = ({ onClose, refresh,
 		if (!projectId) return;
 		createFolderByParentyId({
 			folderName: data.name,
-			userId: 1,
 			projectId: Number (projectId),
 			folderId: Number(userDirectoryId) || 0,
 		})

@@ -13,7 +13,7 @@ const PublicManage = () => {
 	const [quickPreview, setQuickPreview] = useState<ImageType | null>(null);
 	const [refresh, setRefresh] = useState(false);
 	useEffect(() => {
-		getAllPubliByUserId(1).then(({ data }) => {
+		getAllPubliByUserId().then(({ data }) => {
 			setImages(data);
 		});
 	}, [refresh]);

@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 
 const Loading = () => {
-	const [open, setOpen] = useState(true);
+	const [open, setOpen] = useState(false);
 	const loading = useSelector((state: RootState) => state.loading);
 
 	let time: any = null;

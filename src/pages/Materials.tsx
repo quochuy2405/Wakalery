@@ -64,7 +64,7 @@ const Project = () => {
 
 		const file = new File([blob], "crop_ai.png", { type: blob.type });
 		// Now you can use the 'file' object as needed
-		getImageByFaceUploadCropAI("000001", file)
+		getImageByFaceUploadCropAI(file)
 			.then(({ data }) => {
 				console.log("data", data);
 			})
@@ -82,7 +82,6 @@ const Project = () => {
 			getChildByProjectId({
 				folderId: userDirectoryId,
 				projectId: projectId,
-				userId: "1",
 			})
 				.then(({ data }) => {
 					setMaterial(data);

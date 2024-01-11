@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import { Input, InputProps } from "antd";
 import { FieldError } from "react-hook-form";
 interface TextFieldProps extends InputProps {
 	error?: FieldError;
 }
-const TextField: React.FC<TextFieldProps> = (props) => {
+const TextField = React.forwardRef<object, TextFieldProps>((props, _ref) => {
 	return (
 		<div className='w-full flex flex-col gap-2 relative'>
 			<label className='font-medium text-xs w-full'> {props.title}</label>
@@ -18,6 +19,6 @@ const TextField: React.FC<TextFieldProps> = (props) => {
 			)}
 		</div>
 	);
-};
+});
 
 export default TextField;

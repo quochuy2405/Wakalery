@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 const Deleted = () => {
 	const [trash, setTrash] = useState<PhotoDirectory[]>([]);
 	useEffect(() => {
-		getDeletedByUserId("1").then(({ data }) => {
+		getDeletedByUserId().then(({ data }) => {
 			setTrash(data);
 		});
 	}, []);

@@ -10,7 +10,7 @@ const Favorites = () => {
 	const [favorite, setFavorite] = useState<ProjectType[]>([]);
 	const [refresh, setRefresh] = useState(false);
 	useEffect(() => {
-		getFavoriteByUserId("1").then(({ data }) => {
+		getFavoriteByUserId().then(({ data }) => {
 			setFavorite(data);
 		});
 	}, [refresh]);

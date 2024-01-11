@@ -5,6 +5,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 const Login = () => {
 	return (
 		<div className='w-full h-screen flex items-center justify-center'>
+			{/* <VerifyAccount /> */}
 			<div className='flex-[1.5] h-full'>
 				<RegisterForm />
 			</div>

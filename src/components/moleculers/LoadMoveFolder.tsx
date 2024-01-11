@@ -41,7 +41,7 @@ const LoadMoveFolder = () => {
 		await reset();
 		setLoading(true);
 
-		await getAllFolderByUserId("1")
+		await getAllFolderByUserId()
 			.then(({ data }) => {
 				const disecs = data
 					?.filter((item: PhotoDirectory) => !!item.photoDirectory?.startsWith("/"))
@@ -60,7 +60,7 @@ const LoadMoveFolder = () => {
 	const refresh = async () => {
 		setLoading(true);
 		await reset();
-		await getAllFolderByUserId("1")
+		await getAllFolderByUserId()
 			.then(({ data }) => {
 				const disecs = data
 					?.filter((item: PhotoDirectory) => !!item.photoDirectory?.startsWith("/"))
@@ -87,7 +87,6 @@ const LoadMoveFolder = () => {
 	const onMove = (name: string) => {
 		const newDirectory = refactorPath(directoryMove, name);
 		const data = {
-			userId: 1,
 			oldDirectory: fileMoves,
 			newDirectory: newDirectory,
 		};

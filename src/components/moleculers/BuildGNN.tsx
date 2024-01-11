@@ -35,7 +35,7 @@ const BuildGNN = () => {
 			pending: `Analysis face detecting...`,
 		}));
 		await delayTime();
-		await cropFaces("1")
+		await cropFaces()
 			.then(async () => {
 				await delayTime();
 				setStatus((curr) => ({
@@ -47,7 +47,7 @@ const BuildGNN = () => {
 					...curr,
 					pending: ` Preparing data for graph Artificial neural network...`,
 				}));
-				await prepareDataGraphGNN("1")
+				await prepareDataGraphGNN()
 					.then(async () => {
 						await delayTime();
 						setStatus((curr) => ({
@@ -61,7 +61,7 @@ const BuildGNN = () => {
 								{ title: "Data for graph Artificial neural network prepared." },
 							],
 						}));
-						await buildGraphGNN("1")
+						await buildGraphGNN()
 							.then(async () => {
 								await delayTime();
 								setStatus((curr) => ({

@@ -16,7 +16,6 @@ const ModalShare: React.FC<ModalShareProps> = ({ from = "public", photoName }) =
 	const handlePublic = () => {
 		if (!photoName) return;
 		const data = {
-			userId: "1",
 			photoName,
 			sharers: [2],
 			hiddenMsg: "9291",

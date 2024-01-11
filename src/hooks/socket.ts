@@ -43,14 +43,13 @@ export const useSocket = ({ url }: UseSocketProps) => {
 		// Auto-connect on mount
 		connect();
 
-		// Cleanup on unmount
 		return () => {
 			if (socketRef.current) {
 				socketRef.current.close();
 			}
 		};
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [url]);
 
 	const send = (message: object) => {
 		if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {

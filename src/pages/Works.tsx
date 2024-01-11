@@ -21,10 +21,11 @@ const Works = () => {
 
 	useEffect(() => {
 		if (!newProject) dispatch(startLoading());
-		getAllProjectByUserId("1")
+		getAllProjectByUserId()
 			.then(({ data }) => {
 				setProject(data);
 			})
+
 			.finally(() => {
 				dispatch(closeLoading());
 			});
@@ -33,13 +34,13 @@ const Works = () => {
 	return (
 		<div className='w-full h-screen overflow-y-auto flex'>
 			<SideBar page='works' />
-			<div className='flex-1 bg-neutral-100 h-full p-10'>
+			<div className='flex-1 bg-neutral-100 h-full p-10 flex flex-col'>
 				<section>
-					<div className='shadow-lg rounded-3xl w-full h-[230px] overflow-hidden bg-white m-auto relative p-10 text-white flex'>
+					<div className='shadow-lg rounded-3xl w-full h-[20vh] overflow-hidden bg-white m-auto relative p-10 text-white flex'>
 						<img
 							src={Storage}
 							alt='React Logo'
-							className='w-[300px] h-[260px] absolute top-0 right-0 '
+							className='w-[300px] h-[20vh] absolute top-0 right-0 '
 						/>
 						<div className='flex flex-col gap-3 text-left text-black'>
 							<h3 className='font-extrabold text-2xl z-20'>Get Started With Us</h3>
@@ -59,11 +60,13 @@ const Works = () => {
 					</Button>
 				</div>
 
-				<section className='py-6 grid grid-cols-2 lg:grid-cols-4 gap-10 overflow-y-auto'>
-					{project.map((item) => {
-						return <ProjectItem refresh={() => setRefresh((e) => !e)} data={item} />;
-					})}
-				</section>
+				<div className='flex flex-1 flex-col overflow-y-auto'>
+					<section className='py-6 grid grid-cols-2 lg:grid-cols-4 gap-10 overflow-y-auto'>
+						{project.map((item) => {
+							return <ProjectItem refresh={() => setRefresh((e) => !e)} data={item} />;
+						})}
+					</section>
+				</div>
 				<ModalCreateProject open={newProject} onClose={() => setNewProject(false)} />
 			</div>
 			<FloatButton onSearch={() => null} isPrivate />

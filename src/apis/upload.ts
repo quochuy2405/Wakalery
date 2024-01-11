@@ -1,3 +1,4 @@
+import { getUserInfoCookie } from "@/utils/cookies";
 import { UploadFile } from "antd";
 import { unauth } from "./axios";
 
@@ -7,10 +8,13 @@ export const uploadFiles = async (
 	folderId: string,
 	progressUpload: (percent: number) => void
 ) => {
+	const user = getUserInfoCookie();
+	if (!user) throw "user not define";
 	const form = new FormData();
 	for (const file of files) {
 		form.append("files", file.originFileObj as never);
 	}
+
 	const response = await unauth().post(`/upload/1/${projectId}/${folderId}`, form, {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		onUploadProgress: (progressEvent: any) => {

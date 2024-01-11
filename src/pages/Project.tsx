@@ -27,7 +27,6 @@ const Project = () => {
 			getChildByProjectId({
 				folderId: "0",
 				projectId: projectId,
-				userId: "1",
 			})
 				.then(({ data }) => {
 					setMaterial(data);

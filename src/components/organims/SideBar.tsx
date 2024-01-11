@@ -1,19 +1,32 @@
 import analys from "@/assets/analys.svg";
 import favorite from "@/assets/favorite.svg";
 import home from "@/assets/home.svg";
-import image from "@/assets/image.svg";
 import manager from "@/assets/manager.svg";
+import image from "@/assets/image.svg";
 import search from "@/assets/search.svg";
 import storage from "@/assets/storage.svg";
-import { Avatar } from "antd";
+import { initToken } from "@/redux/features/cookie";
+import { RootState } from "@/redux/store";
+import { cookieAuthHandles } from "@/utils/cookies";
+import { LogoutOutlined } from "@ant-design/icons";
+import { ThunkDispatch } from "@reduxjs/toolkit";
+import { Avatar, Popconfirm } from "antd";
 import clsx from "clsx";
 import React from "react";
 import { FaBell } from "react-icons/fa";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 interface SideBarProps {
 	page: string;
 }
 const SideBar: React.FC<SideBarProps> = ({ page }) => {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
+
+	const onLogout = () => {
+		cookieAuthHandles.clear();
+		dispatch(initToken());
+	};
 	return (
 		<div className='max-w-[20vw] min-w-[300px] h-full p-4 flex justify-between flex-col'>
 			<div className='flex items-center flex-col w-full'>
@@ -76,7 +89,7 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 						<p className='font-semibold text-sm group-hover:text-white'>Works</p>
 					</Link>
 					<Link
-						to='/favorites'
+						to='/works/favorites'
 						className={clsx(
 							"border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 group hover:bg-red-400 hover:text-white hover:border-red-300",
 							{
@@ -96,7 +109,7 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 						<p className='font-semibold text-sm group-hover:text-white'>Favorites</p>
 					</Link>
 					<Link
-						to='/analytics'
+						to='/works/analytics'
 						className={clsx(
 							"border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 group hover:text-white hover:border-emerald-400 hover:bg-emerald-500",
 							{
@@ -116,7 +129,7 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 						<p className='font-semibold text-sm group-hover:text-white'>Analytics</p>
 					</Link>
 					<Link
-						to={"/public-manage"}
+						to={"/works/public-manage"}
 						className={clsx(
 							"border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 cursor-pointer hover:bg-blue-400 group hover:text-white hover:border-blue-300",
 							{
@@ -138,23 +151,20 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 				</div>
 			</div>
 			<section>
-				<div className='bg-purple-900 rounded-3xl w-full h-[20vh] m-auto relative p-[8%] text-white flex'>
+				<div className='bg-purple-900 rounded-3xl hidden xl:flex w-full flex-1 my-2 m-auto relative p-4 text-white'>
 					<img
 						src={manager}
 						alt='React Logo'
-						className='w-2/3 h-[2-0px] absolute -top-[20%] -right-[30%]'
+						className='w-2/3 h-[20vh] absolute -top-[20%] -right-[30%]'
 					/>
-					<div className='flex flex-col gap-3 text-left drop-shadow-xl'>
+					<div className='flex flex-col gap-2 text-left drop-shadow-xl'>
 						<h3 className='font-extrabold text-[120%] z-20 drop-shadow-xl'>Get Started With Us</h3>
-						<p className='text-[80%] z-10'>
-							Your ceremony & reception venues, yourvision, your dress, your colours and
-							anythingelse you would like to share with us.
-						</p>
+						<p className='text-xs z-10'>Your ceremony & reception venues, yourvision</p>
 					</div>
 				</div>
 			</section>
 			<div className='flex flex-col gap-3'>
-				<Link to='/recycle' className='flex items-center gap-2'>
+				<Link to='/works/recycle' className='flex items-center gap-2'>
 					<div
 						className={clsx(
 							"w-8 h-8 p-2 bg-slate-100 rounded-lg flex items-center justify-center",
@@ -176,7 +186,7 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 					</div>
 					<p className='font-semibold text-sm'>Recycle</p>
 				</Link>
-				<Link to='/settings' className='flex items-center gap-2'>
+				<Link to='/works/settings' className='flex items-center gap-2'>
 					<div
 						className={clsx(
 							"w-8 h-8 p-2 bg-slate-100 rounded-lg flex items-center justify-center",
@@ -198,7 +208,7 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 					</div>
 					<p className='font-semibold text-sm'>Settings</p>
 				</Link>
-				<Link to='/profile' className='flex items-center gap-2'>
+				<Link to='/works/profile' className='flex items-center gap-2'>
 					<div
 						className={clsx(
 							"w-8 h-8 p-2 bg-slate-100 rounded-lg flex items-center justify-center",
@@ -220,6 +230,19 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 					</div>
 					<p className='font-semibold text-sm'>Profile</p>
 				</Link>
+				<Popconfirm title={"Are you sure ?"} placement='topRight' onConfirm={onLogout}>
+					<div className='flex items-center gap-2 group hover:bg-main w-fit pr-4 rounded-md cursor-pointer transition-all ease-linear duration-200'>
+						<div
+							className={clsx(
+								"w-8 h-8 p-2 rounded-lg flex items-center justify-center transition-all ease-linear duration-200"
+							)}>
+							<LogoutOutlined className='group-hover:text-white transition-all ease-linear duration-200' />
+						</div>
+						<p className='font-semibold text-sm group-hover:text-white transition-all ease-linear duration-200'>
+							Sign out
+						</p>
+					</div>
+				</Popconfirm>
 			</div>
 		</div>
 	);

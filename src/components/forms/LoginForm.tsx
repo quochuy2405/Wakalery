@@ -1,28 +1,65 @@
+import { LoginAccountType, login } from "@/apis/user";
+import { Button, message } from "antd";
 import React from "react";
-import { TextField, TextFieldPassword } from "../atoms";
-import { Button } from "antd";
-import { FcGoogle } from "react-icons/fc";
-import { FaFacebook } from "react-icons/fa";
-import { Link, NavLink } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
+import { FaFacebook } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { TextField, TextFieldPassword } from "../atoms";
+import { cookieAuthHandles } from "@/utils/cookies";
+import { initToken } from "@/redux/features/cookie";
+import { useDispatch } from "react-redux";
+import { ThunkDispatch } from "@reduxjs/toolkit";
+import { RootState } from "@/redux/store";
 
 const LoginForm: React.FC = () => {
+	const navigate = useNavigate();
+	const [messageApi, contextHolder] = message.useMessage();
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
+
 	const form = useForm({
 		defaultValues: {
-			username: "",
+			email: "",
 			password: "",
 		},
 	});
+
+	const onSubmit = (form: LoginAccountType) => {
+		messageApi
+			.open({
+				type: "loading",
+				content: "Login in progress..",
+				duration: 2.5,
+			})
+			.then(async () => {
+				await login(form)
+					.then(({ data }) => {
+						if (data.token) {
+							cookieAuthHandles.set(data.token);
+							dispatch(initToken());
+							message.success("Already login.", 2.5);
+							navigate("/");
+						}
+					})
+					.catch((error) => {
+						console.log("error", error);
+					});
+			});
+	};
+
 	return (
 		<div className='flex flex-col gap-4 h-full flex-1 w-4/5 m-auto justify-center items-center'>
 			<h1 className='font-bold text-center text-4xl mb-5'>Sign in</h1>
-
+			{contextHolder}
 			<div className='flex w-full h-fit flex-col'>
-				<div className='flex flex-col gap-4 justify-center items-center w-full'>
+				<form
+					onSubmit={form.handleSubmit(onSubmit)}
+					className='flex flex-col gap-4 justify-center items-center w-full'>
 					<Controller
-						name='username'
+						name='email'
 						control={form.control}
-						render={({ field }) => <TextField title='Username' {...field} />}
+						render={({ field }) => <TextField title='Email' {...field} />}
 					/>
 					<Controller
 						name='password'
@@ -36,15 +73,15 @@ const LoginForm: React.FC = () => {
 						Recovery Password?
 					</NavLink>
 					<Button
-						href='/'
 						type='primary'
+						htmlType='submit'
 						className='bg-emerald-500 flex items-center justify-center button-form mt-6'>
 						Sign in
 					</Button>
 					<span className='text-xs font-semibold text-center text-black/70 h-10'>
 						Or continue with
 					</span>
-				</div>
+				</form>
 
 				<div className='flex-1 flex h-full justify-center items-start gap-4'>
 					<Button

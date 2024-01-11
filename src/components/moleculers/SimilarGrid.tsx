@@ -45,7 +45,7 @@ const SimilarGrid: React.FC<DiscoveryProps> = ({ columns = 4, photoName, current
 	useEffect(() => {
 		if (!photoName) return;
 		setLoading(true);
-		getImageSimilar("1", photoName)
+		getImageSimilar(photoName)
 			.then(({ data }) => {
 				setImages(data);
 			})

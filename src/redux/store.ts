@@ -12,6 +12,8 @@ import filemove from "./features/filemove";
 import robot from "./features/robot";
 import project from "./features/project";
 import search from "./features/search";
+import verify from "./features/verify";
+import auth from "./features/cookie";
 
 export const store = configureStore({
 	reducer: {
@@ -28,6 +30,8 @@ export const store = configureStore({
 		robot,
 		project,
 		search,
+		verify,
+		auth,
 	},
 	middleware: getDefaultMiddleware({
 		serializableCheck: false,

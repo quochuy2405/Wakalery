@@ -1,26 +1,43 @@
-import { Button } from "antd";
-import { TextField, TextFieldPassword } from "../atoms";
-import { Link } from "react-router-dom";
-import { Controller, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { CreateAccountType, createAccount } from "@/apis/user";
 import { signupSchema } from "@/resolvers/signup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Button } from "antd";
 import React from "react";
+import { Controller, useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+import { TextField, TextFieldPassword } from "../atoms";
+import { useDispatch } from "react-redux";
+import { ThunkDispatch } from "@reduxjs/toolkit";
+import { RootState } from "@/redux/store";
+import { closeVerify, startVerify } from "@/redux/features/verify";
 
 const defaultValues = {
 	firstName: "",
 	lastName: "",
 	phoneNumber: "",
-	username: "",
+	email: "",
 	password: "",
 	confirmPassword: "",
 };
 const SignUpForm: React.FC = () => {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
 	const form = useForm({
 		defaultValues,
 		resolver: yupResolver(signupSchema),
 	});
-	const onSubmit = (data: object) => {
-		console.log("data", data);
+	const onSubmit = (form: CreateAccountType & { confirmPassword?: string }) => {
+		const formData = { ...form };
+		if (formData.confirmPassword) delete formData.confirmPassword;
+		createAccount(formData)
+			.then(({ data }) => {
+				console.log("data", data);
+				dispatch(startVerify());
+			})
+			.catch((error) => {
+				console.log("error", error);
+				dispatch(closeVerify());
+			});
 	};
 	return (
 		<div className='flex flex-col gap-4 h-full flex-1 w-4/5 m-auto justify-center items-center'>
@@ -54,10 +71,10 @@ const SignUpForm: React.FC = () => {
 						}}
 					/>
 					<Controller
-						name='username'
+						name='email'
 						control={form.control}
 						render={({ field, fieldState }) => {
-							return <TextField title='Username' {...field} error={fieldState.error} />;
+							return <TextField title='Email' {...field} error={fieldState.error} />;
 						}}
 					/>
 					<Controller

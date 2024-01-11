@@ -1,15 +1,20 @@
+import { getUserInfoCookie } from "@/utils/cookies";
 import { unauth } from "./axios";
 
-export const cropFaces = (id: string) => {
-	return unauth().get(`/crop-face/${id}`);
+export const cropFaces = () => {
+	const user = getUserInfoCookie();
+	if (!user) throw "user not define";
+	return unauth().get(`/crop-face/${user.user_id}`);
 };
 
-export const prepareDataGraphGNN = (id: string) => {
-	return unauth().get(`/build-graph-gnn/${id}`);
+export const prepareDataGraphGNN = () => {
+	const user = getUserInfoCookie();
+	if (!user) throw "user not define";
+	return unauth().get(`/build-graph-gnn/${user.user_id}`);
 };
 
-export const buildGraphGNN = (id: string) => {
-	return unauth().get(`/train-gnn/${id}`);
+export const buildGraphGNN = () => {
+	const user = getUserInfoCookie();
+	if (!user) throw "user not define";
+	return unauth().get(`/train-gnn/${user.user_id}`);
 };
-
-

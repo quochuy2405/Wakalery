@@ -80,7 +80,7 @@ const PreviewImage = () => {
 	};
 	useEffect(() => {
 		if (photoName) {
-			getImageDetails("1", photoName)
+			getImageDetails(photoName)
 				.then(({ data }) => {
 					form.reset(data);
 				})
@@ -96,7 +96,7 @@ const PreviewImage = () => {
 
 		const file = new File([blob], "crop_ai.png", { type: blob.type });
 		// Now you can use the 'file' object as needed
-		getImageByFaceUploadCropAI("1", file)
+		getImageByFaceUploadCropAI(file)
 			.then(({ data }) => {
 				const photos = data.map((item: any) => item.results).flat();
 				setImageSearch(photos);
