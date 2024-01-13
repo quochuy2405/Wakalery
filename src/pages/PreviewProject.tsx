@@ -26,8 +26,8 @@ interface DescriptionItemProps {
 }
 const DescriptionItem = ({ title, content }: DescriptionItemProps) => (
 	<div className='flex flex-col gap mt-2'>
-		<p className='font-semibold text-xs'>{title}:</p>
-		<p className='text-xs'> {content}</p>
+		<p className='font-semibold text-[11px] md:text-xs'>{title}:</p>
+		<p className='text-[11px] md:text-xs'> {content}</p>
 	</div>
 );
 const RenderTagFromString: React.FC<{ values: string }> = memo(({ values }) => {
@@ -149,8 +149,8 @@ const PreviewImage = () => {
 						<path d='M8.415 4.586a2 2 0 1 1 2.828 2.828L8.657 10H21a2 2 0 0 1 0 4H8.657l2.586 2.586a2 2 0 1 1-2.828 2.828L1 12l7.415-7.414z'></path>
 					</svg>
 				</div>
-				<div className='flex-1 relative w-[80%] m-auto bg-white py-4 flex flex-col items-center justify-center'>
-					<div className='flex justify-center items-center w-full p-4 rounded-lg shadow-[0_0_10px_0px_#0000002b]'>
+				<div className='flex-1 relative w-[90%] md:w-[80%] m-auto bg-white py-4 flex flex-col items-center justify-center'>
+					<div className='flex flex-col lg:flex-row justify-center items-center w-full p-4 rounded-lg shadow-[0_0_10px_0px_#0000002b]'>
 						<Popconfirm
 							title='Search Image Similar Face'
 							description='Are you sure to search this face?'
@@ -190,7 +190,7 @@ const PreviewImage = () => {
 								</div>
 							</div>
 						</Popconfirm>
-						<div className='w-full flex-1 h-full min-h-fit p-8 relative'>
+						<div className='w-full flex-1 h-full min-h-fit p-2 md:p-8 relative'>
 							<canvas ref={previewCanvasRef} hidden />
 							{!!dowload && (
 								<div className='w-full absolute top-2 h-fit flex items-center justify-between'>
@@ -223,15 +223,17 @@ const PreviewImage = () => {
 									<Button
 										icon={<DownloadOutlined size={40} />}
 										onClick={() => onDownload(src, onProgress)}
-										className='bg-red-500 ease-linear duration-200 rounded-full h-12 !text-white font-semibold w-[120px] !border-none !outline-none hover:bg-red-600'>
+										className='bg-red-500 ease-linear duration-200 rounded-full h-8 md:h-10 !text-white font-semibold w-fit  md:w-[120px] !border-none !outline-none hover:bg-red-600 !text-xs md:!text-sm'>
 										Save
 									</Button>
 								</div>
 							</div>
 							<div>
-								<p className='font-semibold mb-3'>Photo name: {form.getValues("photoName")}</p>
+								<p className='font-semibold text-sm md:text-base mb-3'>
+									Photo name: {form.getValues("photoName")}
+								</p>
 								<StegImage photoName={photoName} />
-								<p className='font-semibold'>Models detect</p>
+								<p className='font-semibold text-sm md:text-base'>Models detect</p>
 								<Row>
 									<Col span={12}>
 										<DescriptionItem title='Type' content='Image/png' />
@@ -242,7 +244,7 @@ const PreviewImage = () => {
 								</Row>
 
 								<Divider />
-								<p className='font-semibold'>Model detections</p>
+								<p className='font-semibold text-sm md:text-base'>Model detections</p>
 								<Row className='gap-2'>
 									<DescriptionItem title='Tags' content='' />
 
@@ -267,7 +269,7 @@ const PreviewImage = () => {
 									/>
 								</Row>
 								<Divider />
-								<p className='font-semibold'>Details Model</p>
+								<p className='font-semibold text-sm md:text-base'>Details Model</p>
 
 								<Row className='gap-2'>
 									<Col span={24}>
@@ -367,7 +369,7 @@ const PreviewImage = () => {
 					<h2 className='font-semibold  text-xl text-left w-[80%] py-4 text-emerald-500'>
 						Similar Images
 					</h2>
-					<div className='grid grid-cols-4 gap-4'>
+					<div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
 						<SimilarGrid current='project' photoName={photoName} />
 					</div>
 				</div>

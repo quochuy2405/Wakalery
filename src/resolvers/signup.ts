@@ -10,7 +10,7 @@ declare module "yup" {
 export const signupSchema = yup.object().shape({
 	firstName: yup.string().required("Enter your first name."),
 	lastName: yup.string().required("Enter your last name."),
-	email: yup.string().email().required("Enter your email."),
+	email: yup.string().email("Email must be a valid email.").required("Enter your email."),
 	phoneNumber: yup
 		.string()
 		.onlyNumber("Phone number can only contain digits")

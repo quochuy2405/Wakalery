@@ -102,7 +102,7 @@ const Project = () => {
 		<div className='w-full h-screen overflow-y-auto flex'>
 			<SideBar page='works' />
 
-			<div className='flex-1 bg-neutral-100 h-full p-10'>
+			<div className='flex-1 bg-neutral-100 h-full p-2 lg:p-10'>
 				<BreadcrumbProject refresh={refreshData} />
 				<Popconfirm
 					title='Search Image Similar Face'
@@ -120,7 +120,7 @@ const Project = () => {
 							"!cursor-default": !isSearch,
 						})}
 						onComplete={onCompleteCrop}>
-						<section className='py-6 grid grid-cols-2 h-full mt-4 rounded-md lg:grid-cols-4 overflow-y-auto gap-10'>
+						<section className='py-6 grid grid-cols-1 md:grid-cols-2 h-full mt-4 rounded-md lg:grid-cols-3 overflow-y-auto gap-4 md:gap-10'>
 							{materials.map((item: any) => {
 								const fileExtension = item.photoName?.split(".")?.pop()?.toLowerCase();
 

@@ -19,5 +19,5 @@ export const confirmPropmt = async (file: any, data?: object, canvas?: any) => {
 	const fileCurrent = new File([blob], "crop_ai.png");
 	form.append("files", fileCurrent as never);
 	form.append("data", JSON.stringify(data));
-	return unauth().post(`/promt-process-upload${user.user_id}`, form);
+	return unauth().post(`/promt-process-upload/${user.user_id}`, form);
 };

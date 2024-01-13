@@ -37,7 +37,7 @@ const FolderItem: React.FC<FolderItemProps> = ({ data }) => {
 	};
 	console.log("data", data);
 	return (
-		<div className='min-w-[180px] shadow-xl max-w-[400px] h-[220px] bg-gray-200 rounded-2xl overflow-hidden relative'>
+		<div className='min-w-[180px] shadow-xl max-w-[340px] h-[220px] bg-gray-200 rounded-2xl overflow-hidden relative w-[-webkit-fill-available] md:w-[unset] m-auto md:m-[unset]'>
 			<img aria-label='bg' src={FolderBg} className='w-full h-full object-cover absolute z-1' />
 			<p className='p-2 font-bold text-sm text-gray-600 leading-8 h-16'>{data.folderName}</p>
 			<div className='absolute top-3 right-3 flex gap-2'>

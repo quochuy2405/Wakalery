@@ -5,21 +5,20 @@ import { FloatButton } from "@/components/atoms";
 import { GridImages, ModalShare, SimilarGrid, StegImage } from "@/components/moleculers";
 import { Header } from "@/components/organims";
 import { closeLoading, startLoading } from "@/redux/features/loading";
+import { RootState } from "@/redux/store";
 import { ImageType, PhotoDirectory } from "@/types/image";
 import { canvasPreviewToBlob, getRandomColor, onDownload } from "@/utils/common";
 import { DownloadOutlined } from "@ant-design/icons";
+import { ThunkDispatch } from "@reduxjs/toolkit";
 import { Button, Col, Divider, Empty, Popconfirm, Progress, Row, Space, Tag } from "antd";
 import React, { memo, useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import ReactCrop, { Crop, PixelCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { useDispatch } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { IMAGE_PREFIX } from "../constants";
-import { ThunkDispatch } from "@reduxjs/toolkit";
-import { RootState } from "@/redux/store";
 
 interface DescriptionItemProps {
 	title: string;
@@ -27,8 +26,8 @@ interface DescriptionItemProps {
 }
 const DescriptionItem = ({ title, content }: DescriptionItemProps) => (
 	<div className='flex flex-col gap mt-2'>
-		<p className='font-semibold text-xs'>{title}:</p>
-		<p className='text-xs'> {content}</p>
+		<p className='font-semibold text-[11px] md:text-xs'>{title}:</p>
+		<p className='text-[11px] md:text-xs'> {content}</p>
 	</div>
 );
 
@@ -136,10 +135,10 @@ const PreviewImage = () => {
 		<div className='flex flex-col w-full h-screen overflow-y-auto bg-white'>
 			<Header page='discovery' />
 
-			<div className='flex-1 relative w-full bg-white p-4 flex flex-col items-center justify-center'>
+			<div className='flex-1 relative w-full bg-white md:p-4 flex flex-col items-center justify-center'>
 				<div
 					onClick={() => navigate(-1)}
-					className='absolute top-3 left-10 p-4 w-14 h-14 flex items-center justify-center hover:bg-neutral-100 ease-linear duration-200 cursor-pointer rounded-full'>
+					className='md:absolute top-3 left-10 p-4 w-14 h-14 flex items-center justify-center hover:bg-neutral-100 ease-linear duration-200 cursor-pointer rounded-full mr-auto'>
 					<svg
 						className='Hn_ gUZ R19 U9O kVc'
 						height='20'
@@ -151,7 +150,7 @@ const PreviewImage = () => {
 						<path d='M8.415 4.586a2 2 0 1 1 2.828 2.828L8.657 10H21a2 2 0 0 1 0 4H8.657l2.586 2.586a2 2 0 1 1-2.828 2.828L1 12l7.415-7.414z'></path>
 					</svg>
 				</div>
-				<div className='flex w-[80%] m-auto rounded-lg shadow-[0_0_10px_0px_#0000002b]'>
+				<div className='flex-1 relative w-full md:w-[80%] m-auto bg-white p-4 flex flex-col rounded-md  md:flex-row items-center justify-center md:shadow-[0_0_10px_0px_#0000002b]'>
 					<Popconfirm
 						title='Search Image Similar Face'
 						description='Are you sure to search this face?'
@@ -161,25 +160,25 @@ const PreviewImage = () => {
 						okText='Search'
 						open={isSearch && openConfirm}
 						cancelText='Cancel'>
-						<div className='flex-[3] h-full img-fit p-4 overflow-hidden relative bg-neutral-50'>
+						<div className='w-full flex-[2] flex items-center justify-center overflow-hidden relative bg-neutral-50'>
 							{!isSearch && (
-								<LazyLoadImage
-									className='!h-full cursor-pointer w-full !rounded-lg overflow-hidden !object-contain'
-									src={src}
-									alt={`Image ${photoName}`}
-									effect='blur'
-									loading='lazy'
-								/>
+								<div aria-label='1' className='w-full h-full'>
+									<img
+										className='cursor-pointer !rounded-lg !w-full !object-contain'
+										src={src}
+										alt={`Image ${photoName}`}
+										loading='lazy'
+									/>
+								</div>
 							)}
-
-							<div className='w-full h-full overflow-hidden p-4' hidden={!isSearch}>
+							<div className='w-full h-full overflow-hidden img-fit' hidden={!isSearch}>
 								<ReactCrop
 									crop={(isSearch ? crop : null) as any}
 									onChange={onChangeCrop}
-									className='h-full w-full'
+									className='!h-full !w-full'
 									onComplete={onCompleteCrop}>
 									<img
-										className='!h-full !w-full !object-contain'
+										className='!w-full rounded-2xl !object-cover'
 										src={src}
 										alt={`Image ${photoName}`}
 										loading='lazy'
@@ -191,7 +190,7 @@ const PreviewImage = () => {
 							</div>
 						</div>
 					</Popconfirm>
-					<div className='w-full flex-[2] h-full p-8 relative'>
+					<div className='w-full flex-[2] h-full p-2 md:p-8 relative'>
 						<canvas ref={previewCanvasRef} hidden />
 						{!!dowload && (
 							<div className='w-full absolute top-2 h-fit flex items-center justify-between'>
@@ -224,15 +223,17 @@ const PreviewImage = () => {
 								<Button
 									icon={<DownloadOutlined size={40} />}
 									onClick={() => onDownload(src, onProgress)}
-									className='bg-red-500 rounded-full h-12 !text-white font-semibold w-[120px] !border-none !outline-none hover:bg-red-600'>
+									className='bg-red-500 ease-linear duration-200 rounded-full h-8 md:h-10 !text-white font-semibold w-fit  md:w-[120px] !border-none !outline-none hover:bg-red-600 !text-xs md:!text-sm'>
 									Save
 								</Button>
 							</div>
 						</div>
 						<div>
-							<p className='font-semibold mb-3'>Photo name: {form.getValues("photoName")}</p>
+							<p className='font-semibold mb-3 text-sm md:text-base '>
+								Photo name: {form.getValues("photoName")}
+							</p>
 							<StegImage photoName={photoName} />
-							<p className='font-semibold'>Models detect</p>
+							<p className='font-semibold text-sm md:text-base'>Models detect</p>
 							<Row>
 								<Col span={12}>
 									<DescriptionItem title='Type' content='Image/png' />
@@ -243,7 +244,7 @@ const PreviewImage = () => {
 							</Row>
 
 							<Divider />
-							<p className='font-semibold'>Model detections</p>
+							<p className='font-semibold text-sm md:text-base'>Model detections</p>
 							<Row className='gap-2'>
 								<DescriptionItem title='Tags' content='' />
 
@@ -268,7 +269,7 @@ const PreviewImage = () => {
 								/>
 							</Row>
 							<Divider />
-							<p className='font-semibold'>Details Model</p>
+							<p className='font-semibold text-sm md:text-base '>Details Model</p>
 
 							<Row className='gap-2'>
 								<Col span={24}>
@@ -358,17 +359,17 @@ const PreviewImage = () => {
 					<h2 className='font-semibold text-emerald-500 text-2xl text-left w-[80%] p-4'>
 						Search Results
 					</h2>
-					<div className='grid grid-cols-4 gap-4 bg-white'>
+					<div className='grid grid-cols-2 md:grid-cols-4 gap-4 bg-white'>
 						<GridImages current='discovery' images={imageSearch} />
 						{imageSearch.length === 0 && <Empty className='m-auto col-span-5'></Empty>}
 					</div>
 				</div>
 			)}
-			<div className='h-fit w-[80%] m-auto bg-white'>
+			<div className='h-fit w-[95%] md:w-[80%] m-auto bg-white'>
 				<h2 className='bg-white font-semibold text-emerald-500 text-xl text-left w-[80%] py-4'>
 					Maybe you like that!
 				</h2>
-				<div className='grid grid-cols-5 gap-4'>
+				<div className='grid grid-cols-2 md:grid-cols-5 gap-4'>
 					<SimilarGrid current='discovery' columns={5} photoName={photoName} />
 				</div>
 			</div>

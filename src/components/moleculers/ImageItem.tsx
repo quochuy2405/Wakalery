@@ -4,6 +4,7 @@ import { openMove } from "@/redux/features/onmove";
 import { RootState } from "@/redux/store";
 import { ImageType } from "@/types/image";
 import { onDownload } from "@/utils/common";
+import { getUserInfoCookie } from "@/utils/cookies";
 import { DownloadOutlined, HeartFilled, LockOutlined } from "@ant-design/icons";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { Dropdown, MenuProps, Popconfirm, Rate, Tooltip, message } from "antd";
@@ -28,7 +29,8 @@ const ImageItem: React.FC<ImageItemProps> = ({
 }) => {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
-	const src = IMAGE_PREFIX + "1/" + image.photoName;
+	const user = getUserInfoCookie();
+	const src = IMAGE_PREFIX + `${user?.user_id}/` + image.photoName;
 	const [isDelete, setIsDeleted] = useState(false);
 	const onDeleted = () => {
 		const deletePhotoModelList = [
@@ -104,7 +106,7 @@ const ImageItem: React.FC<ImageItemProps> = ({
 	};
 
 	return (
-		<div className='min-w-[180px] shadow-xl max-w-[400px] h-[220px] bg-gray-200 rounded-2xl overflow-hidden relative'>
+		<div className='min-w-[180px] shadow-xl max-w-[340px] h-[220px] bg-gray-200 rounded-2xl overflow-hidden relative w-[-webkit-fill-available] md:w-[unset] m-auto md:m-[unset]'>
 			<LazyLoadImage src={src} className='w-full h-full object-cover object-top absolute z-1' />
 			<p className='p-2 font-semibold bg-white text-[10px] text-black max-w-[60%] truncate leading-2 rounded-br-xl z-9 relative shadow-sm'>
 				{image.photoName}
@@ -147,7 +149,7 @@ const ImageItem: React.FC<ImageItemProps> = ({
 			</div>
 
 			<Link
-				to={`/project/preview?name=${image.photoName}`}
+				to={`/works/project/preview?name=${image.photoName}`}
 				className='p-3 font-bold text-sm text-white absolute bottom-0 hover:bg-white z-2 right-0 cursor-pointer rounded-tl-2xl ease-linear duration-200 hover:text-black w-[40%] h-[20%] flex items-center justify-center'>
 				Preview
 			</Link>

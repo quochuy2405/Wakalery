@@ -30,7 +30,7 @@ const Deleted = () => {
 					</svg>{" "}
 					<p>Recycle</p>
 				</div>
-				<section className='mt-2'>
+				<section className='mt-2 max-w-screen-lg'>
 					<TableTrash data={trash} />
 				</section>
 			</div>

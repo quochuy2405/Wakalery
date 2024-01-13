@@ -1,6 +1,8 @@
 import { applyPhotoPublic } from "@/apis/public";
+import { IMAGE_PREFIX_PUBLIC } from "@/constants/index";
+import { getUserInfoCookie } from "@/utils/cookies";
 import { CopyOutlined } from "@ant-design/icons";
-import { Button, Col, Modal, QRCode, Space, message } from "antd";
+import { Button, Col, Form, Input, Modal, QRCode, Space, message } from "antd";
 import React, { createContext } from "react";
 
 const ReachableContext = createContext<string | null>(null);
@@ -13,26 +15,53 @@ interface ModalShareProps {
 
 const ModalShare: React.FC<ModalShareProps> = ({ from = "public", photoName }) => {
 	const [modal, contextHolder] = Modal.useModal();
-	const handlePublic = () => {
+	const handlePublic = ({ hiddenMsg }: { hiddenMsg: string }) => {
 		if (!photoName) return;
+		const user = getUserInfoCookie();
+		if (!user) return;
 		const data = {
 			photoName,
-			sharers: [2],
-			hiddenMsg: "9291",
+			sharers: [user?.user_id],
+			hiddenMsg,
 		};
 		applyPhotoPublic(data).then(() => {
 			message.success("Published");
 		});
 	};
+	const onCopyURL = (copyText:string) => {
+		navigator.clipboard.writeText(copyText);
+		message.success("Copied.");
+	};
 	const config = {
 		title: "Sharing",
 		content: (
 			<div className='flex flex-col gap-2'>
-				{from == "private" && <Button onClick={handlePublic}>Public to world</Button>}
+				{from == "private" && (
+					<Form
+						onFinish={handlePublic}
+						className='flex justify-end flex-col bg-neutral-50 p-2 rounded-lg'>
+						<Form.Item
+							name='hiddenMsg'
+							rules={[{ required: true, message: "Please enter your message!" }]}>
+							<Input placeholder='Enter hidden message' />
+						</Form.Item>
+						<Button htmlType='submit'>Public to world</Button>
+					</Form>
+				)}
 
-				<div className='flex items-center gap-3'>
-					<p> Public URL: http://localhost:3000/discovery/cat</p>{" "}
-					<Button icon={<CopyOutlined />}></Button>
+				<div className='flex items-center gap-3 flex-wrap'>
+					<p>
+						Public URL:
+						<i
+							onClick={() => onCopyURL(`${IMAGE_PREFIX_PUBLIC}${photoName}`)}
+							className='text-xs block underline cursor-pointer'>
+							{IMAGE_PREFIX_PUBLIC}
+							{photoName}
+						</i>
+					</p>
+					<Button
+						icon={<CopyOutlined />}
+						onClick={() => onCopyURL(`${IMAGE_PREFIX_PUBLIC}${photoName}`)}></Button>
 				</div>
 				<Col span={12} className='flex flex-col gap-2'>
 					<h2>Can QRCode</h2>

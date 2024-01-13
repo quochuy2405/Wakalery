@@ -4,6 +4,7 @@ import React from "react";
 import { Input, InputProps } from "antd";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { FieldError } from "react-hook-form";
+import clsx from "clsx";
 interface TextFieldProps extends InputProps {
 	error?: FieldError;
 }
@@ -11,7 +12,10 @@ const TextField = React.forwardRef<object, TextFieldProps>((props, _ref) => {
 	return (
 		<div className='w-full flex flex-col gap-2 relative'>
 			<label className='font-medium text-xs w-full'> {props.title}</label>
-			<div className='flex items-center h-10 w-full relative '>
+			<div
+				className={clsx("flex items-center h-10 w-full relative", {
+					"opacity-70": props.disabled,
+				})}>
 				<Input
 					{...props}
 					className='w-full h-full shadow-md !rounded-sm !border-none !ring-1 !ring-gray-200/90 px-3 py-2 pr-6 !text-sm'

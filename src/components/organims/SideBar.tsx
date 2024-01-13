@@ -28,70 +28,70 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 		dispatch(initToken());
 	};
 	return (
-		<div className='max-w-[20vw] min-w-[300px] h-full p-4 flex justify-between flex-col'>
+		<div className='max-w-[20vw] lg:min-w-[300px] h-full p-1 lg:p-4 flex justify-between flex-col'>
 			<div className='flex items-center flex-col w-full'>
 				<div className='flex w-full'>
 					<div className='flex flex-col justify-between w-full'>
-						<h2 className='font-semibold text-sm'>Wakalery</h2>
-						<p className='text-xs'>My works</p>
+						<h2 className='font-semibold  text-xs lg:text-sm'>Wakalery</h2>
+						<p className='hidden lg:block text-xs'>My works</p>
 					</div>
-					<div className='flex gap-4 items-center'>
+					<div className='hidden lg:flex  gap-4 items-center'>
 						<FaBell size={18} />
 						<Avatar size={"small"} />
 					</div>
 				</div>
-				<div className='grid grid-cols-2 pt-6 gap-4 w-full'>
+				<div className='lg:grid grid-cols-2 pt-6 gap-4 w-full'>
 					<Link
 						to='/'
 						className={
-							"border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 group hover:bg-blue-400 hover:text-white hover:border-blue-300"
+							"lg:border w-fit m-auto lg:m-0 my-4 lg:my-0 lg:w-full h-fit lg:h-24 flex flex-col justify-between ease-linear duration-200 rounded-lg lg:rounded-3xl p-1 lg:p-3 group hover:bg-blue-400 hover:text-white hover:border-blue-300"
 						}>
 						<img
 							src={home}
 							alt='Home'
 							className={clsx(
-								"w-7 h-7 group-hover:bg-white group-hover:border group-hover:rounded-md",
+								"w-7 h-7 m-auto lg:m-0 group-hover:bg-white group-hover:border group-hover:rounded-md",
 								{
-									"border rounded-md bg-white": page === "analytics",
+									"lg:border rounded-md bg-white": page === "analytics",
 								}
 							)}
 						/>
-						<p className='font-semibold text-sm'>Home</p>
+						<p className='hidden lg:block font-semibold text-sm'>Home</p>
 					</Link>
 					<Link
 						to='/discovery'
-						className='border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 group hover:bg-red-400 hover:text-white hover:border-red-300'>
+						className='lg:border w-fit m-auto lg:m-0 my-4 lg:my-0 lg:w-full h-fit lg:h-24 flex flex-col justify-between ease-linear duration-200 rounded-lg lg:rounded-3xl p-1 lg:p-3 group hover:bg-red-400 hover:text-white hover:border-red-300'>
 						<img
 							src={image}
 							alt='Home'
-							className='w-7 h-7 group-hover:bg-white group-hover:border group-hover:rounded-md'
+							className='w-7 h-7 m-auto lg:m-0 group-hover:bg-white group-hover:border group-hover:rounded-md'
 						/>
-						<p className='font-semibold text-sm'>Discovery</p>
+						<p className='hidden lg:block font-semibold text-sm'>Discovery</p>
 					</Link>
 					<Link
 						to='/works'
 						className={clsx(
-							"border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 group hover:bg-blue-400 hover:text-white hover:border-blue-300",
+							"lg:border w-fit m-auto lg:m-0 my-4 lg:my- lg:w-full h-fit lg:h-24 flex flex-col justify-between ease-linear duration-200 rounded-lg lg:rounded-3xl p-1 lg:p-3 group hover:bg-blue-400 hover:text-white hover:border-blue-300",
 							{
-								"bg-blue-400 text-white border-2 border-blue-300": page === "works",
+								"bg-blue-400  text-white lg:border-2 border-blue-300": page === "works",
 							}
 						)}>
 						<img
 							src={search}
 							alt='Home'
 							className={clsx(
-								"w-7 h-7 group-hover:bg-white group-hover:border group-hover:rounded-md",
+								"w-7 h-7 m-auto lg:m-0 group-hover:bg-white group-hover:border group-hover:rounded-md",
 								{
 									"border rounded-md bg-white": page === "works",
 								}
 							)}
 						/>
-						<p className='font-semibold text-sm group-hover:text-white'>Works</p>
+						<p className='hidden lg:block font-semibold text-sm group-hover:text-white'>Works</p>
 					</Link>
 					<Link
 						to='/works/favorites'
 						className={clsx(
-							"border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 group hover:bg-red-400 hover:text-white hover:border-red-300",
+							"lg:border w-fit m-auto lg:m-0 my-4 lg:my-0 lg:w-full h-fit lg:h-24 flex flex-col justify-between ease-linear duration-200 rounded-lg lg:rounded-3xl p-1 lg:p-3 group hover:bg-red-400 hover:text-white hover:border-red-300",
 							{
 								"bg-red-400 text-white border-2 border-red-300": page === "favorites",
 							}
@@ -100,18 +100,20 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 							src={favorite}
 							alt='Home'
 							className={clsx(
-								"w-7 h-7 group-hover:bg-white group-hover:border group-hover:rounded-md",
+								"w-7 h-7 m-auto lg:m-0 group-hover:bg-white group-hover:border group-hover:rounded-md",
 								{
 									"border rounded-md bg-white": page === "favorites",
 								}
 							)}
 						/>
-						<p className='font-semibold text-sm group-hover:text-white'>Favorites</p>
+						<p className='hidden lg:block font-semibold text-sm group-hover:text-white'>
+							Favorites
+						</p>
 					</Link>
 					<Link
 						to='/works/analytics'
 						className={clsx(
-							"border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 group hover:text-white hover:border-emerald-400 hover:bg-emerald-500",
+							"lg:border w-fit m-auto lg:m-0 my-4 lg:my-0 lg:w-full h-fit lg:h-24 flex flex-col justify-between ease-linear duration-200 rounded-lg lg:rounded-3xl p-1 lg:p-3 group hover:text-white hover:border-emerald-400 hover:bg-emerald-500",
 							{
 								"bg-emerald-400 text-white border-2 border-emerald-300": page === "analytics",
 							}
@@ -120,18 +122,20 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 							src={analys}
 							alt='Home'
 							className={clsx(
-								"w-7 h-7 group-hover:bg-white group-hover:border group-hover:rounded-md",
+								"w-7 h-7 m-auto lg:m-0 group-hover:bg-white group-hover:border group-hover:rounded-md",
 								{
 									"border rounded-md bg-white": page === "analytics",
 								}
 							)}
 						/>
-						<p className='font-semibold text-sm group-hover:text-white'>Analytics</p>
+						<p className='hidden lg:block font-semibold text-sm group-hover:text-white'>
+							Analytics
+						</p>
 					</Link>
 					<Link
 						to={"/works/public-manage"}
 						className={clsx(
-							"border w-full h-24 flex flex-col justify-between ease-linear duration-200 rounded-3xl p-3 cursor-pointer hover:bg-blue-400 group hover:text-white hover:border-blue-300",
+							"lg:border w-fit m-auto lg:m-0 my-4 lg:my-0 lg:w-full h-fit lg:h-24 flex flex-col justify-between ease-linear duration-200 rounded-lg lg:rounded-3xl p-1 lg:p-3 cursor-pointer hover:bg-blue-400 group hover:text-white hover:border-blue-300",
 							{
 								"bg-blue-400 text-white border-2 border-blue-300": page === "mpublic",
 							}
@@ -140,34 +144,36 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 							src={storage}
 							alt='Home'
 							className={clsx(
-								"w-7 h-7 bg-white group-hover:bg-white group-hover:border rounded-md ",
+								"w-7 h-7 m-auto lg:m-0 bg-white group-hover:bg-white group-hover:border rounded-md ",
 								{
 									"border rounded-md ": page === "mpublic",
 								}
 							)}
 						/>
-						<p className='font-semibold text-sm group-hover:text-white'>Public Manage</p>
+						<p className='hidden lg:block font-semibold text-sm group-hover:text-white'>
+							Public Manage
+						</p>
 					</Link>
 				</div>
 			</div>
-			<section>
-				<div className='bg-purple-900 rounded-3xl hidden xl:flex w-full flex-1 my-2 m-auto relative p-4 text-white'>
-					<img
-						src={manager}
-						alt='React Logo'
-						className='w-2/3 h-[20vh] absolute -top-[20%] -right-[30%]'
-					/>
-					<div className='flex flex-col gap-2 text-left drop-shadow-xl'>
-						<h3 className='font-extrabold text-[120%] z-20 drop-shadow-xl'>Get Started With Us</h3>
-						<p className='text-xs z-10'>Your ceremony & reception venues, yourvision</p>
-					</div>
+
+			<div className='bg-purple-900 max-h-[20vh] h-full rounded-3xl hidden xl:flex w-full flex-1 my-2 m-auto relative p-4 text-white'>
+				<img
+					src={manager}
+					alt='React Logo'
+					className='w-2/3 h-[200%] absolute -top-[20%] -right-[30%]'
+				/>
+				<div className='flex flex-col gap-2 text-left drop-shadow-xl'>
+					<h3 className='font-extrabold text-[120%] z-20 drop-shadow-xl'>Get Started With Us</h3>
+					<p className='text-xs z-10'>Your ceremony & reception venues, yourvision</p>
 				</div>
-			</section>
+			</div>
+
 			<div className='flex flex-col gap-3'>
 				<Link to='/works/recycle' className='flex items-center gap-2'>
 					<div
 						className={clsx(
-							"w-8 h-8 p-2 bg-slate-100 rounded-lg flex items-center justify-center",
+							"w-8 h-8 m-auto lg:m-0 p-2 bg-slate-100 rounded-lg flex items-center justify-center",
 							{
 								"!bg-emerald-400": page === "trash",
 							}
@@ -184,12 +190,12 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 							/>
 						</svg>
 					</div>
-					<p className='font-semibold text-sm'>Recycle</p>
+					<p className='font-semibold text-sm hidden lg:block'>Recycle</p>
 				</Link>
 				<Link to='/works/settings' className='flex items-center gap-2'>
 					<div
 						className={clsx(
-							"w-8 h-8 p-2 bg-slate-100 rounded-lg flex items-center justify-center",
+							"w-8 h-8 m-auto lg:m-0 p-2 bg-slate-100 rounded-lg flex items-center justify-center",
 							{
 								"!bg-emerald-400": page === "settings",
 							}
@@ -206,12 +212,12 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 							/>
 						</svg>
 					</div>
-					<p className='font-semibold text-sm'>Settings</p>
+					<p className='font-semibold text-sm hidden lg:block'>Settings</p>
 				</Link>
 				<Link to='/works/profile' className='flex items-center gap-2'>
 					<div
 						className={clsx(
-							"w-8 h-8 p-2 bg-slate-100 rounded-lg flex items-center justify-center",
+							"w-8 h-8 m-auto lg:m-0 p-2 bg-slate-100 rounded-lg flex items-center justify-center",
 							{
 								"!bg-emerald-400": page === "profile",
 							}
@@ -228,17 +234,17 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 							/>
 						</svg>
 					</div>
-					<p className='font-semibold text-sm'>Profile</p>
+					<p className='font-semibold text-sm hidden lg:block'>Profile</p>
 				</Link>
 				<Popconfirm title={"Are you sure ?"} placement='topRight' onConfirm={onLogout}>
-					<div className='flex items-center gap-2 group hover:bg-main w-fit pr-4 rounded-md cursor-pointer transition-all ease-linear duration-200'>
+					<div className='flex items-center gap-2 group hover:bg-main m-auto lg:m-0  w-fit lg:pr-4 rounded-md cursor-pointer transition-all ease-linear duration-200'>
 						<div
 							className={clsx(
-								"w-8 h-8 p-2 rounded-lg flex items-center justify-center transition-all ease-linear duration-200"
+								"w-8 h-8 m-auto lg:m-0 p-2 rounded-lg flex items-center justify-center transition-all ease-linear duration-200"
 							)}>
 							<LogoutOutlined className='group-hover:text-white transition-all ease-linear duration-200' />
 						</div>
-						<p className='font-semibold text-sm group-hover:text-white transition-all ease-linear duration-200'>
+						<p className='font-semibold text-sm group-hover:text-white transition-all ease-linear duration-200 hidden lg:block'>
 							Sign out
 						</p>
 					</div>

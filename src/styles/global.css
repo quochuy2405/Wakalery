@@ -9,6 +9,9 @@
 		box-sizing: border-box;
 		font-family: "Poppins", sans-serif !important;
 	}
+	html {
+		overflow-x: hidden;
+	}
 
 	.fade-enter .switch {
 		opacity: 0;
@@ -169,15 +172,48 @@
 }
 /* session home */
 
+.sec3-grid,
+.sec2-grid,
 .home-grid {
-	display: grid;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+@media (min-width: 1024px) {
+	.home-grid {
+		display: grid;
 
-	grid-template-rows: 260px 260px 260px 260px;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
+		grid-template-rows: 260px 260px 260px 260px;
+		grid-template-columns: 1fr 1fr 1fr 1fr;
 
-	gap: 10px;
-	width: 90%;
-	margin-left: auto;
+		gap: 10px;
+		width: 95%;
+		margin-left: auto;
+	}
+
+	.sec2-grid {
+		display: grid;
+
+		grid-template-rows: 200px 200px 300px;
+		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+
+		height: 100%;
+		width: 95%;
+		margin-left: auto;
+		gap: 10px;
+	}
+	.sec3-grid {
+		display: grid;
+		margin-top: 40px;
+		grid-template-rows: 200px 100px 300px 300px 200px;
+		grid-template-columns: 1fr 1fr 20px 1fr 1fr 30px 1fr 1fr 1fr;
+
+		gap: 0px;
+		height: 100%;
+		width: 95%;
+		margin-left: auto;
+		gap: 10px;
+	}
 }
 
 #sec-item-0 {
@@ -193,7 +229,7 @@
 	flex-direction: column;
 
 	grid-row-end: 3;
-	grid-column-end: 2;
+	grid-column-end: 3;
 }
 #sec-item-1 {
 	height: 100%;
@@ -326,18 +362,6 @@
 	grid-column-end: 5;
 }
 
-.sec2-grid {
-	display: grid;
-
-	grid-template-rows: 200px 200px 300px;
-	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-
-	height: 100%;
-	width: 90%;
-	margin-left: auto;
-	gap: 10px;
-}
-
 #sec2-item-0 {
 	border-radius: 10px;
 	grid-row-start: 1;
@@ -374,18 +398,6 @@
 }
 
 /* sec 3 */
-.sec3-grid {
-	display: grid;
-	margin-top: 40px;
-	grid-template-rows: 200px 100px 300px 300px 200px;
-	grid-template-columns: 1fr 1fr 20px 1fr 1fr 30px 1fr 1fr 1fr;
-
-	gap: 0px;
-	height: 100%;
-	width: 90%;
-	margin-left: auto;
-	gap: 10px;
-}
 
 #sec3-item-0 {
 	border-radius: 10px;
@@ -481,6 +493,6 @@
 	margin: 0;
 }
 .ant-btn.ant-btn-dashed.ant-btn-background-ghost {
-	border-color: #212121 ;
-  color: #212121;
+	border-color: #212121;
+	color: #212121;
 }

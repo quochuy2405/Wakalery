@@ -11,7 +11,7 @@ const BreadcrumbProject: React.FC<BreadcrumbProjectProps> = ({ refresh }) => {
 	const [isUpload, setIsUpload] = useState<boolean>(false);
 	const [isCreate, setIsCreate] = useState<boolean>(false);
 	return (
-		<div className='flex items-center justify-between bg-white w-full rounded-xl p-3 shadow-lg'>
+		<div className='flex md:items-center gap-2 lg:justify-between bg-white w-full rounded-xl p-2 lg:p-3 shadow-lg flex-col md:flex-row '>
 			<Breadcrumb
 				items={[
 					{
@@ -27,15 +27,15 @@ const BreadcrumbProject: React.FC<BreadcrumbProjectProps> = ({ refresh }) => {
 				]}
 			/>
 
-			<div className='flex items-center gap-4'>
+			<div className='flex items-center gap-4 justify-end'>
 				<Button
 					onClick={() => setIsCreate(true)}
-					className='font-normal items-center flex justify-center text-xs !rounded-lg'>
+					className='font-normal items-center flex justify-center text-xs !rounded-lg !p-2 !h-7 md:!h-8'>
 					Create folder
 				</Button>
 				<Button
 					onClick={() => setIsUpload(true)}
-					className='font-normal items-center flex justify-center text-xs !rounded-lg'>
+					className='font-normal items-center flex justify-center text-xs !rounded-lg !h-7 md:!h-8'>
 					Upload
 				</Button>
 			</div>

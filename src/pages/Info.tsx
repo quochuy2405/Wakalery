@@ -3,9 +3,9 @@ import React from "react";
 
 const Info = () => {
 	return (
-		<div className='flex flex-col w-full h-screen overflow-y-auto bg-white'>
+		<div className='flex flex-col w-full h-screen overflow-y-auto bg-white overflow-x-hidden'>
 			<Header page='contact' />
-			<div className='flex flex-col justify-center items-center w-5/6 m-auto'>
+			<div className='flex flex-col justify-center items-center w-5/6 m-auto pb-24'>
 				<h2 className='uppercase text-sm font-semibold'>Hello! 😘</h2>
 				<h1 className='text-4xl lg:text-4xl font-semibold'>Wakalery</h1>
 				<h3 className='text-3xl font-bold text-red-500'>We Are A Champions</h3>

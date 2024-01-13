@@ -35,11 +35,11 @@ const Public = () => {
 	}, [dispatch]);
 
 	return (
-		<div className='flex flex-col w-full h-screen overflow-y-auto bg-white'>
+		<div className='flex flex-col w-full h-screen overflow-y-auto overflow-x-hidden bg-white'>
 			<Header page='discovery' />
-			<div className='flex-1 w-full h-full bg-white p-4 flex flex-col overflow-y-auto'>
+			<div className='flex-1 w-full h-full bg-white p-4 flex flex-col overflow-y-auto pb-24'>
 				<div className='flex justify-between'>
-					<h2 className='font-extrabold text-4xl uppercase leading-[90px] z-10 opacity-70 top-20 py-3'>
+					<h2 className='font-extrabold text-xl lg:text-4xl uppercase lg:leading-[90px] z-10 opacity-70 top-20 py-3'>
 						Explore more
 					</h2>
 					<Button
@@ -48,7 +48,7 @@ const Public = () => {
 						Upload
 					</Button>
 				</div>
-				<div className='grid lg:grid-cols-4 xl:grid-cols-7 gap-3 relative'>
+				<div className='grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-3 relative'>
 					<GridImages current='discovery' images={images} />
 
 					{capture && <Image src={capture} />}

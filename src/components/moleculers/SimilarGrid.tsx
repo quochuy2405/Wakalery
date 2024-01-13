@@ -1,6 +1,7 @@
 import { getImageSimilar } from "@/apis/image";
 import { IMAGE_PREFIX } from "@/constants/index";
 import { PhotoDirectory } from "@/types/image";
+import { getUserInfoCookie } from "@/utils/cookies";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 import React, { useEffect, useMemo, useState } from "react";
@@ -14,6 +15,7 @@ interface DiscoveryProps {
 }
 const SimilarGrid: React.FC<DiscoveryProps> = ({ columns = 4, photoName, current }) => {
 	const [loading, setLoading] = useState(false);
+	const user = getUserInfoCookie();
 	const [images, setImages] = useState<PhotoDirectory[]>([]);
 	const grid = useMemo(() => {
 		const grid = [];
@@ -21,7 +23,7 @@ const SimilarGrid: React.FC<DiscoveryProps> = ({ columns = 4, photoName, current
 			grid.push(
 				<div key={i} className='flex flex-col gap-2'>
 					{images
-						.filter((_, index) => index % columns === i)
+						?.filter((_, index) => index % columns === i)
 						.map((photo, index) => (
 							<Link
 								to={`/${current}/preview?name=${photo?.photoName}`}
@@ -29,7 +31,7 @@ const SimilarGrid: React.FC<DiscoveryProps> = ({ columns = 4, photoName, current
 								className='rounded-lg overflow-hidden h-fit cursor-pointer'>
 								<LazyLoadImage
 									className='h-fit cursor-pointer w-full !rounded-lg overflow-hidden object-cover'
-									src={IMAGE_PREFIX + "1/" + photo.photoName}
+									src={IMAGE_PREFIX + `${user?.user_id}/` + photo.photoName}
 									alt={`Image ${index + 1}`}
 									effect='blur'
 									loading='lazy'
@@ -45,9 +47,10 @@ const SimilarGrid: React.FC<DiscoveryProps> = ({ columns = 4, photoName, current
 	useEffect(() => {
 		if (!photoName) return;
 		setLoading(true);
+		console.log("call");
 		getImageSimilar(photoName)
 			.then(({ data }) => {
-				setImages(data);
+				if (data) setImages(data);
 			})
 			.finally(() => setLoading(false));
 	}, [photoName]);

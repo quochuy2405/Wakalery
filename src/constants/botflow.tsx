@@ -1,8 +1,9 @@
 import { UploadFace } from "@/components/moleculers";
 import { LoadingOutlined } from "@ant-design/icons";
-import { Button, Form, Input, Spin } from "antd";
-import { PiRobotLight } from "react-icons/pi";
+import { Button, Form, Spin } from "antd";
+import TextArea from "antd/es/input/TextArea";
 import React from "react";
+import { PiRobotLight } from "react-icons/pi";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const botComponents = ({ onMethods }: { onMethods?: any }) => ({
@@ -24,7 +25,7 @@ export const botComponents = ({ onMethods }: { onMethods?: any }) => ({
 					<Button type='dashed' onClick={() => onMethods("face")} ghost>
 						Face
 					</Button>
-					<Button type='dashed' onClick={() => onMethods("text")} ghost>
+					<Button type='dashed' onClick={() => onMethods("face")} ghost>
 						Similar
 					</Button>
 				</div>
@@ -37,9 +38,15 @@ export const botComponents = ({ onMethods }: { onMethods?: any }) => ({
 	searchText: {
 		title: "Using search image by Warkary bot",
 		body: (
-			<Form.Item labelCol={{ span: 6 }} wrapperCol={{ span: 100 }} className='!w-[400px]'>
-				<Form.Item label='Script' name='record' rules={[{ required: true }]}>
-					<Input width={300} />
+			<Form.Item
+				labelCol={{ span: 6 }}
+				wrapperCol={{ span: 100 }}
+				className='w-full md:!w-[400px] flex flex-col gap-2'>
+				<label htmlFor='' className='font-medium text-main'>
+					Enter command:
+				</label>
+				<Form.Item name='record' rules={[{ required: true }]}>
+					<TextArea rows={3} />
 				</Form.Item>
 			</Form.Item>
 		),

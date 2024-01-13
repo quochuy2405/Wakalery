@@ -1,12 +1,23 @@
-import { useSocket } from "@/hooks/socket";
 import { RootState } from "@/redux/store";
 import clsx from "clsx";
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { Client } from "@stomp/stompjs";
 
 const VerifyAccount = () => {
+	useEffect(() => {
+		const client = new Client({
+			brokerURL: "wss://isphoto.ftisu.vn/ws",
+			onConnect: () => {
+				client.subscribe("/api/auth/respone_verification", (message) =>
+					console.log(`Received: ${message.body}`)
+				);
+			},
+		});
+		client.activate();
+	}, []);
 	const verify = useSelector((state: RootState) => state.verify.status);
-	useSocket({ url: "wss://javascript.info/article/websocket/demo/hello" });
+
 	if (verify === "close") return <></>;
 
 	return (

@@ -7,7 +7,7 @@ import { setSearch } from "@/redux/features/search";
 import { RootState } from "@/redux/store";
 import { TagsOutlined } from "@ant-design/icons";
 import { FloatButton, Form, Popconfirm, Switch, UploadFile } from "antd";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BsRobot } from "react-icons/bs";
 import { LuSearch } from "react-icons/lu";
 import { useDispatch, useSelector } from "react-redux";
@@ -52,7 +52,7 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 					.then(({ data }) => {
 						if (data?.length) {
 							dispatch(setSearch(data));
-							navigate("/project/search");
+							navigate("/works/project/search");
 						} else {
 							throw "error";
 						}
@@ -69,6 +69,8 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 				dispatch(startLoading());
 				sendPrompt(record).then(async ({ data }) => {
 					refDataPromt.current = data;
+
+					dispatch(closeLoading());
 					if (data.querySimilarImage) {
 						onMethods("face");
 						return;
@@ -80,7 +82,7 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 					await getImageByTagsContains(data.params)
 						.then(({ data: photo }) => {
 							dispatch(setSearch(photo));
-							navigate("/project/search?name=" + data?.params.toString());
+							navigate("/works/project/search?name=" + data?.params.toString());
 						})
 						.catch(() => {
 							dispatch(setRobot(botComponents({}).notfound));
@@ -115,7 +117,7 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 				await getImageByTagsContains(tags)
 					.then(({ data }) => {
 						dispatch(setSearch(data));
-						navigate("/project/search?name=" + tags.toString());
+						navigate("/works/project/search?name=" + tags.toString());
 					})
 					.catch(() => {
 						dispatch(setRobot(botComponents({}).notfound));
@@ -131,7 +133,7 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 				await getImageByTagsMatchAll(tags)
 					.then(({ data }) => {
 						dispatch(setSearch(data));
-						navigate("/project/search?name=" + tags.toString());
+						navigate("/works/project/search?name=" + tags.toString());
 					})
 					.catch(() => {
 						dispatch(setRobot(botComponents({}).notfound));
@@ -145,9 +147,13 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 		}
 	};
 
+	useEffect(() => {
+		dispatch(resetRobot());
+	}, []);
+
 	return (
 		<>
-			<FloatButton.Group shape='square' style={{ right: 94, zIndex: 999 }}>
+			<FloatButton.Group shape='square' className='right-[8%] z-50'>
 				<canvas ref={previewCanvasRef} hidden />
 				{isPrivate && (
 					<Form form={form} onFinish={onSubmit}>
@@ -180,33 +186,34 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 				)}
 				{isPrivate && (
 					<Popconfirm
-						title={robot.title}
+						title={"Choose tags"}
 						placement='left'
 						open={showSearchTag}
 						onConfirm={() => formTag.submit()}
 						onCancel={() => setShowSearchTag(false)}
 						description={
-							<Form form={formTag} onFinish={onSearchByTag}>
-								<Form.Item labelCol={{ span: 6 }} wrapperCol={{ span: 100 }} className='w-full'>
-									<Form.Item label='Mode'>
-										<Switch
-											title='Match'
-											value={mode === "all"}
-											checkedChildren='All'
-											onChange={(value) => {
-												if (value) {
-													setMode("all");
-												} else {
-													setMode("contains");
-												}
-											}}
-											unCheckedChildren='In'
-											className='bg-gray-500'
-										/>
-									</Form.Item>
-									<Form.Item name='tags' rules={[{ required: true }]}>
-										<InputTag />
-									</Form.Item>
+							<Form form={formTag} onFinish={onSearchByTag} className='flex flex-col'>
+								<Form.Item className='!mb-2 flex gap-2'>
+									<label htmlFor='' className='font-medium text-main pr-2'>
+										Mode:
+									</label>
+									<Switch
+										title='Match'
+										value={mode === "all"}
+										checkedChildren='All'
+										onChange={(value) => {
+											if (value) {
+												setMode("all");
+											} else {
+												setMode("contains");
+											}
+										}}
+										unCheckedChildren='In'
+										className='bg-gray-500'
+									/>
+								</Form.Item>
+								<Form.Item name='tags' rules={[{ required: true }]}>
+									<InputTag />
 								</Form.Item>
 							</Form>
 						}
@@ -215,8 +222,6 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 					</Popconfirm>
 				)}
 				<FloatButton icon={<LuSearch />} onClick={() => onSearch()} />
-
-				<FloatButton.BackTop visibilityHeight={0} />
 			</FloatButton.Group>
 		</>
 	);

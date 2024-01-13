@@ -8,7 +8,6 @@ export const cookieAuthHandles = {
 		document.cookie = `token=${token}; ${expires}; path=/`;
 	},
 	get: () => {
-		console.log(" document.cookie", document.cookie);
 		const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, "$1");
 		return token;
 	},
@@ -34,7 +33,6 @@ export const getUserInfoCookie = () => {
 		const token = cookieAuthHandles.get();
 		if (!token) return null;
 		const decodedHeader = jwtDecode<JWTDecode>(token);
-		console.log("decodedHeader", decodedHeader);
 		return decodedHeader;
 	} catch (error) {
 		return null;

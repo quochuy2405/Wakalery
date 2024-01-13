@@ -1,20 +1,23 @@
 import { LoginAccountType, login } from "@/apis/user";
+import { initToken } from "@/redux/features/cookie";
+import { RootState } from "@/redux/store";
+import { loginSchema } from "@/resolvers/login";
+import { cookieAuthHandles } from "@/utils/cookies";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { ThunkDispatch } from "@reduxjs/toolkit";
 import { Button, message } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import { useDispatch } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { TextField, TextFieldPassword } from "../atoms";
-import { cookieAuthHandles } from "@/utils/cookies";
-import { initToken } from "@/redux/features/cookie";
-import { useDispatch } from "react-redux";
-import { ThunkDispatch } from "@reduxjs/toolkit";
-import { RootState } from "@/redux/store";
 
 const LoginForm: React.FC = () => {
 	const navigate = useNavigate();
 	const [messageApi, contextHolder] = message.useMessage();
+	const [loading, setLoading] = useState(false);
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
 
@@ -23,17 +26,19 @@ const LoginForm: React.FC = () => {
 			email: "",
 			password: "",
 		},
+		resolver: yupResolver(loginSchema),
 	});
 
-	const onSubmit = (form: LoginAccountType) => {
+	const onSubmit = async (form: LoginAccountType) => {
+		const account = { ...form };
+		setLoading(true);
 		messageApi
 			.open({
 				type: "loading",
 				content: "Login in progress..",
-				duration: 2.5,
 			})
 			.then(async () => {
-				await login(form)
+				return await login(account)
 					.then(({ data }) => {
 						if (data.token) {
 							cookieAuthHandles.set(data.token);
@@ -42,9 +47,13 @@ const LoginForm: React.FC = () => {
 							navigate("/");
 						}
 					})
-					.catch((error) => {
-						console.log("error", error);
+					.catch(() => {
+						// const response = error.response;
+						message.error("Login failure.", 2.5);
 					});
+			})
+			.then(() => {
+				setLoading(false);
 			});
 	};
 
@@ -55,16 +64,22 @@ const LoginForm: React.FC = () => {
 			<div className='flex w-full h-fit flex-col'>
 				<form
 					onSubmit={form.handleSubmit(onSubmit)}
-					className='flex flex-col gap-4 justify-center items-center w-full'>
+					className='flex flex-col gap-6 justify-center items-center w-full'>
 					<Controller
 						name='email'
 						control={form.control}
-						render={({ field }) => <TextField title='Email' {...field} />}
+						disabled={loading}
+						render={({ field, fieldState }) => (
+							<TextField title='Email' {...field} error={fieldState.error} />
+						)}
 					/>
 					<Controller
 						name='password'
 						control={form.control}
-						render={({ field }) => <TextFieldPassword title='Password' {...field} />}
+						disabled={loading}
+						render={({ field, fieldState }) => (
+							<TextFieldPassword title='Password' {...field} error={fieldState.error} />
+						)}
 					/>
 
 					<NavLink
@@ -75,6 +90,7 @@ const LoginForm: React.FC = () => {
 					<Button
 						type='primary'
 						htmlType='submit'
+						disabled={loading}
 						className='bg-emerald-500 flex items-center justify-center button-form mt-6'>
 						Sign in
 					</Button>

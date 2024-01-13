@@ -31,7 +31,7 @@ const UploadImage = () => {
 	return (
 		<div className='h-screen flex flex-col'>
 			<Header page='discovery' />
-			<div className='max-w-7xl m-auto w-full flex-1 flex items-center justify-center'>
+			<div className='max-w-7xl m-auto w-full flex-1 flex items-center justify-center px-4'>
 				<Dragger
 					{...props}
 					className='flex flex-1 justify-center items-center h-2/3 !bg-white gap-4'>

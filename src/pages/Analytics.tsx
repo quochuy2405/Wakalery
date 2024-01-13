@@ -3,18 +3,17 @@ import { GraphEdges } from "@/components/moleculers";
 import { SideBar } from "@/components/organims";
 import { Card, Col, Row } from "antd";
 import {
-  ArcElement,
-  BarElement,
-  CategoryScale,
-  Chart as ChartJS,
-  Legend,
-  LinearScale,
-  Title,
-  Tooltip,
+	ArcElement,
+	BarElement,
+	CategoryScale,
+	Chart as ChartJS,
+	Legend,
+	LinearScale,
+	Title,
+	Tooltip,
 } from "chart.js";
 import React from "react";
 import { Bar, Pie } from "react-chartjs-2";
-
 
 ChartJS.register(CategoryScale, ArcElement, LinearScale, BarElement, Title, Tooltip, Legend);
 let delayed = false;
@@ -114,20 +113,16 @@ const Analytics = () => {
 	return (
 		<div className='w-full h-screen flex overflow-hidden'>
 			<SideBar page='analytics' />
-			<div className='flex-1 bg-neutral-50 h-screen overflow-y-auto flex-col gap-1 flex p-10'>
-				<Row gutter={4}>
-					<Col span={8}>
-						<Card className='w-full h-full'>
-							<Pie data={dataPie} />
-						</Card>
-					</Col>
+			<div className='flex-1 bg-neutral-50 h-screen overflow-y-auto flex-col gap-1 flex p-2 md:p-10'>
+				<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+					<Card className='w-full h-full'>
+						<Pie data={dataPie} />
+					</Card>
+					<div className='h-full w-full bg-white p-4 rounded-md border border-gray-100'>
+						<GraphEdges />
+					</div>
+				</div>
 
-					<Col span={16}>
-						<div className='h-full w-full bg-white p-4 rounded-md border border-gray-100'>
-							<GraphEdges />
-						</div>
-					</Col>
-				</Row>
 				<Row gutter={4}>
 					<Col span={24}>
 						<Card>
