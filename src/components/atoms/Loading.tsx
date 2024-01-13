@@ -22,7 +22,7 @@ const Loading = () => {
 	return (
 		<div
 			className={clsx(
-				"w-screen fixed z-[9999] left-0 top-0 items-center justify-center h-screen flex flex-col bg-gray-600/20 transition-all ease-linear duration-300 opacity-1",
+				"w-screen fixed z-[9999] left-0 top-0 items-center justify-center h-screen !h-[100dvh] flex flex-col bg-gray-600/20 transition-all ease-linear duration-300 opacity-1",
 				{
 					"!opacity-0": !loading,
 					hidden: !open,

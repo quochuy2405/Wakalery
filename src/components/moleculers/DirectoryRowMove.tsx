@@ -1,3 +1,4 @@
+import { PhotoDirectory } from "@/types/image";
 import { Button, Popconfirm } from "antd";
 import clsx from "clsx";
 import React from "react";
@@ -7,12 +8,11 @@ import { FcFolder } from "react-icons/fc";
 import { HiDocumentText } from "react-icons/hi2";
 import { MdMoveDown } from "react-icons/md";
 interface DirectoryRowProps {
-	name: string;
+	data?: PhotoDirectory;
 	isFolder: boolean;
 	disabled: boolean;
 	onClick: () => void;
-	onMove: (name: string) => void;
-	refresh: () => void;
+	onMove: () => void;
 }
 const IconByType: Record<string, React.ReactNode> = {
 	img: <BsImage size={20} color='#00DFA2' />,
@@ -20,16 +20,7 @@ const IconByType: Record<string, React.ReactNode> = {
 	video: <BiSolidVideos size={22} color='#E1AA74' />,
 };
 
-const typeDefine: Record<string, string> = {
-	png: "img",
-	jpg: "img",
-	jpeg: "img",
-	mp4: "video",
-	txt: "doc",
-};
-const DirectoryRowMove: React.FC<DirectoryRowProps> = ({ name, isFolder, onClick, onMove }) => {
-	const lastFile = name.slice(-3).toLocaleLowerCase() as keyof typeof typeDefine;
-
+const DirectoryRowMove: React.FC<DirectoryRowProps> = ({ data, isFolder, onClick, onMove }) => {
 	return (
 		<div
 			className={clsx(
@@ -37,8 +28,10 @@ const DirectoryRowMove: React.FC<DirectoryRowProps> = ({ name, isFolder, onClick
 			)}
 			onClick={onClick}>
 			{isFolder && <FcFolder size={20} />}
-			{!isFolder && IconByType[typeDefine[lastFile]]}
-			<p className='flex-1 text-sm font-medium uppercase hover:text-emerald-600'>{name}</p>
+			{!isFolder && IconByType["img"]}
+			<p className='flex-1 text-sm font-medium uppercase hover:text-emerald-600 truncate'>
+				{isFolder ? data?.folderName : data?.photoName}
+			</p>
 			{isFolder && (
 				<Popconfirm
 					title='Move In'
@@ -46,7 +39,7 @@ const DirectoryRowMove: React.FC<DirectoryRowProps> = ({ name, isFolder, onClick
 					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 					onConfirm={(event: any) => {
 						event.stopPropagation();
-						onMove(name);
+						onMove();
 					}}
 					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 					onCancel={(event: any) => {

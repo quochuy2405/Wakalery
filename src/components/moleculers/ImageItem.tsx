@@ -1,5 +1,6 @@
 import { updateImage } from "@/apis/image";
 import { IMAGE_PREFIX } from "@/constants/index";
+import { addFileMove } from "@/redux/features/filemove";
 import { openMove } from "@/redux/features/onmove";
 import { RootState } from "@/redux/store";
 import { ImageType } from "@/types/image";
@@ -54,7 +55,10 @@ const ImageItem: React.FC<ImageItemProps> = ({
 			label: "Move",
 			key: "1",
 			icon: <GiMove />,
-			onClick: () => dispatch(openMove()),
+			onClick: () => {
+				dispatch(openMove());
+				dispatch(addFileMove(image));
+			},
 		},
 		{
 			label: "Download",

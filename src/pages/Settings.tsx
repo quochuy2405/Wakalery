@@ -5,7 +5,7 @@ import React from "react";
 
 const Settings = () => {
 	return (
-		<div className='w-full h-screen overflow-y-auto flex'>
+		<div className='w-full h-screen !h-[100dvh] overflow-y-auto flex'>
 			<SideBar page='settings' />
 			<div className='flex-1 bg-neutral-100 h-full p-10'>
         <Card>

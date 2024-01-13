@@ -51,7 +51,7 @@ const Profile = () => {
 		}
 	};
 	return (
-		<div className='w-full h-screen overflow-y-auto flex'>
+		<div className='w-full h-screen !h-[100dvh] overflow-y-auto flex'>
 			<SideBar page='profile' />
 			<div className='flex-1 bg-neutral-100 h-full p-10'>
 				<div className=' bg-white h-full dark:bg-gray-900 rounded-lg overflow-hidden shadow-lg'>

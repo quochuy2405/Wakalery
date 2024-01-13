@@ -29,7 +29,7 @@ const UploadImage = () => {
 		console.log("form", data);
 	};
 	return (
-		<div className='h-screen flex flex-col'>
+		<div className='h-screen !h-[100dvh] flex flex-col'>
 			<Header page='discovery' />
 			<div className='max-w-7xl m-auto w-full flex-1 flex items-center justify-center px-4'>
 				<Dragger

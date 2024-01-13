@@ -14,7 +14,7 @@ const AuthRedirect = () => {
 		if (!user?.user_id) navigate("/login");
   }, [navigate, token]);
   console.log("user", user);
-	if (!user?.user_id) return <Navigate to={"login"} />;
+	if (!user?.user_id) return <Navigate to={"/login"} />;
 	return <></>;
 };
 

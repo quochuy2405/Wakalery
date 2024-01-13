@@ -1,4 +1,5 @@
 import FolderBg from "@/assets/folder.svg";
+import { addFileMove } from "@/redux/features/filemove";
 import { openMove } from "@/redux/features/onmove";
 import { RootState } from "@/redux/store";
 import { PhotoDirectory } from "@/types/image";
@@ -23,7 +24,10 @@ const FolderItem: React.FC<FolderItemProps> = ({ data }) => {
 			label: "Move",
 			key: "1",
 			icon: <GiMove />,
-			onClick: () => dispatch(openMove()),
+			onClick: () => {
+				dispatch(openMove());
+				dispatch(addFileMove(data));
+			},
 		},
 		{
 			label: "Delete",

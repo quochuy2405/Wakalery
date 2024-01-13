@@ -132,7 +132,7 @@ const PreviewImage = () => {
 	};
 
 	return (
-		<div className='flex flex-col w-full h-screen overflow-y-auto bg-white'>
+		<div className='flex flex-col w-full h-screen !h-[100dvh] overflow-y-auto bg-white overflow-x-hidden'>
 			<Header page='discovery' />
 
 			<div className='flex-1 relative w-full bg-white md:p-4 flex flex-col items-center justify-center'>

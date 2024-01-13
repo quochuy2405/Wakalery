@@ -1,20 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { PhotoDirectory } from "@/types/image";
 import { createSlice } from "@reduxjs/toolkit";
-
+const initialState: Array<PhotoDirectory> = [];
 export const moveSlice = createSlice({
 	name: "filemove",
-	initialState: [],
+	initialState,
 	reducers: {
 		setFileMove: (state, { payload }) => {
 			state = payload;
 			return state;
 		},
-		addFileMove: (state: any, { payload }) => {
+		addFileMove: (state, { payload }) => {
 			state = [...new Set([...state, payload])];
+			console.log("data", state);
 			return state;
 		},
-		removeFileMove: (state: any, { payload }) => {
-			state = state.filter((item: string) => item !== payload);
+		removeFileMove: (state, { payload }) => {
+			state = state.filter((item) => JSON.stringify(item) !== JSON.stringify(payload));
 			return state;
 		},
 		clearFileMove: (state) => {

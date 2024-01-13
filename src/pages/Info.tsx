@@ -3,7 +3,7 @@ import React from "react";
 
 const Info = () => {
 	return (
-		<div className='flex flex-col w-full h-screen overflow-y-auto bg-white overflow-x-hidden'>
+		<div className='flex flex-col w-full h-screen !h-[100dvh] overflow-y-auto bg-white overflow-x-hidden'>
 			<Header page='contact' />
 			<div className='flex flex-col justify-center items-center w-5/6 m-auto pb-24'>
 				<h2 className='uppercase text-sm font-semibold'>Hello! 😘</h2>

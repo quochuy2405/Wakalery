@@ -10,10 +10,8 @@ const LandingPage = () => {
 
 			<section className='max-w-screen h-fit'>
 				<div className='home-grid h-fit select-none'>
-					<div id='sec-item-0'>
-						<h2 className='font-extrabold  text-6xl leading-[80px]'>
-							A Photo Galery of The Nature
-						</h2>
+					<div id='sec-item-0' className='!p-4 md:!p-10'>
+						<h2 className='font-extrabold text-6xl leading-[80px]'>A Photo Galery of The Nature</h2>
 						<p className='w-full'>
 							The Nature is Beautiful find your favorite picture around the world.
 						</p>
@@ -114,7 +112,7 @@ const LandingPage = () => {
 							className='h-full w-full object-cover'
 						/>
 					</div>
-					<div id='sec2-item-3' className='p-10'>
+					<div id='sec2-item-3' className='p-4 md:p-10'>
 						<h2 className='font-extrabold leading-[80px] text-6xl'>
 							Where creative process happens
 						</h2>
@@ -166,7 +164,7 @@ const LandingPage = () => {
 							className='h-full w-full object-cover'
 						/>
 					</div>
-					<div id='sec3-item-7' className='p-10'>
+					<div id='sec3-item-7' className='p-4 md:p-10'>
 						<h3 className='font-medium text-lg'>GET TO KNOW US</h3>
 						<h2 className='font-extrabold text-6xl leading-[80px]'>Why we make it happens </h2>
 						<p className='py-4 text-lg'>

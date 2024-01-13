@@ -1,8 +1,8 @@
 import { getSessionWithExpiry } from "@/utils/session";
 import axios from "axios";
 import { refreshAccessToken } from "./refresh_token";
-export const APP_API_HOST = "https://isphoto-back.ftisu.vn";
-// export const APP_API_HOST = " http://172.0.3.153:8080";
+// export const APP_API_HOST = "https://isphoto-back.ftisu.vn";
+export const APP_API_HOST = "http://172.0.1.166:8080";
 // export const APP_API_HOST = "http://isphoto.ftisu.vn:8080";
 const axiosAuth = axios.create({
 	baseURL: APP_API_HOST,

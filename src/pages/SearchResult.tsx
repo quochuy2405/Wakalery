@@ -18,7 +18,7 @@ const SearchResult = () => {
 	const [quickPreview, setQuickPreview] = useState<ImageType | null>(null);
 	const onSearch = () => {};
 	return (
-		<div className='w-full h-screen overflow-y-auto flex'>
+		<div className='w-full h-screen !h-[100dvh] overflow-y-auto flex'>
 			<SideBar page='works' />
 
 			<div className='flex-1 bg-neutral-100 h-full p-10'>

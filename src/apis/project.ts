@@ -23,8 +23,8 @@ export const updateProject = (data: {
 };
 
 type ChildQuery = {
-	projectId: string;
-	folderId: string;
+	projectId: number;
+	folderId: number;
 };
 export const getChildByProjectId = ({ projectId, folderId }: ChildQuery) => {
 	const user = getUserInfoCookie();

@@ -80,8 +80,8 @@ const Project = () => {
 		if (projectId && userDirectoryId) {
 			dispatch(startLoading());
 			getChildByProjectId({
-				folderId: userDirectoryId,
-				projectId: projectId,
+				folderId: Number(userDirectoryId),
+				projectId: Number(projectId),
 			})
 				.then(({ data }) => {
 					setMaterial(data);
@@ -98,8 +98,14 @@ const Project = () => {
 	const refreshData = () => {
 		setRefresh((curr) => !curr);
 	};
+	const onCompletedMove = (item: object) => {
+		const currentMaterials = materials.filter(
+			(mar) => JSON.stringify(mar) !== JSON.stringify(item)
+		);
+		setMaterial(currentMaterials);
+	};
 	return (
-		<div className='w-full h-screen overflow-y-auto flex'>
+		<div className='w-full h-screen !h-[100dvh] overflow-y-auto flex'>
 			<SideBar page='works' />
 
 			<div className='flex-1 bg-neutral-100 h-full p-2 lg:p-10'>
@@ -159,7 +165,7 @@ const Project = () => {
 				/>
 			)}
 
-			<LoadMoveFolder />
+			<LoadMoveFolder onCompletedMove={onCompletedMove} />
 			<FloatButton onSearch={onSearch} isPrivate />
 		</div>
 	);

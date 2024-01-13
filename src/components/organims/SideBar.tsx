@@ -1,8 +1,8 @@
 import analys from "@/assets/analys.svg";
 import favorite from "@/assets/favorite.svg";
 import home from "@/assets/home.svg";
-import manager from "@/assets/manager.svg";
 import image from "@/assets/image.svg";
+import manager from "@/assets/manager.svg";
 import search from "@/assets/search.svg";
 import storage from "@/assets/storage.svg";
 import { initToken } from "@/redux/features/cookie";
@@ -10,12 +10,12 @@ import { RootState } from "@/redux/store";
 import { cookieAuthHandles } from "@/utils/cookies";
 import { LogoutOutlined } from "@ant-design/icons";
 import { ThunkDispatch } from "@reduxjs/toolkit";
-import { Avatar, Popconfirm } from "antd";
+import { Popconfirm } from "antd";
 import clsx from "clsx";
 import React from "react";
-import { FaBell } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { UserInfo } from "../atoms";
 interface SideBarProps {
 	page: string;
 }
@@ -27,6 +27,7 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 		cookieAuthHandles.clear();
 		dispatch(initToken());
 	};
+
 	return (
 		<div className='max-w-[20vw] lg:min-w-[300px] h-full p-1 lg:p-4 flex justify-between flex-col'>
 			<div className='flex items-center flex-col w-full'>
@@ -35,9 +36,9 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 						<h2 className='font-semibold  text-xs lg:text-sm'>Wakalery</h2>
 						<p className='hidden lg:block text-xs'>My works</p>
 					</div>
-					<div className='hidden lg:flex  gap-4 items-center'>
-						<FaBell size={18} />
-						<Avatar size={"small"} />
+					<div className='hidden lg:flex w-full gap-4 items-center justify-end'>
+						{/* <FaBell size={18} /> */}
+						<UserInfo />
 					</div>
 				</div>
 				<div className='lg:grid grid-cols-2 pt-6 gap-4 w-full'>

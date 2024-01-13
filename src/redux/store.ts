@@ -1,24 +1,21 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import detect from "./features/detect";
-import directory from "./features/directory";
-import directorymove from "./features/directorymove";
+
+import auth from "./features/cookie";
+import filemove from "./features/filemove";
 import fileprogress from "./features/fileprogress";
 import graphedges from "./features/graphedges";
+import guide from "./features/guide";
 import loading from "./features/loading";
 import onmove from "./features/onmove";
-import storage from "./features/storage";
-import guide from "./features/guide";
-import filemove from "./features/filemove";
-import robot from "./features/robot";
 import project from "./features/project";
+import robot from "./features/robot";
 import search from "./features/search";
+import storage from "./features/storage";
 import verify from "./features/verify";
-import auth from "./features/cookie";
 
 export const store = configureStore({
 	reducer: {
-		directory,
-		directorymove,
 		loading,
 		fileprogress,
 		storage,

@@ -35,7 +35,7 @@ const Public = () => {
 	}, [dispatch]);
 
 	return (
-		<div className='flex flex-col w-full h-screen overflow-y-auto overflow-x-hidden bg-white'>
+		<div className='flex flex-col w-full h-screen !h-[100dvh] overflow-y-auto overflow-x-hidden bg-white'>
 			<Header page='discovery' />
 			<div className='flex-1 w-full h-full bg-white p-4 flex flex-col overflow-y-auto pb-24'>
 				<div className='flex justify-between'>

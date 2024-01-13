@@ -4,14 +4,14 @@ import { FloatButton } from "@/components/atoms";
 import { BreadcrumbProject, FolderItem, ImageItem, LoadMoveFolder } from "@/components/moleculers";
 import { SideBar } from "@/components/organims";
 import { closeLoading, startLoading } from "@/redux/features/loading";
+import { RootState } from "@/redux/store";
 import { ImageType, PhotoDirectory } from "@/types/image";
+import { ThunkDispatch } from "@reduxjs/toolkit";
 import { Image } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { IMAGE_PREFIX } from "../constants";
-import { ThunkDispatch } from "@reduxjs/toolkit";
-import { RootState } from "@/redux/store";
 
 const Project = () => {
 	const { projectId } = useParams();
@@ -25,8 +25,8 @@ const Project = () => {
 		if (projectId) {
 			dispatch(startLoading());
 			getChildByProjectId({
-				folderId: "0",
-				projectId: projectId,
+				folderId: 0,
+				projectId: Number(projectId),
 			})
 				.then(({ data }) => {
 					setMaterial(data);
@@ -38,12 +38,19 @@ const Project = () => {
 					dispatch(closeLoading());
 				});
 		}
-	}, [projectId, refresh]);
+	}, [dispatch, projectId, refresh]);
 	const refreshData = () => {
 		setRefresh((curr) => !curr);
 	};
+
+	const onCompletedMove = (item: object) => {
+		const currentMaterials = materials.filter(
+			(mar) => JSON.stringify(mar) !== JSON.stringify(item)
+		);
+		setMaterial(currentMaterials);
+	};
 	return (
-		<div className='w-full h-screen overflow-y-auto flex'>
+		<div className='w-full h-screen !h-[100dvh] overflow-y-auto flex'>
 			<SideBar page='works' />
 
 			<div className='flex-1 bg-neutral-100 h-full p-2 lg:p-10'>
@@ -84,7 +91,7 @@ const Project = () => {
 				/>
 			)}
 
-			<LoadMoveFolder />
+			<LoadMoveFolder onCompletedMove={onCompletedMove} />
 			<FloatButton onSearch={() => null} isPrivate />
 		</div>
 	);

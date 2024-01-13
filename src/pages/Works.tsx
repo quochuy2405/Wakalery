@@ -37,7 +37,7 @@ const Works = () => {
 	}, [dispatch, newProject, refresh]);
 
 	return (
-		<div className='w-full h-screen max-h-[100dvh] overflow-y-auto flex'>
+		<div className='w-full h-screen !h-[100dvh] !h-[100dvh] overflow-y-auto flex'>
 			<SideBar page='works' />
 			<div className='flex-1 bg-neutral-100 h-full p-2 lg:p-10 flex flex-col'>
 				<section>

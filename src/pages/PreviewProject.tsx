@@ -131,7 +131,7 @@ const PreviewImage = () => {
 	};
 
 	return (
-		<div className='w-full h-screen flex'>
+		<div className='w-full h-screen !h-[100dvh] flex'>
 			<SideBar page='works' />
 
 			<div className='flex-1 relative bg-white border-l h-full overflow-y-auto'>

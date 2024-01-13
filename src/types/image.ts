@@ -29,5 +29,6 @@ export interface PhotoDirectory {
 	userId: number;
 	createAt: Date;
 	isFolder?: boolean;
-	favorite?: boolean;
+  favorite?: boolean;
+  parentId?:string
 }

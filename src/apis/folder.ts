@@ -35,22 +35,19 @@ export const deleteFolderFromDirectory = ({ delDir }: DeleteDirectory) => {
 	});
 };
 
-type MoveDirectory = {
-	oldDirectory: Array<string>;
-	newDirectory: string;
+export type MoveDirectory = {
+	type: "FOLDER" | "PHOTO";
+	fileId: number;
+	oldProjectId: number;
+	oldFolderId: number;
+	newProjectId: number;
+	newFolderId: number;
 };
-export const moveFolderFromDirectory = ({ oldDirectory, newDirectory }: MoveDirectory) => {
+export const moveFolderFromDirectory = (data: MoveDirectory) => {
 	const user = getUserInfoCookie();
 	if (!user) throw "user not define";
-	return unauth().put(`/photo/move`, {
+	return unauth().put(`/directory/move`, {
 		userId: user.user_id,
-		oldDirectory,
-		newDirectory,
+		...data,
 	});
-};
-
-export const getChildFolderByFolderParentId = (dirId: string) => {
-	const user = getUserInfoCookie();
-	if (!user) throw "user not define";
-	return unauth().get(`/directory/get-child?userId=${user.user_id}&dirId=${dirId}`);
 };
