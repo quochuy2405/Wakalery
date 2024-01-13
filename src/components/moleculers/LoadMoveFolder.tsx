@@ -165,7 +165,7 @@ const LoadMoveFolder: React.FC<LoadMoveFolderProps> = ({ onCompletedMove }) => {
 					{!loading && !dataDir?.length && <Empty description='Empty folder' />}
 					{!loading &&
 						dataDir?.map((item) => {
-							const isFolder = !!item?.folderName;
+							const isFolder = !!item?.userDirectoryId;
 							if (!isFolder) return <></>;
 							return (
 								<DirectoryRowMove

@@ -5,17 +5,18 @@ import { FloatButton } from "@/components/atoms";
 import { BreadcrumbProject, FolderItem, ImageItem, LoadMoveFolder } from "@/components/moleculers";
 import { SideBar } from "@/components/organims";
 import { closeLoading, startLoading } from "@/redux/features/loading";
+import { RootState } from "@/redux/store";
 import { ImageType, PhotoDirectory } from "@/types/image";
 import { canvasPreviewToBlob } from "@/utils/common";
-import { Image, Popconfirm } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
+import { ThunkDispatch } from "@reduxjs/toolkit";
+import { Image, Popconfirm, Spin } from "antd";
 import clsx from "clsx";
 import React, { useEffect, useRef, useState } from "react";
 import ReactCrop, { Crop, PixelCrop } from "react-image-crop";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { IMAGE_PREFIX } from "../constants";
-import { RootState } from "@/redux/store";
-import { ThunkDispatch } from "@reduxjs/toolkit";
 
 const Project = () => {
 	const { projectId, userDirectoryId } = useParams();
@@ -25,6 +26,11 @@ const Project = () => {
 	const imgRef = useRef<HTMLImageElement>(null);
 	const [materials, setMaterial] = useState<PhotoDirectory[]>([]);
 	const [refresh, setRefresh] = useState<boolean>(false);
+	const refScroll = useRef<any>(null);
+	const [loadingLazy, setLoadingLazy] = useState(false);
+	const page = useRef(0);
+	const stopLoading = useRef(false);
+
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
 	const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
@@ -82,9 +88,11 @@ const Project = () => {
 			getChildByProjectId({
 				folderId: Number(userDirectoryId),
 				projectId: Number(projectId),
+				page: page.current,
+				size: 22,
 			})
 				.then(({ data }) => {
-					setMaterial(data);
+					setMaterial(data.content);
 				})
 				.catch(() => {
 					setMaterial([]);
@@ -93,8 +101,42 @@ const Project = () => {
 					dispatch(closeLoading());
 				});
 		}
+		scrollBottomListener();
+		return () => {
+			if (!refScroll.current) {
+				refScroll.current?.removeEventListener("scrollend", () => loadingScroll());
+			}
+		};
 	}, [projectId, refresh, userDirectoryId]);
+	const loadingScroll = () => {
+		if (stopLoading.current) return;
+		setLoadingLazy(true);
+		new Promise((resolve) => {
+			stopLoading.current = true;
+			page.current += 1;
+			getChildByProjectId({
+				folderId: Number(userDirectoryId),
+				projectId: Number(projectId),
+				page: page.current,
+				size: 22,
+			}).then(({ data }) => {
+				const size = data.content?.length || 0;
+				stopLoading.current = false;
+				if (size < 22) {
+					stopLoading.current = true;
+				}
 
+				setMaterial((curr) => [...curr, ...data.content]);
+				resolve(true);
+			});
+		}).then(() => {
+			setLoadingLazy(false);
+		});
+	};
+	const scrollBottomListener = () => {
+		if (!refScroll.current) return;
+		refScroll.current?.addEventListener("scrollend", () => loadingScroll());
+	};
 	const refreshData = () => {
 		setRefresh((curr) => !curr);
 	};
@@ -126,14 +168,12 @@ const Project = () => {
 							"!cursor-default": !isSearch,
 						})}
 						onComplete={onCompleteCrop}>
-						<section className='py-6 grid grid-cols-1 md:grid-cols-2 h-full mt-4 rounded-md lg:grid-cols-3 overflow-y-auto gap-4 md:gap-10'>
+						<section
+							ref={refScroll}
+							className='py-6 grid grid-cols-1 md:grid-cols-2 h-full mt-4 rounded-md lg:grid-cols-3 overflow-y-auto gap-4 md:gap-10 mb-24'>
 							{materials.map((item: any) => {
-								const fileExtension = item.photoName?.split(".")?.pop()?.toLowerCase();
-
-								// List of allowed image extensions (add more if needed)
-								const allowedExtensions = ["jpg", "jpeg", "png", "gif"];
-
-								if (!allowedExtensions.includes(fileExtension)) {
+								const isFolder = !!item?.userDirectoryId;
+								if (isFolder) {
 									return <FolderItem key={item.userDirectoryId} data={item} />;
 								}
 								return (
@@ -147,6 +187,13 @@ const Project = () => {
 									/>
 								);
 							})}
+							{loadingLazy && (
+								<div className='col-span-full flex justify-center'>
+									<Spin
+										indicator={<LoadingOutlined style={{ fontSize: 24, color: "black" }} spin />}
+									/>
+								</div>
+							)}
 						</section>
 					</ReactCrop>
 				</Popconfirm>

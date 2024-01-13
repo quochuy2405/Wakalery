@@ -1,10 +1,10 @@
-import { getImageSimilar } from "@/apis/image";
+import { getImageSimilar, getImageSimilarPublic } from "@/apis/image";
 import { IMAGE_PREFIX } from "@/constants/index";
 import { PhotoDirectory } from "@/types/image";
 import { getUserInfoCookie } from "@/utils/cookies";
 import { LoadingOutlined } from "@ant-design/icons";
-import { Spin } from "antd";
-import React, { useEffect, useMemo, useState } from "react";
+import { Empty, Spin } from "antd";
+import React, { memo, useEffect, useMemo, useState } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { Link } from "react-router-dom";
@@ -23,10 +23,14 @@ const SimilarGrid: React.FC<DiscoveryProps> = ({ columns = 4, photoName, current
 			grid.push(
 				<div key={i} className='flex flex-col gap-2'>
 					{images
-						?.filter((_, index) => index % columns === i)
+						?.filter((item, index) => index % columns === i && item.photoName !== photoName)
 						.map((photo, index) => (
 							<Link
-								to={`/${current}/preview?name=${photo?.photoName}`}
+								to={
+									current === "project"
+										? `/works/project/preview?name=${photo?.photoName}`
+										: `/${current}/preview?name=${photo?.photoName}`
+								}
 								key={index}
 								className='rounded-lg overflow-hidden h-fit cursor-pointer'>
 								<LazyLoadImage
@@ -47,12 +51,23 @@ const SimilarGrid: React.FC<DiscoveryProps> = ({ columns = 4, photoName, current
 	useEffect(() => {
 		if (!photoName) return;
 		setLoading(true);
-		console.log("call");
-		getImageSimilar(photoName)
-			.then(({ data }) => {
-				if (data) setImages(data);
-			})
-			.finally(() => setLoading(false));
+		switch (current) {
+			case "discovery": {
+				getImageSimilarPublic(photoName)
+					.then(({ data }) => {
+						if (data) setImages(data);
+					})
+					.finally(() => setLoading(false));
+				break;
+			}
+			default: {
+				getImageSimilar(photoName)
+					.then(({ data }) => {
+						if (data) setImages(data);
+					})
+					.finally(() => setLoading(false));
+			}
+		}
 	}, [photoName]);
 	if (loading)
 		return (
@@ -60,6 +75,12 @@ const SimilarGrid: React.FC<DiscoveryProps> = ({ columns = 4, photoName, current
 				<Spin indicator={<LoadingOutlined style={{ fontSize: 33, color: "black" }} spin />} />
 			</div>
 		);
+	if (!grid.length)
+		return (
+			<span className='col-span-full'>
+				<Empty />
+			</span>
+		);
 	return <>{grid}</>;
 };
-export default SimilarGrid;
+export default memo(SimilarGrid);

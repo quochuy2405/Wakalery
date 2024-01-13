@@ -369,7 +369,7 @@ const PreviewImage = () => {
 					<h2 className='font-semibold  text-xl text-left w-[80%] py-4 text-emerald-500'>
 						Similar Images
 					</h2>
-					<div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
+					<div className='grid grid-cols-2 md:grid-cols-4 gap-4 pb-32'>
 						<SimilarGrid current='project' photoName={photoName} />
 					</div>
 				</div>

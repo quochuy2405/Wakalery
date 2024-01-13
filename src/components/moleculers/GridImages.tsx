@@ -27,7 +27,11 @@ const GridImages: React.FC<DiscoveryProps> = memo(({ images, current }) => {
 					.filter((_, index) => index % columns === i)
 					.map((photo, index) => (
 						<Link
-							to={`/${current}/preview?name=${photo.photoName}`}
+							to={
+								current === "project"
+									? `/works/project/preview?name=${photo?.photoName}`
+									: `/${current}/preview?name=${photo?.photoName}`
+							}
 							key={index}
 							className='rounded-lg overflow-hidden cursor-pointer'>
 							<LazyLoadImage

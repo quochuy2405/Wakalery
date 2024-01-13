@@ -5,7 +5,7 @@ import { closeLoading, startLoading } from "@/redux/features/loading";
 import { RootState } from "@/redux/store";
 import { PhotoDirectory } from "@/types/image";
 import { ThunkDispatch } from "@reduxjs/toolkit";
-import { Button, Image } from "antd";
+import { Image } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
@@ -42,11 +42,11 @@ const Public = () => {
 					<h2 className='font-extrabold text-xl lg:text-4xl uppercase lg:leading-[90px] z-10 opacity-70 top-20 py-3'>
 						Explore more
 					</h2>
-					<Button
+					{/* <Button
 						href='/upload-public'
 						className='bg-main flex items-center text-white px-5 !rounded-full h-10 text-xs font-semibold hover:!text-gray-100'>
 						Upload
-					</Button>
+					</Button> */}
 				</div>
 				<div className='grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-3 relative'>
 					<GridImages current='discovery' images={images} />

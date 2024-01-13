@@ -39,7 +39,6 @@ const FolderItem: React.FC<FolderItemProps> = ({ data }) => {
 	const menuProps = {
 		items,
 	};
-	console.log("data", data);
 	return (
 		<div className='min-w-[180px] shadow-xl max-w-[340px] h-[220px] bg-gray-200 rounded-2xl overflow-hidden relative w-[-webkit-fill-available] md:w-[unset] m-auto md:m-[unset]'>
 			<img aria-label='bg' src={FolderBg} className='w-full h-full object-cover absolute z-1' />
@@ -63,11 +62,11 @@ const FolderItem: React.FC<FolderItemProps> = ({ data }) => {
 			<div className='w-full h-full relative p-4 z-10 flex flex-col gap-2'>
 				<div className=' flex gap-2 justify-between'>
 					<p className='font-semibold text-xs'>Storage</p>
-					<p className='font-medium text-xs'>2.00GB Usage</p>
+					<p className='font-medium text-xs'>In process</p>
 				</div>
 				<div className=' flex gap-2 justify-between'>
 					<p className='font-semibold text-xs'>Files</p>
-					<p className='font-medium text-xs'>1213 files</p>
+					<p className='font-medium text-xs'>In process</p>
 				</div>
 				<div className=' flex gap-2 justify-between'>
 					<p className='font-semibold text-xs'>Date created</p>

@@ -6,9 +6,9 @@ import { RootState } from "@/redux/store";
 import { ImageType } from "@/types/image";
 import { onDownload } from "@/utils/common";
 import { getUserInfoCookie } from "@/utils/cookies";
-import { DownloadOutlined, HeartFilled, LockOutlined } from "@ant-design/icons";
+import { DownloadOutlined, LockOutlined } from "@ant-design/icons";
 import { ThunkDispatch } from "@reduxjs/toolkit";
-import { Dropdown, MenuProps, Popconfirm, Rate, Tooltip, message } from "antd";
+import { Dropdown, MenuProps, Popconfirm, Tooltip, message } from "antd";
 import React, { useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { BsEyeFill } from "react-icons/bs";
@@ -116,9 +116,9 @@ const ImageItem: React.FC<ImageItemProps> = ({
 				{image.photoName}
 			</p>
 			<div className='absolute top-3 right-3 flex gap-1'>
-				<div className='box-border w-6 h-6 flex items-center justify-center cursor-pointer rounded-full bg-neutral-100 ease-linear duration-200 '>
+				{/* <div className='box-border w-6 h-6 flex items-center justify-center cursor-pointer rounded-full bg-neutral-100 ease-linear duration-200 '>
 					<Rate count={1} className='text-[14px]' character={<HeartFilled size={0} />} />
-				</div>
+				</div> */}
 				<div
 					onClick={() => onQuickPreview(image)}
 					className='p-1 w-6 h-6 flex items-center justify-center hover:bg-neutral-100 cursor-pointer ease-linear duration-200 rounded-full text-white hover:text-gray-800'>

@@ -7,38 +7,57 @@ import { closeLoading, startLoading } from "@/redux/features/loading";
 import { RootState } from "@/redux/store";
 import { ImageType, PhotoDirectory } from "@/types/image";
 import { ThunkDispatch } from "@reduxjs/toolkit";
-import { Image } from "antd";
-import React, { useEffect, useState } from "react";
+import { Image, Spin } from "antd";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { IMAGE_PREFIX } from "../constants";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const Project = () => {
 	const { projectId } = useParams();
 	const [quickPreview, setQuickPreview] = useState<ImageType | null>(null);
 	const [materials, setMaterial] = useState<PhotoDirectory[]>([]);
 	const [refresh, setRefresh] = useState<boolean>(false);
+	const refScroll = useRef<any>(null);
+	const [loadingLazy, setLoadingLazy] = useState(false);
+	const page = useRef(0);
+	const stopLoading = useRef(false);
+	let timeOutCurrent: any = null;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
 
 	useEffect(() => {
 		if (projectId) {
-			dispatch(startLoading());
-			getChildByProjectId({
-				folderId: 0,
-				projectId: Number(projectId),
-			})
-				.then(({ data }) => {
-					setMaterial(data);
+			new Promise((resolve) => {
+				dispatch(startLoading());
+				resolve(true);
+			}).then(() => {
+				getChildByProjectId({
+					folderId: 0,
+					projectId: Number(projectId),
+					page: page.current,
+					size: 22,
 				})
-				.catch(() => {
-					setMaterial([]);
-				})
-				.finally(() => {
-					dispatch(closeLoading());
-				});
+					.then(({ data }) => {
+						setMaterial(data.content);
+					})
+					.catch(() => {
+						setMaterial([]);
+					})
+					.finally(() => {
+						dispatch(closeLoading());
+					});
+			});
 		}
+		scrollBottomListener();
+		return () => {
+			if (!refScroll.current) {
+				refScroll.current?.removeEventListener("scrollend", () => loadingScroll());
+			}
+		};
 	}, [dispatch, projectId, refresh]);
+
 	const refreshData = () => {
 		setRefresh((curr) => !curr);
 	};
@@ -49,20 +68,50 @@ const Project = () => {
 		);
 		setMaterial(currentMaterials);
 	};
+	const loadingScroll = () => {
+		timeOutCurrent && clearInterval(timeOutCurrent);
+		if (stopLoading.current) return;
+		setLoadingLazy(true);
+		new Promise((resolve) => {
+			timeOutCurrent = setTimeout(() => {
+				stopLoading.current = true;
+				page.current += 1;
+				getChildByProjectId({
+					folderId: 0,
+					projectId: Number(projectId),
+					page: page.current,
+					size: 22,
+				}).then(({ data }) => {
+					const size = data.content?.length || 0;
+					stopLoading.current = false;
+					if (size < 22) {
+						stopLoading.current = true;
+					}
+					setMaterial((curr) => [...curr, ...data.content]);
+					resolve(true);
+				});
+			}, 1000);
+		}).then(() => {
+			setLoadingLazy(false);
+		});
+	};
+	const scrollBottomListener = () => {
+		if (!refScroll.current) return;
+		refScroll.current?.addEventListener("scrollend", () => loadingScroll());
+	};
+
 	return (
-		<div className='w-full h-screen !h-[100dvh] overflow-y-auto flex'>
+		<div className='w-full h-screen !h-[100dvh] overflow-y-hidden  flex'>
 			<SideBar page='works' />
 
 			<div className='flex-1 bg-neutral-100 h-full p-2 lg:p-10'>
 				<BreadcrumbProject refresh={refreshData} />
-				<section className='py-6 grid grid-cols-1 md:grid-cols-2 h-full mt-4 rounded-md lg:grid-cols-3 overflow-y-auto gap-4 md:gap-10'>
+				<section
+					ref={refScroll}
+					className='py-6 grid grid-cols-1 md:grid-cols-2 h-full mt-4 rounded-md lg:grid-cols-3 overflow-y-auto gap-4 md:gap-10 pb-32'>
 					{materials.map((item: any) => {
-						const fileExtension = item.photoName?.split(".")?.pop()?.toLowerCase();
-
-						// List of allowed image extensions (add more if needed)
-						const allowedExtensions = ["jpg", "jpeg", "png", "gif"];
-
-						if (!allowedExtensions.includes(fileExtension)) {
+						const isFolder = !!item?.userDirectoryId;
+						if (isFolder) {
 							return <FolderItem key={item.userDirectoryId} data={item} />;
 						}
 						return (
@@ -75,6 +124,11 @@ const Project = () => {
 							/>
 						);
 					})}
+					{loadingLazy && (
+						<div className='col-span-full flex justify-center'>
+							<Spin indicator={<LoadingOutlined style={{ fontSize: 24, color: "black" }} spin />} />
+						</div>
+					)}
 				</section>
 			</div>
 			{!!quickPreview && (

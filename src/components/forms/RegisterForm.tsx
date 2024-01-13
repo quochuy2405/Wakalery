@@ -31,7 +31,6 @@ const SignUpForm: React.FC = () => {
 		if (formData.confirmPassword) delete formData.confirmPassword;
 		createAccount(formData)
 			.then(({ data }) => {
-				console.log("data", data);
 				dispatch(startVerify());
 			})
 			.catch((error) => {

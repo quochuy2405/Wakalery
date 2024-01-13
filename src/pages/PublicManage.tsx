@@ -26,7 +26,7 @@ const PublicManage = () => {
 					<img src={favoriteIcon} alt='Home' className={clsx("w-7 h-7")} /> <p>Public Manage</p>
 				</div>
 
-				<section className='py-6 grid grid-cols-1 md:grid-cols-2 h-full mt-4 rounded-md lg:grid-cols-4 overflow-y-auto gap-4 md:gap-10'>
+				<section className='py-6 grid grid-cols-1 md:grid-cols-2 h-full mt-4 rounded-md lg:grid-cols-4 overflow-y-auto gap-4 md:gap-10 pb-24'>
 					{images.map((item) => {
 						return (
 							<ImageItem

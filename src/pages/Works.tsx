@@ -23,9 +23,7 @@ const Works = () => {
 	useEffect(() => {
 		const user = getUserInfoCookie();
 		if (!user?.user_id) return;
-		if (!newProject) {
-			dispatch(startLoading());
-		}
+		dispatch(startLoading());
 		getAllProjectByUserId()
 			.then(({ data }) => {
 				setProject(data);
@@ -34,10 +32,21 @@ const Works = () => {
 			.finally(() => {
 				dispatch(closeLoading());
 			});
-	}, [dispatch, newProject, refresh]);
+	}, [dispatch, refresh]);
+	useEffect(() => {
+		if (!newProject && project)
+			getAllProjectByUserId()
+				.then(({ data }) => {
+					setProject(data);
+				})
+
+				.finally(() => {
+					dispatch(closeLoading());
+				});
+	}, [dispatch, project, newProject]);
 
 	return (
-		<div className='w-full h-screen !h-[100dvh] !h-[100dvh] overflow-y-auto flex'>
+		<div className='w-full h-screen !h-[100dvh] overflow-y-auto flex'>
 			<SideBar page='works' />
 			<div className='flex-1 bg-neutral-100 h-full p-2 lg:p-10 flex flex-col'>
 				<section>
@@ -69,7 +78,7 @@ const Works = () => {
 				</div>
 
 				<div className='flex flex-1 flex-col overflow-y-auto'>
-					<section className='py-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 justify-center overflow-y-auto'>
+					<section className='py-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 justify-center overflow-y-auto pb-32'>
 						{project.map((item) => {
 							return <ProjectItem refresh={() => setRefresh((e) => !e)} data={item} />;
 						})}

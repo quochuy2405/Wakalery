@@ -20,6 +20,10 @@ export const getImageDetails = async (photoName: string) => {
 	return await unauth().get(`/photo/detail/${user.user_id}/${photoName}`);
 };
 
+export const getImageDetailsPublic = async (photoName: string) => {
+	return await unauth().get(`/photo/detail/public/${photoName}`);
+};
+
 export const getCroppedPhoto = async () => {
 	const user = getUserInfoCookie();
 	if (!user) throw "user not define";
@@ -30,6 +34,10 @@ export const getImageSimilar = async (photoName: string) => {
 	const user = getUserInfoCookie();
 	if (!user) throw "user not define";
 	return await unauth().get(`/similar-images/detect/${user.user_id}/${photoName}`);
+};
+
+export const getImageSimilarPublic = async (photoName: string) => {
+	return await unauth().get(`/similar-images/detect/public/${photoName}`);
 };
 type DeletePhotoModelListItem = {
 	photoId: number;

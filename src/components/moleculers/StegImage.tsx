@@ -20,7 +20,6 @@ const StegImage: React.FC<StegImageProps> = ({ photoName }) => {
 		getDecodeSteg({
 			photoName
 		}).then(({ data }) => {
-			console.log("data", data);
 			setSteg(data);
 		});
 	}, []);

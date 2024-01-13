@@ -107,10 +107,12 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 				break;
 		}
 	};
-	const onShowBot = () => {
+  const onShowBot = () => {
+    setShowSearchTag(false);
 		dispatch(setRobot(botComponents({ onMethods }).methods));
 	};
 	const onSearchByTag = async ({ tags }: { tags: Array<string> }) => {
+		dispatch(resetRobot());
 		switch (mode) {
 			case "contains": {
 				dispatch(startLoading());

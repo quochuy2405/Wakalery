@@ -92,11 +92,11 @@ const ProjectItem: React.FC<ProjectItemProps> = ({ data, refresh }) => {
 			<div className='w-full h-full relative p-4 z-10 flex flex-col gap-2'>
 				<div className=' flex gap-2 justify-between'>
 					<p className='font-semibold text-xs'>Storage</p>
-					<p className='font-medium text-xs'>2.00GB Usage</p>
+					<p className='font-medium text-xs'>In process</p>
 				</div>
 				<div className=' flex gap-2 justify-between'>
 					<p className='font-semibold text-xs'>Files</p>
-					<p className='font-medium text-xs'>1213 files</p>
+					<p className='font-medium text-xs'>In process</p>
 				</div>
 				<div className=' flex gap-2 justify-between'>
 					<p className='font-semibold text-xs'>Date created</p>

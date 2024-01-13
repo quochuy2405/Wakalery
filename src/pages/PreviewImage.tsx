@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { getImageByFaceUploadCropAI } from "@/apis/face";
-import { getImageDetails } from "@/apis/image";
+import { getImageDetailsPublic } from "@/apis/image";
 import { FloatButton } from "@/components/atoms";
 import { GridImages, ModalShare, SimilarGrid, StegImage } from "@/components/moleculers";
 import { Header } from "@/components/organims";
@@ -81,7 +81,7 @@ const PreviewImage = () => {
 	};
 	useEffect(() => {
 		if (photoName) {
-			getImageDetails( photoName)
+			getImageDetailsPublic(photoName)
 				.then(({ data }) => {
 					form.reset(data);
 				})
@@ -97,7 +97,7 @@ const PreviewImage = () => {
 
 		const file = new File([blob], "crop_ai.png", { type: blob.type });
 		// Now you can use the 'file' object as needed
-		getImageByFaceUploadCropAI( file)
+		getImageByFaceUploadCropAI(file)
 			.then(({ data }) => {
 				const photos = data.map((item: any) => item.results).flat();
 				setImageSearch(photos);
@@ -369,7 +369,7 @@ const PreviewImage = () => {
 				<h2 className='bg-white font-semibold text-emerald-500 text-xl text-left w-[80%] py-4'>
 					Maybe you like that!
 				</h2>
-				<div className='grid grid-cols-2 md:grid-cols-5 gap-4'>
+				<div className='grid grid-cols-2 md:grid-cols-5 gap-4 pb-32'>
 					<SimilarGrid current='discovery' columns={5} photoName={photoName} />
 				</div>
 			</div>
