@@ -2,7 +2,7 @@ import { CreateAccountType, createAccount } from "@/apis/user";
 import { signupSchema } from "@/resolvers/signup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { TextField, TextFieldPassword } from "../atoms";
@@ -10,6 +10,8 @@ import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { RootState } from "@/redux/store";
 import { closeVerify, startVerify } from "@/redux/features/verify";
+import { VerifyAccount } from "../organims";
+import { closeLoading, startLoading } from "@/redux/features/loading";
 
 const defaultValues = {
 	firstName: "",
@@ -22,24 +24,31 @@ const defaultValues = {
 const SignUpForm: React.FC = () => {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
+	const [email, setEmail] = useState("");
 	const form = useForm({
 		defaultValues,
 		resolver: yupResolver(signupSchema),
 	});
 	const onSubmit = (form: CreateAccountType & { confirmPassword?: string }) => {
+		dispatch(startLoading());
 		const formData = { ...form };
 		if (formData.confirmPassword) delete formData.confirmPassword;
 		createAccount(formData)
-			.then(({ data }) => {
+			.then(() => {
+				setEmail(form.email);
 				dispatch(startVerify());
 			})
 			.catch((error) => {
 				console.log("error", error);
 				dispatch(closeVerify());
+			})
+			.finally(() => {
+				dispatch(closeLoading());
 			});
 	};
 	return (
 		<div className='flex flex-col gap-4 h-full flex-1 w-4/5 m-auto justify-center items-center'>
+			<VerifyAccount email={email} />
 			<h1 className='font-bold text-center text-4xl mb-5'>Sign up</h1>
 
 			<div className='flex w-full h-fit flex-col'>

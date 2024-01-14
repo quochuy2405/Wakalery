@@ -20,7 +20,7 @@ const PublicManage = () => {
 
 	return (
 		<div className='w-full h-screen !h-[100dvh] overflow-y-auto flex'>
-			<SideBar page='PublicManage' />
+			<SideBar page='mpublic' />
 			<div className='flex-1 bg-neutral-50 h-full p-2 md:p-10'>
 				<div className='flex items-center gap-2 font-semibold text-sm mt-6'>
 					<img src={favoriteIcon} alt='Home' className={clsx("w-7 h-7")} /> <p>Public Manage</p>

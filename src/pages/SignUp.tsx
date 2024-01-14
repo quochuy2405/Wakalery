@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const Login = () => {
 	return (
 		<div className='w-full h-screen !h-[100dvh] flex items-center justify-center'>
-			{/* <VerifyAccount /> */}
+	
 			<Link
 				to={"/"}
 				className='absolute top-3 left-3 p-4 w-14 h-14 flex items-center justify-center hover:bg-neutral-100 ease-linear duration-200 cursor-pointer rounded-full'>

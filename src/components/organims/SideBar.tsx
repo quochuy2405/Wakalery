@@ -12,13 +12,38 @@ import { LogoutOutlined } from "@ant-design/icons";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { Popconfirm } from "antd";
 import clsx from "clsx";
-import React from "react";
+import React, { memo } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { UserInfo } from "../atoms";
 interface SideBarProps {
 	page: string;
 }
+
+interface TabItemProps {
+	src: string;
+	active: boolean;
+	name: string;
+	className: string;
+	to: string;
+}
+const TabItem: React.FC<TabItemProps> = memo(({ src, className, name, to, active }) => {
+	return (
+		<Link to={to} className={className}>
+			<img
+				src={src}
+				alt={name}
+				className={clsx(
+					"w-7 h-7 m-auto lg:m-0 group-hover:bg-white group-hover:border group-hover:rounded-md",
+					{
+						"lg:border rounded-md bg-white": active,
+					}
+				)}
+			/>
+			<p className='hidden lg:block font-semibold text-sm'>{name}</p>
+		</Link>
+	);
+});
 const SideBar: React.FC<SideBarProps> = ({ page }) => {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
@@ -42,119 +67,74 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 					</div>
 				</div>
 				<div className='lg:grid grid-cols-2 pt-6 gap-4 w-full'>
-					<Link
+					<TabItem
 						to='/'
+						src={home}
+						active={false}
+						name='Home'
 						className={
 							"lg:border w-fit m-auto lg:m-0 my-4 lg:my-0 lg:w-full h-fit lg:h-24 flex flex-col justify-between ease-linear duration-200 rounded-lg lg:rounded-3xl p-1 lg:p-3 group hover:bg-blue-400 hover:text-white hover:border-blue-300"
-						}>
-						<img
-							src={home}
-							alt='Home'
-							className={clsx(
-								"w-7 h-7 m-auto lg:m-0 group-hover:bg-white group-hover:border group-hover:rounded-md",
-								{
-									"lg:border rounded-md bg-white": page === "analytics",
-								}
-							)}
-						/>
-						<p className='hidden lg:block font-semibold text-sm'>Home</p>
-					</Link>
-					<Link
+						}
+					/>
+
+					<TabItem
 						to='/discovery'
-						className='lg:border w-fit m-auto lg:m-0 my-4 lg:my-0 lg:w-full h-fit lg:h-24 flex flex-col justify-between ease-linear duration-200 rounded-lg lg:rounded-3xl p-1 lg:p-3 group hover:bg-red-400 hover:text-white hover:border-red-300'>
-						<img
-							src={image}
-							alt='Home'
-							className='w-7 h-7 m-auto lg:m-0 group-hover:bg-white group-hover:border group-hover:rounded-md'
-						/>
-						<p className='hidden lg:block font-semibold text-sm'>Discovery</p>
-					</Link>
-					<Link
+						src={image}
+						active={false}
+						name='Discovery'
+						className='lg:border w-fit m-auto lg:m-0 my-4 lg:my-0 lg:w-full h-fit lg:h-24 flex flex-col justify-between ease-linear duration-200 rounded-lg lg:rounded-3xl p-1 lg:p-3 group hover:bg-red-400 hover:text-white hover:border-red-300'
+					/>
+					<TabItem
 						to='/works'
+						src={search}
+						active={page === "works"}
+						name='Discovery'
 						className={clsx(
 							"lg:border w-fit m-auto lg:m-0 my-4 lg:my- lg:w-full h-fit lg:h-24 flex flex-col justify-between ease-linear duration-200 rounded-lg lg:rounded-3xl p-1 lg:p-3 group hover:bg-blue-400 hover:text-white hover:border-blue-300",
 							{
-								"bg-blue-400  text-white lg:border-2 border-blue-300": page === "works",
+								"bg-blue-400  text-white border-2 border-blue-300": page === "works",
 							}
-						)}>
-						<img
-							src={search}
-							alt='Home'
-							className={clsx(
-								"w-7 h-7 m-auto lg:m-0 group-hover:bg-white group-hover:border group-hover:rounded-md",
-								{
-									"border rounded-md bg-white": page === "works",
-								}
-							)}
-						/>
-						<p className='hidden lg:block font-semibold text-sm group-hover:text-white'>Works</p>
-					</Link>
-					<Link
+						)}
+					/>
+
+					<TabItem
 						to='/works/favorites'
+						src={favorite}
+						active={page === "favorites"}
+						name='Favorites'
 						className={clsx(
 							"lg:border w-fit m-auto lg:m-0 my-4 lg:my-0 lg:w-full h-fit lg:h-24 flex flex-col justify-between ease-linear duration-200 rounded-lg lg:rounded-3xl p-1 lg:p-3 group hover:bg-red-400 hover:text-white hover:border-red-300",
 							{
 								"bg-red-400 text-white border-2 border-red-300": page === "favorites",
 							}
-						)}>
-						<img
-							src={favorite}
-							alt='Home'
-							className={clsx(
-								"w-7 h-7 m-auto lg:m-0 group-hover:bg-white group-hover:border group-hover:rounded-md",
-								{
-									"border rounded-md bg-white": page === "favorites",
-								}
-							)}
-						/>
-						<p className='hidden lg:block font-semibold text-sm group-hover:text-white'>
-							Favorites
-						</p>
-					</Link>
-					<Link
+						)}
+					/>
+
+					<TabItem
 						to='/works/analytics'
+						src={analys}
+						active={page === "analytics"}
+						name='Analytics'
 						className={clsx(
 							"lg:border w-fit m-auto lg:m-0 my-4 lg:my-0 lg:w-full h-fit lg:h-24 flex flex-col justify-between ease-linear duration-200 rounded-lg lg:rounded-3xl p-1 lg:p-3 group hover:text-white hover:border-emerald-400 hover:bg-emerald-500",
 							{
 								"bg-emerald-400 text-white border-2 border-emerald-300": page === "analytics",
 							}
-						)}>
-						<img
-							src={analys}
-							alt='Home'
-							className={clsx(
-								"w-7 h-7 m-auto lg:m-0 group-hover:bg-white group-hover:border group-hover:rounded-md",
-								{
-									"border rounded-md bg-white": page === "analytics",
-								}
-							)}
-						/>
-						<p className='hidden lg:block font-semibold text-sm group-hover:text-white'>
-							Analytics
-						</p>
-					</Link>
-					<Link
+						)}
+					/>
+
+					<TabItem
 						to={"/works/public-manage"}
+						src={storage}
+						active={page === "mpublic"}
+						name='Public Manage'
 						className={clsx(
 							"lg:border w-fit m-auto lg:m-0 my-4 lg:my-0 lg:w-full h-fit lg:h-24 flex flex-col justify-between ease-linear duration-200 rounded-lg lg:rounded-3xl p-1 lg:p-3 cursor-pointer hover:bg-blue-400 group hover:text-white hover:border-blue-300",
 							{
 								"bg-blue-400 text-white border-2 border-blue-300": page === "mpublic",
 							}
-						)}>
-						<img
-							src={storage}
-							alt='Home'
-							className={clsx(
-								"w-7 h-7 m-auto lg:m-0 bg-white group-hover:bg-white group-hover:border rounded-md ",
-								{
-									"border rounded-md ": page === "mpublic",
-								}
-							)}
-						/>
-						<p className='hidden lg:block font-semibold text-sm group-hover:text-white'>
-							Public Manage
-						</p>
-					</Link>
+						)}
+					/>
 				</div>
 			</div>
 

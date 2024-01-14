@@ -3,7 +3,7 @@ type VerifyType = {
 	status: "start" | "completed" | "already" | "close";
 };
 const initialState: VerifyType = {
-	status: "start",
+	status: "close",
 };
 export const verifySlice = createSlice({
 	name: "verify",
