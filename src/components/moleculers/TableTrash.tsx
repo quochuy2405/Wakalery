@@ -27,7 +27,7 @@ interface TableTrashProps {
 const TableTrash: React.FC<TableTrashProps> = ({ data, refresh }) => {
 	const onRestore = (record: ProjectType & ImageType & PhotoDirectory) => {
 		const material = {
-			type: (!!record.projectId && "PROJECT") || (!!record.userDirectoryId && "FOLDER") || "IMAGE",
+			type: (!!record.projectName && "PROJECT") || (!!record.folderName && "FOLDER") || "IMAGE",
 			fileId:
 				Number(record.projectId) || Number(record.userDirectoryId) || Number(record.photoSerialId),
 		};
@@ -43,7 +43,7 @@ const TableTrash: React.FC<TableTrashProps> = ({ data, refresh }) => {
 
 	const onDeleteForever = (record: ProjectType & ImageType & PhotoDirectory) => {
 		const material = {
-			type: (!!record.projectId && "PROJECT") || (!!record.userDirectoryId && "FOLDER") || "IMAGE",
+			type: (!!record.projectName && "PROJECT") || (!!record.folderName && "FOLDER") || "IMAGE",
 			fileId:
 				Number(record.projectId) || Number(record.userDirectoryId) || Number(record.photoSerialId),
 		};
@@ -61,10 +61,11 @@ const TableTrash: React.FC<TableTrashProps> = ({ data, refresh }) => {
 			title: "Name",
 			dataIndex: "name",
 			key: "name",
+			width: "240px",
 			className: "text-xs",
 			render: (_: unknown, record: ProjectType & ImageType & PhotoDirectory) => {
 				const type =
-					(!!record.projectId && "PROJECT") || (!!record.userDirectoryId && "FOLDER") || "IMAGE";
+					(!!record.projectName && "PROJECT") || (!!record.folderName && "FOLDER") || "IMAGE";
 				const name = record.projectName || record.folderName || record.photoName;
 				return (
 					<div className='flex items-center gap-2 cursor-pointer'>
@@ -78,6 +79,7 @@ const TableTrash: React.FC<TableTrashProps> = ({ data, refresh }) => {
 			title: "Last Modified",
 			dataIndex: "modified",
 			key: "modified",
+			width: "140px",
 			className: "text-xs",
 			render: (text: string) => (
 				<p className='font-normal text-xs'>{moment(text).format("MMMM, DD YYYY")}</p>
@@ -111,6 +113,7 @@ const TableTrash: React.FC<TableTrashProps> = ({ data, refresh }) => {
 			title: "Delete",
 			dataIndex: "",
 			key: "",
+			width: "140px",
 			className: "text-xs",
 			render: (_: unknown, record: ProjectType & ImageType & PhotoDirectory) => (
 				<Popconfirm
@@ -130,7 +133,7 @@ const TableTrash: React.FC<TableTrashProps> = ({ data, refresh }) => {
 		},
 	];
 
-	return <Table dataSource={data} scroll={{ y: 560 }} columns={columns} />;
+	return <Table dataSource={data} scroll={{ y: 660 }} columns={columns} />;
 };
 
 export default TableTrash;

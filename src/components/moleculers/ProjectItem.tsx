@@ -1,10 +1,12 @@
 import { updateProject } from "@/apis/project";
 import FolderBg from "@/assets/folder.svg";
 import { ProjectType } from "@/types/project";
-import { Dropdown, MenuProps, Popconfirm, Rate, message } from "antd";
+import { Dropdown, Form, Input, MenuProps, Modal, Popconfirm, Rate, message } from "antd";
+import { useForm } from "antd/es/form/Form";
 import moment from "moment";
 import React, { memo, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
+import { BiRename } from "react-icons/bi";
 import { Link } from "react-router-dom";
 interface ProjectItemProps {
 	data: ProjectType;
@@ -12,8 +14,20 @@ interface ProjectItemProps {
 	deleted?: boolean;
 }
 const ProjectItem: React.FC<ProjectItemProps> = ({ data, deleted = true, refresh }) => {
+	const [form] = useForm();
+
 	const [isDelete, setIsDeleted] = useState(false);
+	const [isRename, setIsRename] = useState(false);
 	const items: MenuProps["items"] = [
+		{
+			label: "Rename",
+			key: "1",
+			icon: <BiRename />,
+			onClick: () => {
+				form.setFieldValue("projectName", data.projectName);
+				setIsRename(true);
+			},
+		},
 		{
 			label: "Delete",
 			key: "3",
@@ -46,6 +60,20 @@ const ProjectItem: React.FC<ProjectItemProps> = ({ data, deleted = true, refresh
 				message.error("Error!");
 			});
 		setIsDeleted(false);
+	};
+
+	const onRename = async ({ projectName }: { projectName: string }) => {
+		await updateProject({ ...data, projectName })
+			.then(() => {
+				message.success(`Rename successfuly.`);
+				refresh();
+			})
+			.catch(() => {
+				message.error("Error!");
+			})
+			.finally(() => {
+				setIsRename(false);
+			});
 	};
 	const menuProps = {
 		items,
@@ -111,6 +139,16 @@ const ProjectItem: React.FC<ProjectItemProps> = ({ data, deleted = true, refresh
 				className='p-3 font-bold text-sm text-gray-600 absolute bottom-0 hover:bg-white z-10 right-0 cursor-pointer z-2 hover:text-black w-[40%] h-[20%] flex items-center justify-center ease-linear duration-200'>
 				Open
 			</Link>
+			<Modal open={isRename} onCancel={() => setIsRename(false)} onOk={form.submit}>
+				<Form onFinish={onRename} form={form} className='p-4 flex flex-col gap-1'>
+					<p className='font-semibold'>Project name:</p>
+					<Form.Item
+						name='projectName'
+						rules={[{ required: true, message: "Enter project name " }]}>
+						<Input />
+					</Form.Item>
+				</Form>
+			</Modal>
 		</div>
 	);
 };

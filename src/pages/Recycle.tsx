@@ -18,7 +18,7 @@ const Deleted = () => {
 		dispatch(startLoading());
 		getDeletedByUserId()
 			.then(({ data }) => {
-				setTrash(data);
+				setTrash([...(data.folders || []), ...(data.photos || []), ...(data?.projects || [])]);
 			})
 			.finally(() => {
 				dispatch(closeLoading());
@@ -28,7 +28,7 @@ const Deleted = () => {
 	return (
 		<div className='w-full h-screen !h-[100dvh] overflow-y-auto flex'>
 			<SideBar page='trash' />
-			<div className='flex-1 bg-neutral-100 h-full p-10'>
+			<div className='flex-1 overflow-hidden flex flex-col w-full bg-neutral-100 h-full p-2 md:p-10'>
 				<div className='flex items-center gap-2 font-semibold text-xl mt-6'>
 					<svg
 						width='24'
@@ -43,8 +43,8 @@ const Deleted = () => {
 					</svg>{" "}
 					<p>Recycle</p>
 				</div>
-				<section className='mt-2 max-w-[120vw] overflow-auto'>
-					<TableTrash refresh={() => setRefresh(e=>!e )} data={trash} />
+				<section className='mt-2 overflow-auto w-full'>
+					<TableTrash refresh={() => setRefresh((e) => !e)} data={trash} />
 				</section>
 			</div>
 		</div>

@@ -1,5 +1,6 @@
 import { getUserInfoCookie } from "@/utils/cookies";
 import { unauth } from "./axios";
+import { PhotoDirectory } from "@/types/image";
 
 export const getAllFolderByUserId = () => {
 	const user = getUserInfoCookie();
@@ -35,6 +36,11 @@ export const deleteFolderOrImage = ({ fileId, type }: DeleteDirectory) => {
 		fileId,
 		type,
 	});
+};
+export const updateFolder = (data: PhotoDirectory) => {
+	const user = getUserInfoCookie();
+	if (!user) throw "user not define";
+	return unauth().put(`/folder/update-name/${user.user_id}/${data.userDirectoryId}/${data.folderName}`);
 };
 
 export type MoveDirectory = {

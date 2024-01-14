@@ -178,7 +178,7 @@ const Project = () => {
 										<FolderItem
 											onCompletedMove={onCompletedMove}
 											key={item.userDirectoryId}
-											data={item}
+											folder={item}
 										/>
 									);
 								}

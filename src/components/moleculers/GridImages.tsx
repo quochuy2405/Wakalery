@@ -24,7 +24,7 @@ const GridImages: React.FC<DiscoveryProps> = memo(({ images, current }) => {
 		grid.push(
 			<div key={i} className='flex flex-col gap-2'>
 				{images
-					.filter((_, index) => index % columns === i)
+					?.filter((_, index) => index % columns === i)
 					.map((photo, index) => (
 						<Link
 							to={

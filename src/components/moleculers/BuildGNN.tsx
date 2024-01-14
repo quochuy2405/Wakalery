@@ -99,7 +99,7 @@ const BuildGNN = () => {
 	}, [detect]);
 
 	return (
-		<div className='flex flex-col gap-2'>
+		<div className='flex flex-col gap-2 w-full overflow-hidden'>
 			<h2 className='uppercase px-2 font-semibold text-xs text-black/50'>Progress Analysis</h2>
 			<div className='p-8'>
 				<Timeline

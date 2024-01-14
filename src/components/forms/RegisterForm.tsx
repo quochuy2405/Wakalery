@@ -1,17 +1,17 @@
 import { CreateAccountType, createAccount } from "@/apis/user";
+import { closeLoading, startLoading } from "@/redux/features/loading";
+import { closeVerify, startVerify } from "@/redux/features/verify";
+import { RootState } from "@/redux/store";
 import { signupSchema } from "@/resolvers/signup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { ThunkDispatch } from "@reduxjs/toolkit";
 import { Button } from "antd";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { TextField, TextFieldPassword } from "../atoms";
-import { useDispatch } from "react-redux";
-import { ThunkDispatch } from "@reduxjs/toolkit";
-import { RootState } from "@/redux/store";
-import { closeVerify, startVerify } from "@/redux/features/verify";
 import { VerifyAccount } from "../organims";
-import { closeLoading, startLoading } from "@/redux/features/loading";
 
 const defaultValues = {
 	firstName: "",
@@ -29,17 +29,20 @@ const SignUpForm: React.FC = () => {
 		defaultValues,
 		resolver: yupResolver(signupSchema),
 	});
-	const onSubmit = (form: CreateAccountType & { confirmPassword?: string }) => {
+	const onSubmit = (dataForm: CreateAccountType & { confirmPassword?: string }) => {
 		dispatch(startLoading());
-		const formData = { ...form };
+		const formData = { ...dataForm };
 		if (formData.confirmPassword) delete formData.confirmPassword;
 		createAccount(formData)
 			.then(() => {
-				setEmail(form.email);
+				setEmail(dataForm.email);
 				dispatch(startVerify());
 			})
 			.catch((error) => {
-				console.log("error", error);
+				const messageError = error?.response?.data?.message;
+				// message.error();
+				form.setError("email", { type: "validate", message: messageError?.[0] });
+
 				dispatch(closeVerify());
 			})
 			.finally(() => {

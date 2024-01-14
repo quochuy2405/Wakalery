@@ -100,6 +100,14 @@ const Project = () => {
 		refScroll.current?.addEventListener("scrollend", () => loadingScroll());
 	};
 
+	const onUpdateItem = (prev: object, newMar: any) => {
+		const current = [...materials];
+		const item = current.find((item) => JSON.stringify(item) === JSON.stringify(prev));
+		if (item) {
+			item.folderName = newMar.folderName;
+		}
+		setMaterial(current);
+	};
 	return (
 		<div className='w-full h-screen !h-[100dvh] overflow-y-hidden  flex'>
 			<SideBar page='works' />
@@ -116,7 +124,8 @@ const Project = () => {
 								<FolderItem
 									onCompletedMove={onCompletedMove}
 									key={item.userDirectoryId}
-									data={item}
+									folder={item}
+									onUpdate={onUpdateItem}
 								/>
 							);
 						}

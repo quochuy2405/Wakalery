@@ -96,7 +96,7 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 					return;
 				}
 
-				dispatch(startLoading());
+        dispatch(startLoading());
 				getSimilarByUpload(similar[0]?.originFileObj as never)
 					.then(({ data }) => {
 						dispatch(setSearch(data));

@@ -6,6 +6,7 @@ export const uploadFiles = async (
 	files: UploadFile[],
 	projectId: number,
 	folderId: number,
+	StegData: Array<object>,
 	progressUpload: (percent: number) => void
 ) => {
 	const user = getUserInfoCookie();
@@ -13,6 +14,9 @@ export const uploadFiles = async (
 	const form = new FormData();
 	for (const file of files) {
 		form.append("files", file.originFileObj as never);
+	}
+	if (StegData.length) {
+		form.append("check-steg", JSON.stringify(StegData));
 	}
 
 	const response = await unauth().post(`/upload/${user.user_id}/${projectId}/${folderId}`, form, {

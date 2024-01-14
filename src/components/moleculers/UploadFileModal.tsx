@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { getCheckSteg } from "@/apis/image";
 import { uploadFiles } from "@/apis/upload";
 import { getUserInfo } from "@/apis/user";
 import { startTrain } from "@/redux/features/detect";
@@ -7,8 +9,8 @@ import { setStorage } from "@/redux/features/storage";
 import { RootState } from "@/redux/store";
 import { InboxOutlined } from "@ant-design/icons";
 import { ThunkDispatch } from "@reduxjs/toolkit";
-import { Modal, Upload, UploadFile, UploadProps, message } from "antd";
-import React, { useState } from "react";
+import { Modal, Tooltip, Upload, UploadFile, UploadProps, message } from "antd";
+import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
@@ -18,12 +20,46 @@ interface UploadFileModalProps {
 	onClose: () => void;
 	refresh: () => void;
 }
+
+interface DraggableUploadListItemProps {
+	originNode: React.ReactElement<any, string | React.JSXElementConstructor<any>>;
+	file: UploadFile<any>;
+}
+const DraggableUploadListItem = ({ originNode, file }: DraggableUploadListItemProps) => {
+	const style: React.CSSProperties = {
+		cursor: "move",
+		color: (file?.status as any) === "warning" ? "#faad14" : "#0ccc7b",
+	};
+	if ((file?.status as any) === "warning") {
+		return (
+			<Tooltip title='Image belong to another user'>
+				<div
+					style={style}
+					// prevent preview event when drag end
+				>
+					{originNode}
+				</div>
+			</Tooltip>
+		);
+	}
+
+	return (
+		<div
+			style={style}
+			// prevent preview event when drag end
+		>
+			{originNode}
+		</div>
+	);
+};
+
 const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, refresh, onClose }) => {
 	const [files, setFiles] = useState<UploadFile[]>([]);
 	const { projectId, userDirectoryId } = useParams();
 	const allow = useSelector((state: RootState) => state.detect.allow);
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
+	const refStegData = useRef<Array<{ ownerId: number; photoName: string }>>([]);
 
 	const handleUpload = async () => {
 		if (!files.length) {
@@ -37,7 +73,13 @@ const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, refresh, onClos
 		if (!projectId) return;
 		dispatch(startLoading());
 		dispatch(setProgress(1));
-		await uploadFiles(files, Number(projectId), Number(userDirectoryId) || -1, progressUpload)
+		await uploadFiles(
+			files,
+			Number(projectId),
+			Number(userDirectoryId) || -1,
+			refStegData.current,
+			progressUpload
+		)
 			.then(async () => {
 				allow && dispatch(startTrain());
 				await getUserInfo().then(({ data }) => {
@@ -52,7 +94,8 @@ const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, refresh, onClos
 			})
 			.finally(() => {
 				refresh();
-				setFiles([]);
+        setFiles([]);
+        refStegData.current=[]
 				onClose();
 				dispatch(closeLoading());
 			});
@@ -68,8 +111,34 @@ const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, refresh, onClos
 		listType: "text",
 
 		onChange(info) {
-			info.file.status = "done";
-			setFiles(info.fileList);
+			dispatch(startLoading());
+			info.file.status = "uploading";
+
+			getCheckSteg(info.fileList)
+				.then(({ data }) => {
+					refStegData.current = data;
+					const names = data?.map((item: any) => item.photoName);
+					console.log("names", names);
+					const currentFile: any = info.fileList.map((file) => {
+						console.log("names.includes(file.fileName)", file.name);
+						if (names.includes(file.name))
+							return {
+								...file,
+								status: "warning",
+							};
+						return file;
+					});
+					info.file.status = "done";
+					setFiles(currentFile);
+				})
+				.finally(() => {
+					dispatch(closeLoading());
+				});
+		},
+		onRemove(file) {
+			const name = file.fileName;
+			const dataSteg = refStegData.current.filter((item) => item.photoName !== name);
+			refStegData.current = dataSteg;
 		},
 	};
 
@@ -83,7 +152,12 @@ const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, refresh, onClos
 			okText='Upload'
 			onOk={handleUpload}>
 			<div className='p-4'>
-				<Dragger accept='image/png,image/jpg,image/jpeg' {...props}>
+				<Dragger
+					accept='image/png,image/jpg,image/jpeg'
+					{...props}
+					itemRender={(originNode, file) => (
+						<DraggableUploadListItem originNode={originNode} file={file} />
+					)}>
 					<p className='ant-upload-drag-icon'>
 						<InboxOutlined />
 					</p>
@@ -92,6 +166,7 @@ const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, refresh, onClos
 						Support for a single or bulk upload. Strictly prohibited from uploading company data or
 						other banned files.
 					</p>
+					{!!refStegData.current.length&&<p className="text-red-500 mt-4">I will send to email owner image if you upload image belong to another owner</p>}
 				</Dragger>
 			</div>
 		</Modal>

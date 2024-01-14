@@ -1,4 +1,5 @@
 import { deleteFolderOrImage } from "@/apis/folder";
+import { unPublic } from "@/apis/public";
 import { IMAGE_PREFIX } from "@/constants/index";
 import { addFileMove } from "@/redux/features/filemove";
 import { closeLoading, startLoading } from "@/redux/features/loading";
@@ -71,7 +72,9 @@ const ImageItem: React.FC<ImageItemProps> = ({
 			label: "Change Visibility",
 			key: "1",
 			icon: <LockOutlined />,
-			onClick: () => {},
+			onClick: () => {
+				onUnPublic();
+			},
 		},
 		{
 			label: "Download",
@@ -79,16 +82,6 @@ const ImageItem: React.FC<ImageItemProps> = ({
 			icon: <DownloadOutlined />,
 			onClick: () => {
 				onDownload(src);
-			},
-		},
-		{
-			label: "Delete",
-			key: "3",
-			icon: <AiFillDelete />,
-			danger: true,
-
-			onClick: () => {
-				setIsDeleted(true);
 			},
 		},
 	];
@@ -101,6 +94,22 @@ const ImageItem: React.FC<ImageItemProps> = ({
 		await deleteFolderOrImage({ fileId: Number(image.photoSerialId), type: "PHOTO" })
 			.then(() => {
 				message.success("Deleted.");
+				onCompletedMove?.(image);
+				refresh?.();
+			})
+			.catch(() => {
+				message.error("Something error!!!");
+			})
+			.finally(() => {
+				dispatch(closeLoading());
+			});
+	};
+
+	const onUnPublic = async () => {
+		dispatch(startLoading());
+		await unPublic(image)
+			.then(() => {
+				message.success("Successfuly.");
 				onCompletedMove?.(image);
 				refresh?.();
 			})

@@ -18,7 +18,7 @@ import "react-image-crop/dist/ReactCrop.css";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { useDispatch } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { IMAGE_PREFIX } from "../constants";
+import { IMAGE_PREFIX_PUBLIC } from "../constants";
 
 interface DescriptionItemProps {
 	title: string;
@@ -70,7 +70,7 @@ const PreviewImage = () => {
 		},
 	});
 	const navigate = useNavigate();
-	const src = IMAGE_PREFIX + "1/" + photoName;
+	const src = IMAGE_PREFIX_PUBLIC + photoName;
 	const onProgress = (percent: number) => {
 		setDownload(percent);
 		if (percent > 99) {
