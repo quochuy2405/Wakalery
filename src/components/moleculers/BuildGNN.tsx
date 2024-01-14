@@ -105,18 +105,18 @@ const BuildGNN = () => {
 				<Timeline
 					pending={
 						status.pending && (
-							<p className='text-xs font-normal text-emerald-400'>{status.pending}</p>
+							<p className='text-xs font-normal hidden md:block text-emerald-400'>{status.pending}</p>
 						)
 					}
 					reverse={false}
-					className='!text-xs !font-semibold'
+					className='!text-xs !font-semibold flex flex-col gap-3'
 					items={status.items.map((item) => ({
 						dot: (
 							<span className='animate-[wiggle_1s_ease-in-out_forwards]'>
 								<BiCheckCircle color='#34d399' size={20} />
 							</span>
 						),
-						children: <p className='text-xs font-semibold'>{item.title}</p>,
+						children: <p className='text-xs font-semibold hidden md:block'>{item.title}</p>,
 					}))}
 				/>
 			</div>

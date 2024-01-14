@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { GraphView } from "react-digraph";
 import { getGraphRNN } from "../../apis/graph-rnn";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { RootState } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { closeLoading, startLoading } from "@/redux/features/loading";
+import { IMAGE_PREFIX, IMAGE_PREFIX_CROP } from "@/constants/index";
 
 const NODE_KEY = "id"; // Allows D3 to correctly update DOM
 const GraphEdges = () => {
@@ -80,7 +81,9 @@ const GraphEdges = () => {
 					const keyNode = isNode ? "nodemain" : "noderelated";
 					const typeText = isNode ? "Faces" : "Related image";
 
-					// const url = isNode ? IMAGE_PREFIX_CROP + "1/" + item.node : IMAGE_PREFIX + "1/" + item.node;
+					const url = isNode
+						? IMAGE_PREFIX_CROP + "1/" + item.node
+						: IMAGE_PREFIX + "1/" + item.node;
 					NodeTypes = {
 						...NodeTypes,
 						[keyNode + index]: {
@@ -94,11 +97,11 @@ const GraphEdges = () => {
 											<circle cx='15' cy='15' r={isNode ? "15" : "18"} />
 										</clipPath>
 									</defs>
-									{/* <image
-									href={url}
-									className='object-contain rounded-full overflow-hidden w-full h-full'
-									clipPath={`url(#circleClip${index})`}
-								/> */}
+									<image
+										href={url}
+										className='object-contain rounded-full overflow-hidden w-full h-full'
+										clipPath={`url(#circleClip${index})`}
+									/>
 								</symbol>
 							),
 						},
@@ -135,7 +138,7 @@ const GraphEdges = () => {
 				setGraph({ edges, nodes });
 			})
 			.finally(() => {
-				dispatch(closeLoading ());
+				dispatch(closeLoading());
 			});
 	};
 
@@ -159,4 +162,4 @@ const GraphEdges = () => {
 		</div>
 	);
 };
-export default GraphEdges;
+export default memo(GraphEdges);

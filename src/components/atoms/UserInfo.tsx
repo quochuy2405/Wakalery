@@ -1,17 +1,22 @@
 import { getUserInfo } from "@/apis/user";
+import { setAllowGNN } from "@/redux/features/detect";
 import { RootState } from "@/redux/store";
 import { UserInfo } from "@/types/user";
+import { ThunkDispatch } from "@reduxjs/toolkit";
 import { Avatar } from "antd";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const UserInfo = () => {
 	const token = useSelector((state: RootState) => state.auth.cookie.token);
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
 	const [user, setUser] = useState<UserInfo>();
 	useEffect(() => {
 		getUserInfo()
 			.then(({ data }) => {
 				setUser(data);
+				dispatch(setAllowGNN(data.isAutoBuildGnn));
 			})
 			.catch((e) => {
 				console.log("e", e);

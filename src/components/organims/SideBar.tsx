@@ -13,9 +13,10 @@ import { ThunkDispatch } from "@reduxjs/toolkit";
 import { Popconfirm } from "antd";
 import clsx from "clsx";
 import React, { memo } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { UserInfo } from "../atoms";
+import { BuildGNN } from "../moleculers";
 interface SideBarProps {
 	page: string;
 }
@@ -47,7 +48,7 @@ const TabItem: React.FC<TabItemProps> = memo(({ src, className, name, to, active
 const SideBar: React.FC<SideBarProps> = ({ page }) => {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
-
+	const train = useSelector((state: RootState) => state.detect);
 	const onLogout = () => {
 		cookieAuthHandles.clear();
 		dispatch(initToken());
@@ -137,18 +138,20 @@ const SideBar: React.FC<SideBarProps> = ({ page }) => {
 					/>
 				</div>
 			</div>
-
-			<div className='bg-purple-900 max-h-[20vh] h-full rounded-3xl hidden xl:flex w-full flex-1 my-2 m-auto relative p-4 text-white'>
-				<img
-					src={manager}
-					alt='React Logo'
-					className='w-2/3 h-[200%] absolute -top-[20%] -right-[30%]'
-				/>
-				<div className='flex flex-col gap-2 text-left drop-shadow-xl'>
-					<h3 className='font-extrabold text-[120%] z-20 drop-shadow-xl'>Get Started With Us</h3>
-					<p className='text-xs z-10'>Your ceremony & reception venues, yourvision</p>
+			{train.train && train?.allow && <BuildGNN />}
+			{!(train.train && train?.allow) && (
+				<div className='bg-purple-900 max-h-[20vh] h-full rounded-3xl hidden xl:flex w-full flex-1 my-2 m-auto relative p-4 text-white'>
+					<img
+						src={manager}
+						alt='React Logo'
+						className='w-2/3 h-[200%] absolute -top-[20%] -right-[30%]'
+					/>
+					<div className='flex flex-col gap-2 text-left drop-shadow-xl'>
+						<h3 className='font-extrabold text-[120%] z-20 drop-shadow-xl'>Get Started With Us</h3>
+						<p className='text-xs z-10'>Your ceremony & reception venues, yourvision</p>
+					</div>
 				</div>
-			</div>
+			)}
 
 			<div className='flex flex-col gap-3'>
 				<Link to='/works/recycle' className='flex items-center gap-2'>

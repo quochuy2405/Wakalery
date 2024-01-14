@@ -4,8 +4,8 @@ import { unauth } from "./axios";
 
 export const uploadFiles = async (
 	files: UploadFile[],
-	projectId: string,
-	folderId: string,
+	projectId: number,
+	folderId: number,
 	progressUpload: (percent: number) => void
 ) => {
 	const user = getUserInfoCookie();
@@ -15,7 +15,7 @@ export const uploadFiles = async (
 		form.append("files", file.originFileObj as never);
 	}
 
-	const response = await unauth().post(`/upload/1/${projectId}/${folderId}`, form, {
+	const response = await unauth().post(`/upload/${user.user_id}/${projectId}/${folderId}`, form, {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		onUploadProgress: (progressEvent: any) => {
 			const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);

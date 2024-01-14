@@ -201,7 +201,7 @@ const LandingPage = () => {
 					</div>
 				</section>
 				<section className='pb-24'>
-					<div className='bg-black rounded-3xl md:w-4/5 h-fit mb-44 lg:mb-4 lg:h-[40vh] flex justify-center items-center m-auto relative p-4 lg:p-10 text-white'>
+					<div className='bg-black rounded-3xl md:w-4/5 h-fit mb-44 lg:mb-4 lg:h-[40vh] overflow-hidden flex flex-col md:flex-row justify-center items-center m-auto relative p-4 lg:p-10 text-white'>
 						<img
 							src='https://i.pinimg.com/564x/1b/aa/e6/1baae61e5d2d7acef5b250a2eea1b4dc.jpg'
 							alt='image i can do it'

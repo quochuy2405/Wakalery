@@ -2,13 +2,15 @@ import { uploadFiles } from "@/apis/upload";
 import { getUserInfo } from "@/apis/user";
 import { startTrain } from "@/redux/features/detect";
 import { setProgress } from "@/redux/features/fileprogress";
+import { closeLoading, startLoading } from "@/redux/features/loading";
 import { setStorage } from "@/redux/features/storage";
 import { RootState } from "@/redux/store";
 import { InboxOutlined } from "@ant-design/icons";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { Modal, Upload, UploadFile, UploadProps, message } from "antd";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 const { Dragger } = Upload;
 interface UploadFileModalProps {
@@ -18,7 +20,8 @@ interface UploadFileModalProps {
 }
 const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, refresh, onClose }) => {
 	const [files, setFiles] = useState<UploadFile[]>([]);
-
+	const { projectId, userDirectoryId } = useParams();
+	const allow = useSelector((state: RootState) => state.detect.allow);
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
 
@@ -31,23 +34,28 @@ const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, refresh, onClos
 			});
 			return;
 		}
-
+		if (!projectId) return;
+		dispatch(startLoading());
 		dispatch(setProgress(1));
-		await uploadFiles(files, "1", "0", progressUpload).then(async () => {
-			dispatch(startTrain());
-			await getUserInfo().then(({ data }) => {
-				dispatch(setStorage(data));
-			});
+		await uploadFiles(files, Number(projectId), Number(userDirectoryId) || -1, progressUpload)
+			.then(async () => {
+				allow && dispatch(startTrain());
+				await getUserInfo().then(({ data }) => {
+					dispatch(setStorage(data));
+				});
 
-			message.open({
-				type: "success",
-				content: "Upload successfuly.",
-				duration: 20,
+				message.open({
+					type: "success",
+					content: "Upload successfuly.",
+					duration: 20,
+				});
+			})
+			.finally(() => {
+				refresh();
+				setFiles([]);
+				onClose();
+				dispatch(closeLoading());
 			});
-			refresh();
-			setFiles([]);
-			onClose();
-		});
 	};
 	const progressUpload = (percent: number) => {
 		dispatch(setProgress(percent));
@@ -60,14 +68,8 @@ const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, refresh, onClos
 		listType: "text",
 
 		onChange(info) {
-      info.file.status = "done";
-      
+			info.file.status = "done";
 			setFiles(info.fileList);
-		},
-		onDrop(e) {
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			const data: any = e.dataTransfer.files as FileList;
-			setFiles(data);
 		},
 	};
 
@@ -81,7 +83,7 @@ const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, refresh, onClos
 			okText='Upload'
 			onOk={handleUpload}>
 			<div className='p-4'>
-				<Dragger {...props}>
+				<Dragger accept='image/png,image/jpg,image/jpeg' {...props}>
 					<p className='ant-upload-drag-icon'>
 						<InboxOutlined />
 					</p>
