@@ -43,10 +43,7 @@ export const botComponents = ({
 	searchText: {
 		title: "Using search image by Warkary bot",
 		body: (
-			<Form.Item
-				labelCol={{ span: 6 }}
-				wrapperCol={{ span: 100 }}
-				className='w-full md:!w-[400px] flex flex-col gap-2'>
+			<Form.Item wrapperCol={{ span: 100 }} className='w-full md:!w-[400px] flex flex-col gap-2'>
 				<label htmlFor='' className='font-medium text-main'>
 					Enter command:
 				</label>
@@ -63,7 +60,7 @@ export const botComponents = ({
 	face: {
 		title: "Upload the face you want find.",
 		body: (
-			<Form.Item labelCol={{ span: 6 }} name={"face"} wrapperCol={{ span: 100 }} className='w-full'>
+			<Form.Item name={"face"} className='w-full'>
 				<UploadFace />
 			</Form.Item>
 		),
@@ -74,11 +71,7 @@ export const botComponents = ({
 	faceRecord: {
 		title: "I need your face.",
 		body: (
-			<Form.Item
-				labelCol={{ span: 6 }}
-				name={"faceRecord"}
-				wrapperCol={{ span: 100 }}
-				className='w-full'>
+			<Form.Item labelCol={{ span: 6 }} name={"faceRecord"} className='w-full'>
 				<UploadFace />
 			</Form.Item>
 		),
@@ -88,11 +81,7 @@ export const botComponents = ({
 	similar: {
 		title: "Upload your image to find similar.",
 		body: (
-			<Form.Item
-				labelCol={{ span: 6 }}
-				name={"similar"}
-				wrapperCol={{ span: 100 }}
-				className='w-full'>
+			<Form.Item labelCol={{ span: 6 }} name={"similar"} className='w-full'>
 				<UploadFace />
 			</Form.Item>
 		),
@@ -102,11 +91,7 @@ export const botComponents = ({
 	similarRecord: {
 		title: "I need your image to find similar.",
 		body: (
-			<Form.Item
-				labelCol={{ span: 6 }}
-				name={"similarRecord"}
-				wrapperCol={{ span: 100 }}
-				className='w-full'>
+			<Form.Item labelCol={{ span: 6 }} name={"similarRecord"} className='w-full'>
 				<UploadFace />
 			</Form.Item>
 		),

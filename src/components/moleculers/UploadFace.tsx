@@ -7,7 +7,6 @@ interface UploadFaceProps {
 	onChange?: (files: UploadFile[]) => void;
 }
 const UploadFace: React.FC<UploadFaceProps> = (props) => {
-
 	return (
 		<Upload
 			id={props.id}

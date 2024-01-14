@@ -71,7 +71,7 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 					dispatch(setRobot(botComponents({}).notfound));
 					return;
 				}
-				const file = new File([similarRecord[0]?.originFileObj as never], "crop_similar_ai.png", {
+				const file = new File([similarRecord[0]?.originFileObj as never], "crop_ai.png", {
 					type: similarRecord[0].type,
 				});
 				dispatch(startLoading());
@@ -97,10 +97,10 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 				}
 
 				dispatch(startLoading());
-				getSimilarByUpload(similar[0] as any)
+				getSimilarByUpload(similar[0]?.originFileObj as never)
 					.then(({ data }) => {
 						dispatch(setSearch(data));
-						navigate("/works/project/search?name='similar'");
+						navigate(`/works/project/search?name='similar by ${similar[0].name}' `);
 					})
 					.catch(() => {
 						dispatch(setRobot(botComponents({}).notfound));

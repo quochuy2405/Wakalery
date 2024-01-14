@@ -73,7 +73,7 @@ export const onDownload = async (src: string, onProgress?: (percent: number) => 
 			const url = URL.createObjectURL(new Blob([data]));
 
 			// Extract the filename from the 'src' URL
-			const filename = src.split("/").pop() + ".png" || "image.png";
+			const filename = src.split("/").pop()?.split('.')[0] + ".png" || "image.png";
 
 			// Create a link element
 			const link = document.createElement("a");

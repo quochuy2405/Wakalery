@@ -56,7 +56,7 @@ const Header: React.FC<HeaderProps> = ({ page }) => {
 							<Link
 								to='/works'
 								className='p-4 w-fit h-10 flex ease-linear duration-200 items-center justify-center hover:bg-neutral-100 cursor-pointer rounded-full font-medium box-border'>
-								My works
+							My Workspace
 							</Link>
 						)}
 

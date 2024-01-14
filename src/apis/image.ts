@@ -57,7 +57,7 @@ export const getSimilarByUpload = (file: File) => {
 	if (!user) throw "user not define";
 	const form = new FormData();
 
-	form.append("files", file);
+	form.append("file", file);
 
-	return unauth().post(`/face-detect/upload/${user.user_id}`, form);
+	return unauth().post(`/similar-images/detect-upload/${user.user_id}`, form);
 };
