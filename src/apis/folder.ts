@@ -24,14 +24,16 @@ export const createFolderByParentyId = ({ folderName, projectId, folderId }: Cre
 	});
 };
 type DeleteDirectory = {
-	delDir: string;
+	type: "FOLDER" | "IMAGE";
+	fileId: number;
 };
-export const deleteFolderFromDirectory = ({ delDir }: DeleteDirectory) => {
+export const deleteFolderOrImage = ({ fileId, type }: DeleteDirectory) => {
 	const user = getUserInfoCookie();
 	if (!user) throw "user not define";
 	return unauth().post(`/directory/delete`, {
 		userId: user.user_id,
-		delDir: delDir,
+		fileId,
+		type,
 	});
 };
 

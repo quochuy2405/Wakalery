@@ -2,9 +2,16 @@
 import React, { useEffect, useState } from "react";
 import { GraphView } from "react-digraph";
 import { getGraphRNN } from "../../apis/graph-rnn";
+import { ThunkDispatch } from "@reduxjs/toolkit";
+import { RootState } from "@/redux/store";
+import { useDispatch } from "react-redux";
+import { closeLoading, startLoading } from "@/redux/features/loading";
 
 const NODE_KEY = "id"; // Allows D3 to correctly update DOM
 const GraphEdges = () => {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
+
 	const [graph, setGraph] = useState({
 		edges: [],
 		nodes: [],
@@ -58,74 +65,78 @@ const GraphEdges = () => {
 	const EdgeTypes = GraphConfig.EdgeTypes;
 
 	const fetch = async () => {
-		await getGraphRNN().then(({ data }: any) => {
+		dispatch(startLoading());
+		await getGraphRNN()
+			.then(({ data }: any) => {
+				const radius = data.nodes.length * 25; // Adjust the radius of the circle as needed
+				const centerX = data.nodes.length * 100; // Adjust the x-coordinate of the circle center
+				const centerY = data.nodes.length * 100; // Adjust the y-coordinate of the circle center
+				let NodeTypes = { ...config };
+				const nodes = data.nodes.map((item: any, index: any) => {
+					const angle = (index / data.nodes.length) * 2 * Math.PI; // Calculate the angle based on the index
+					const x = centerX + radius * Math.cos(angle);
+					const y = centerY + radius * Math.sin(angle);
+					const isNode = item.node.includes("face");
+					const keyNode = isNode ? "nodemain" : "noderelated";
+					const typeText = isNode ? "Faces" : "Related image";
 
-			const radius = data.nodes.length * 25; // Adjust the radius of the circle as needed
-			const centerX = data.nodes.length * 100; // Adjust the x-coordinate of the circle center
-			const centerY = data.nodes.length * 100; // Adjust the y-coordinate of the circle center
-			let NodeTypes = { ...config };
-			const nodes = data.nodes.map((item: any, index: any) => {
-				const angle = (index / data.nodes.length) * 2 * Math.PI; // Calculate the angle based on the index
-				const x = centerX + radius * Math.cos(angle);
-				const y = centerY + radius * Math.sin(angle);
-				const isNode = item.node.includes("face");
-				const keyNode = isNode ? "nodemain" : "noderelated";
-				const typeText = isNode ? "Faces" : "Related image";
-
-				// const url = isNode ? IMAGE_PREFIX_CROP + "1/" + item.node : IMAGE_PREFIX + "1/" + item.node;
-				NodeTypes = {
-					...NodeTypes,
-					[keyNode + index]: {
-						typeText,
-						shapeId: `#${keyNode}${index}`,
-						shape: (
-							// <svg id='nodecrop' viewBox='0 0 160 40' xmlns='http://www.w3.org/2000/svg'>
-							<symbol viewBox='0 0 30 30' id={keyNode + index} key={index}>
-								<defs>
-									<clipPath id={`circleClip${index}`}>
-										<circle cx='15' cy='15' r={isNode ? "15" : "18"} />
-									</clipPath>
-								</defs>
-								{/* <image
+					// const url = isNode ? IMAGE_PREFIX_CROP + "1/" + item.node : IMAGE_PREFIX + "1/" + item.node;
+					NodeTypes = {
+						...NodeTypes,
+						[keyNode + index]: {
+							typeText,
+							shapeId: `#${keyNode}${index}`,
+							shape: (
+								// <svg id='nodecrop' viewBox='0 0 160 40' xmlns='http://www.w3.org/2000/svg'>
+								<symbol viewBox='0 0 30 30' id={keyNode + index} key={index}>
+									<defs>
+										<clipPath id={`circleClip${index}`}>
+											<circle cx='15' cy='15' r={isNode ? "15" : "18"} />
+										</clipPath>
+									</defs>
+									{/* <image
 									href={url}
 									className='object-contain rounded-full overflow-hidden w-full h-full'
 									clipPath={`url(#circleClip${index})`}
 								/> */}
-							</symbol>
-						),
-					},
-				};
+								</symbol>
+							),
+						},
+					};
 
-				return {
-					id: index,
-					title: item.node,
-					x,
-					y,
-					type: keyNode + index,
-				};
+					return {
+						id: index,
+						title: item.node,
+						x,
+						y,
+						type: keyNode + index,
+					};
+				});
+				setConfig(NodeTypes);
+
+				const edges: any = data.edges.map((item: any) => {
+					const _temp = item.edge
+						.replaceAll("(", "")
+						.replaceAll(")", "")
+						.replaceAll("'", "")
+						.replaceAll(" ", "")
+						.replaceAll("'", "")
+						.split(",");
+					const target = nodes.findIndex((item: any) => item.title === _temp[1]);
+					const source = nodes.findIndex((item: any) => item.title === _temp[0]);
+					const edge = {
+						source: source,
+						target: target,
+						type: "emptyEdge",
+					};
+
+					return edge;
+				});
+				setGraph({ edges, nodes });
+			})
+			.finally(() => {
+				dispatch(closeLoading ());
 			});
-			setConfig(NodeTypes);
-
-			const edges: any = data.edges.map((item: any) => {
-				const _temp = item.edge
-					.replaceAll("(", "")
-					.replaceAll(")", "")
-					.replaceAll("'", "")
-					.replaceAll(" ", "")
-					.replaceAll("'", "")
-					.split(",");
-				const target = nodes.findIndex((item: any) => item.title === _temp[1]);
-				const source = nodes.findIndex((item: any) => item.title === _temp[0]);
-				const edge = {
-					source: source,
-					target: target,
-					type: "emptyEdge",
-				};
-
-				return edge;
-			});
-			setGraph({ edges, nodes });
-		});
 	};
 
 	useEffect(() => {
@@ -140,9 +151,8 @@ const GraphEdges = () => {
 				edges={graph.edges}
 				edgeArrowSize={1}
 				minZoom={0}
-        nodeTypes={config}
-        backgroundFillId="#000000"
-      
+				nodeTypes={config}
+				backgroundFillId='#000000'
 				nodeSubtypes={NodeSubtypes}
 				edgeTypes={EdgeTypes}
 			/>

@@ -60,7 +60,8 @@ const UploadFileModal: React.FC<UploadFileModalProps> = ({ open, refresh, onClos
 		listType: "text",
 
 		onChange(info) {
-			info.file.status = "done";
+      info.file.status = "done";
+      
 			setFiles(info.fileList);
 		},
 		onDrop(e) {

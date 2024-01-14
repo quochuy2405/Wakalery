@@ -16,18 +16,19 @@ const Favorites = () => {
 	}, [refresh]);
 
 	return (
-		<div className='w-full h-screen !h-[100dvh] overflow-y-auto flex'>
+		<div className='w-full h-screen !h-[100dvh] overflow-hidden flex'>
 			<SideBar page='favorites' />
-			<div className='flex-1 bg-neutral-50 h-full  p-2 md:p-10'>
+			<div className='flex-1 bg-neutral-50 h-full p-2 md:p-10'>
 				<div className='flex items-center gap-2 font-semibold text-sm mt-6'>
 					<img src={favoriteIcon} alt='Home' className={clsx("w-7 h-7")} /> <p>Favorites</p>
 				</div>
-
-				<section className='py-6 grid grid-cols-1 md:grid-cols-2 h-full mt-4 rounded-md lg:grid-cols-4 overflow-y-auto gap-4 md:gap-10'>
-					{favorite.map((item) => {
-						return <ProjectItem refresh={() => setRefresh((e) => !e)} data={item} />;
-					})}
-				</section>
+				<div className='h-full overflow-y-auto overflow-x-hidden mt-4 rounded-md pb-32 '>
+					<section className='py-6 grid grid-cols-1 md:grid-cols-2 h-fit  lg:grid-cols-3 2xl:grid-cols-4  gap-4 md:gap-10'>
+						{favorite.map((item) => {
+							return <ProjectItem refresh={() => setRefresh((e) => !e)} data={item} />;
+						})}
+					</section>
+				</div>
 			</div>
 		</div>
 	);

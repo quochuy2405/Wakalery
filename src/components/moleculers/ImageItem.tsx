@@ -1,6 +1,7 @@
-import { updateImage } from "@/apis/image";
+import { deleteFolderOrImage } from "@/apis/folder";
 import { IMAGE_PREFIX } from "@/constants/index";
 import { addFileMove } from "@/redux/features/filemove";
+import { closeLoading, startLoading } from "@/redux/features/loading";
 import { openMove } from "@/redux/features/onmove";
 import { RootState } from "@/redux/store";
 import { ImageType } from "@/types/image";
@@ -18,12 +19,14 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 interface ImageItemProps {
 	image: ImageType;
-	onQuickPreview: (image: ImageType) => void;
-	refresh?: () => void;
 	isPublicManage?: boolean;
+	onQuickPreview: (image: ImageType) => void;
+	onCompletedMove?: (image: object) => void;
+	refresh?: () => void;
 }
 const ImageItem: React.FC<ImageItemProps> = ({
 	onQuickPreview,
+	onCompletedMove,
 	refresh,
 	image,
 	isPublicManage,
@@ -33,22 +36,6 @@ const ImageItem: React.FC<ImageItemProps> = ({
 	const user = getUserInfoCookie();
 	const src = IMAGE_PREFIX + `${user?.user_id}/` + image.photoName;
 	const [isDelete, setIsDeleted] = useState(false);
-	const onDeleted = () => {
-		const deletePhotoModelList = [
-			{
-				photoId: Number(image?.photoSerialId),
-			},
-		];
-		updateImage({ deletePhotoModelList })
-			.then(() => {
-				message.success("Successfully!");
-				refresh?.();
-			})
-			.catch(() => {
-				message.error("Error!");
-			});
-		setIsDeleted(false);
-	};
 
 	const items: MenuProps["items"] = [
 		{
@@ -108,6 +95,22 @@ const ImageItem: React.FC<ImageItemProps> = ({
 	const menuProps = {
 		items: isPublicManage ? itemsPublicManage : items,
 	};
+	const onDeleteImage = async () => {
+		dispatch(startLoading());
+		await deleteFolderOrImage({ fileId: Number(image.photoSerialId), type: "IMAGE" })
+			.then(() => {
+				message.success("Deleted.");
+				onCompletedMove?.(image);
+				refresh?.();
+			})
+			.catch(() => {
+				message.error("Something error!!!");
+			})
+			.finally(() => {
+				setIsDeleted(false);
+				dispatch(closeLoading());
+			});
+	};
 
 	return (
 		<div className='min-w-[180px] shadow-xl max-w-[340px] h-[220px] bg-gray-200 rounded-2xl overflow-hidden relative w-[-webkit-fill-available] md:w-[unset] m-auto md:m-[unset]'>
@@ -127,9 +130,9 @@ const ImageItem: React.FC<ImageItemProps> = ({
 					</Tooltip>
 				</div>
 				<Popconfirm
-					title='Delete Project'
-					description='Are you sure to delete this project?'
-					onConfirm={onDeleted}
+					title='Delete Image'
+					description='Are you sure to delete this image?'
+					onConfirm={onDeleteImage}
 					onCancel={() => setIsDeleted(false)}
 					okText='OK'
 					placement='top'

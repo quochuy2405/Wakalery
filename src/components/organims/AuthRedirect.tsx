@@ -13,7 +13,6 @@ const AuthRedirect = () => {
 		const user = getUserInfoCookie();
 		if (!user?.user_id) navigate("/login");
   }, [navigate, token]);
-  console.log("user", user);
 	if (!user?.user_id) return <Navigate to={"/login"} />;
 	return <></>;
 };

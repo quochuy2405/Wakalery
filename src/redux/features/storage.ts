@@ -7,7 +7,7 @@ const initialState: UserInfo = {
 	avatar: "",
 	usedDisk: 0,
 	availableDisk: 0,
-	joinAt: null,
+	joinAt: '',
 	isActive: false,
 	accountSerialId: 0,
 };

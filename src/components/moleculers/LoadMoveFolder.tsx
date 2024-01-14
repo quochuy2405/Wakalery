@@ -41,6 +41,8 @@ const LoadMoveFolder: React.FC<LoadMoveFolderProps> = ({ onCompletedMove }) => {
 			await getChildByProjectId({
 				folderId: currentId,
 				projectId: Number(projectId),
+				page: 0,
+				size: 2000,
 			})
 				.then(({ data }) => {
 					setDataDir(data);
@@ -50,6 +52,8 @@ const LoadMoveFolder: React.FC<LoadMoveFolderProps> = ({ onCompletedMove }) => {
 			await getChildByProjectId({
 				folderId: 0,
 				projectId: Number(projectId),
+				page: 0,
+				size: 2000, 
 			})
 				.then(({ data }) => {
 					const currentData = data.filter(
@@ -63,8 +67,8 @@ const LoadMoveFolder: React.FC<LoadMoveFolderProps> = ({ onCompletedMove }) => {
 
 	const onMove = async (id: number) => {
 		dispatch(startLoading());
-    const type: MoveDirectory["type"] = fileMoves[0]?.userDirectoryId ? "FOLDER" : "PHOTO";
-    const fileId = fileMoves[0]?.userDirectoryId || fileMoves[0].photoSerialId;
+		const type: MoveDirectory["type"] = fileMoves[0]?.userDirectoryId ? "FOLDER" : "PHOTO";
+		const fileId = fileMoves[0]?.userDirectoryId || fileMoves[0].photoSerialId;
 		const data: MoveDirectory = {
 			fileId: Number(fileId),
 			newFolderId: id,

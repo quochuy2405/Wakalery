@@ -10,13 +10,14 @@ import { ProjectType } from "@/types/project";
 import { getUserInfoCookie } from "@/utils/cookies";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { Button } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 
 const Works = () => {
 	const [project, setProject] = useState<ProjectType[]>([]);
 	const [refresh, setRefresh] = useState<boolean>(false);
 	const [newProject, setNewProject] = useState<boolean>(false);
+	const dataRef = useRef<boolean>(false);
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
 
@@ -27,14 +28,15 @@ const Works = () => {
 		getAllProjectByUserId()
 			.then(({ data }) => {
 				setProject(data);
+				dataRef.current = true;
 			})
 
 			.finally(() => {
 				dispatch(closeLoading());
 			});
-	}, [dispatch, refresh]);
+	}, [refresh]);
 	useEffect(() => {
-		if (!newProject && project)
+		if (!newProject && dataRef.current)
 			getAllProjectByUserId()
 				.then(({ data }) => {
 					setProject(data);
@@ -43,7 +45,7 @@ const Works = () => {
 				.finally(() => {
 					dispatch(closeLoading());
 				});
-	}, [dispatch, project, newProject]);
+	}, [dispatch, newProject]);
 
 	return (
 		<div className='w-full h-screen !h-[100dvh] overflow-y-auto flex'>
@@ -78,7 +80,7 @@ const Works = () => {
 				</div>
 
 				<div className='flex flex-1 flex-col overflow-y-auto'>
-					<section className='py-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 justify-center overflow-y-auto pb-32'>
+					<section className='py-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-10 justify-center overflow-y-auto pb-32'>
 						{project.map((item) => {
 							return <ProjectItem refresh={() => setRefresh((e) => !e)} data={item} />;
 						})}

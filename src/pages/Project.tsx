@@ -56,7 +56,7 @@ const Project = () => {
 				refScroll.current?.removeEventListener("scrollend", () => loadingScroll());
 			}
 		};
-	}, [dispatch, projectId, refresh]);
+	}, [projectId, refresh]);
 
 	const refreshData = () => {
 		setRefresh((curr) => !curr);
@@ -108,16 +108,23 @@ const Project = () => {
 				<BreadcrumbProject refresh={refreshData} />
 				<section
 					ref={refScroll}
-					className='py-6 grid grid-cols-1 md:grid-cols-2 h-full mt-4 rounded-md lg:grid-cols-3 overflow-y-auto gap-4 md:gap-10 pb-32'>
+					className='py-6 grid grid-cols-1 md:grid-cols-2 h-full mt-4 rounded-md lg:grid-cols-3 2xl:grid-cols-4 overflow-y-auto gap-4 md:gap-10 pb-32'>
 					{materials.map((item: any) => {
 						const isFolder = !!item?.userDirectoryId;
 						if (isFolder) {
-							return <FolderItem key={item.userDirectoryId} data={item} />;
+							return (
+								<FolderItem
+									onCompletedMove={onCompletedMove}
+									key={item.userDirectoryId}
+									data={item}
+								/>
+							);
 						}
 						return (
 							<ImageItem
 								key={item.photoSerialId}
 								image={item}
+								onCompletedMove={onCompletedMove}
 								onQuickPreview={(image) => {
 									setQuickPreview(image);
 								}}

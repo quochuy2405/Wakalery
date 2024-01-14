@@ -1,15 +1,27 @@
-import { getDeletedByUserId } from "@/apis/project";
+import { getDeletedByUserId } from "@/apis/trash";
 import { TableTrash } from "@/components/moleculers";
 import { SideBar } from "@/components/organims";
+import { closeLoading, startLoading } from "@/redux/features/loading";
+import { RootState } from "@/redux/store";
 import { PhotoDirectory } from "@/types/image";
+import { ThunkDispatch } from "@reduxjs/toolkit";
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
 const Deleted = () => {
 	const [trash, setTrash] = useState<PhotoDirectory[]>([]);
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
+
 	useEffect(() => {
-		getDeletedByUserId().then(({ data }) => {
-			setTrash(data);
-		});
+		dispatch(startLoading());
+		getDeletedByUserId()
+			.then(({ data }) => {
+				setTrash(data);
+			})
+			.finally(() => {
+				dispatch(closeLoading());
+			});
 	}, []);
 
 	return (
@@ -30,7 +42,7 @@ const Deleted = () => {
 					</svg>{" "}
 					<p>Recycle</p>
 				</div>
-				<section className='mt-2 max-w-screen-lg'>
+				<section className='mt-2 max-w-full'>
 					<TableTrash data={trash} />
 				</section>
 			</div>

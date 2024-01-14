@@ -47,11 +47,7 @@ export const getFavoriteByUserId = () => {
 	if (!user) throw "user not define";
 	return unauth().get(`/project/get-favorite/${user.user_id}`);
 };
-export const getDeletedByUserId = () => {
-	const user = getUserInfoCookie();
-	if (!user) throw "user not define";
-	return unauth().get(`/project/get-deleted/${user.user_id}`);
-};
+
 type BreadcrumbType = {
 	projectId: number;
 	folderId: number;
