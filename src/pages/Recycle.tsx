@@ -43,7 +43,7 @@ const Deleted = () => {
 					</svg>{" "}
 					<p>Recycle</p>
 				</div>
-				<section className='mt-2 max-w-[120vw]'>
+				<section className='mt-2 max-w-[120vw] overflow-auto'>
 					<TableTrash refresh={() => setRefresh(e=>!e )} data={trash} />
 				</section>
 			</div>
