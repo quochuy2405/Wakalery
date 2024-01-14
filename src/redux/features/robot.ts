@@ -5,8 +5,8 @@ export type RobotType = {
 	body: ReactNode;
 	submit?: (data: object) => void;
 	show?: boolean;
-	type?: "face" | "record";
-  hiddenCancel?:boolean
+	type?: "face-record" | "record" | "similar-record" | "face" | "similar";
+	hiddenCancel?: boolean;
 };
 
 const initialState: RobotType = {
@@ -14,7 +14,7 @@ const initialState: RobotType = {
 	body: "",
 	submit: () => 1,
 	show: false,
-	hiddenCancel:false
+	hiddenCancel: false,
 };
 export const robotSlice = createSlice({
 	name: "robot",

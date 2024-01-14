@@ -50,3 +50,14 @@ export const updateImage = (data: { deletePhotoModelList: Array<DeletePhotoModel
 	});
 	return unauth().put("photo/delete", { deletePhotoModelList });
 };
+
+
+export const getSimilarByUpload = (file: File) => {
+	const user = getUserInfoCookie();
+	if (!user) throw "user not define";
+	const form = new FormData();
+
+	form.append("files", file);
+
+	return unauth().post(`/face-detect/upload/${user.user_id}`, form);
+};

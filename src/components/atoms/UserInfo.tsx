@@ -1,24 +1,30 @@
+import { getUserInfo } from "@/apis/user";
 import { RootState } from "@/redux/store";
-import { getUserInfoCookie } from "@/utils/cookies";
+import { UserInfo } from "@/types/user";
 import { Avatar } from "antd";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 const UserInfo = () => {
 	const token = useSelector((state: RootState) => state.auth.cookie.token);
-	const [user, setUser] = useState(getUserInfoCookie());
+	const [user, setUser] = useState<UserInfo>();
 	useEffect(() => {
-		const currentUser = getUserInfoCookie();
-		setUser(currentUser);
+		getUserInfo()
+			.then(({ data }) => {
+				setUser(data);
+			})
+			.catch((e) => {
+				console.log("e", e);
+			});
 	}, [token]);
 	return (
 		<div className='flex gap-2 items-center'>
 			<Avatar
 				size={"small"}
-				alt={user?.first_name}
-				src={`https://ui-avatars.com/api/?name=${user?.first_name}&background=0D8ABC&color=fff`}
+				alt={user?.firstName}
+				src={`https://ui-avatars.com/api/?name=${user?.firstName}&background=0D8ABC&color=fff`}
 			/>
-			<p className='text-xs'>{user?.first_name}</p>
+			<p className='text-xs'>{user?.firstName}</p>
 		</div>
 	);
 };

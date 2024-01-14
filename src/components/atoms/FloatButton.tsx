@@ -1,21 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { getImageByTagsContains, getImageByTagsMatchAll } from "@/apis/image";
+import { getImageByFaceUploadCropAI } from "@/apis/face";
+import { getImageByTagsContains, getImageByTagsMatchAll, getSimilarByUpload } from "@/apis/image";
+import { confirmPropmt, sendPrompt } from "@/apis/prompt";
 import { botComponents } from "@/constants/botflow";
 import { closeLoading, startLoading } from "@/redux/features/loading";
-import { resetRobot, setRobot } from "@/redux/features/robot";
+import { RobotType, resetRobot, setRobot } from "@/redux/features/robot";
 import { setSearch } from "@/redux/features/search";
 import { RootState } from "@/redux/store";
 import { TagsOutlined } from "@ant-design/icons";
+import { ThunkDispatch } from "@reduxjs/toolkit";
 import { FloatButton, Form, Popconfirm, Switch, UploadFile } from "antd";
+import { useForm } from "antd/es/form/Form";
 import React, { useEffect, useRef, useState } from "react";
 import { BsRobot } from "react-icons/bs";
 import { LuSearch } from "react-icons/lu";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import InputTag from "./InputTag";
-import { useForm } from "antd/es/form/Form";
-import { confirmPropmt, sendPrompt } from "@/apis/prompt";
-import { ThunkDispatch } from "@reduxjs/toolkit";
 interface FloatProps {
 	onSearch: () => void;
 	isPrivate?: boolean;
@@ -23,7 +24,10 @@ interface FloatProps {
 
 type FormPromtType = {
 	record: string;
+	faceRecord: UploadFile[];
 	face: UploadFile[];
+	similarRecord: UploadFile[];
+	similar: UploadFile[];
 };
 const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 	const [form] = useForm();
@@ -37,9 +41,76 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 	const refDataPromt = useRef<any>();
 	const previewCanvasRef = useRef<any>();
 
-	const onSubmit = ({ record, face }: FormPromtType) => {
+	const onSubmit = ({ record, face, similar, faceRecord, similarRecord }: FormPromtType) => {
 		switch (robot?.type) {
 			case "face": {
+				if (!face.length) {
+					dispatch(setRobot(botComponents({}).notfound));
+					return;
+				}
+				const file = new File([face[0]?.originFileObj as never], "crop_ai.png", {
+					type: face[0].type,
+				});
+				dispatch(startLoading());
+				getImageByFaceUploadCropAI(file)
+					.then(({ data }) => {
+						dispatch(setSearch(data));
+						navigate("/works/project/search?name='face'");
+						form.resetFields();
+					})
+					.catch(() => {
+						dispatch(setRobot(botComponents({}).notfound));
+					})
+					.finally(() => {
+						dispatch(closeLoading());
+					});
+				break;
+			}
+			case "similar-record": {
+				if (!similarRecord.length) {
+					dispatch(setRobot(botComponents({}).notfound));
+					return;
+				}
+				const file = new File([similarRecord[0]?.originFileObj as never], "crop_similar_ai.png", {
+					type: similarRecord[0].type,
+				});
+				dispatch(startLoading());
+				getImageByFaceUploadCropAI(file)
+					.then(({ data }) => {
+						dispatch(setSearch(data));
+						navigate("/works/project/search?name='similar'");
+						form.resetFields();
+					})
+					.catch(() => {
+						dispatch(setRobot(botComponents({}).notfound));
+					})
+					.finally(() => {
+						dispatch(closeLoading());
+					});
+				break;
+			}
+			case "similar": {
+				if (!similar.length) {
+					dispatch(setRobot(botComponents({}).notfound));
+					form.resetFields();
+					return;
+				}
+
+				dispatch(startLoading());
+				getSimilarByUpload(similar[0] as any)
+					.then(({ data }) => {
+						dispatch(setSearch(data));
+						navigate("/works/project/search?name='similar'");
+					})
+					.catch(() => {
+						dispatch(setRobot(botComponents({}).notfound));
+					})
+					.finally(() => {
+						dispatch(closeLoading());
+					});
+				break;
+			}
+			case "face-record": {
 				dispatch(startLoading());
 				const dataFaceFind = {
 					record: refDataPromt.current?.record,
@@ -48,11 +119,12 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 					queryFaceDetection: refDataPromt.current?.queryFaceDetection,
 					querySimilarImage: refDataPromt.current?.querySimilarImage,
 				};
-				confirmPropmt(face[0], dataFaceFind, previewCanvasRef.current)
+				confirmPropmt(faceRecord[0], dataFaceFind, previewCanvasRef.current)
 					.then(({ data }) => {
 						if (data?.length) {
 							dispatch(setSearch(data));
 							navigate("/works/project/search");
+							form.resetFields();
 						} else {
 							throw "error";
 						}
@@ -65,6 +137,7 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 					});
 				break;
 			}
+
 			case "record": {
 				dispatch(startLoading());
 				sendPrompt(record).then(async ({ data }) => {
@@ -72,17 +145,18 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 
 					dispatch(closeLoading());
 					if (data.querySimilarImage) {
-						onMethods("face");
+						onMethods("similar-record");
 						return;
 					}
 					if (data.queryFaceDetection) {
-						onMethods("face");
+						onMethods("face-record");
 						return;
 					}
 					await getImageByTagsContains(data.params)
 						.then(({ data: photo }) => {
 							dispatch(setSearch(photo));
 							navigate("/works/project/search?name=" + data?.params.toString());
+							form.resetFields();
 						})
 						.catch(() => {
 							dispatch(setRobot(botComponents({}).notfound));
@@ -95,20 +169,29 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 			}
 		}
 	};
-	const onMethods = (method: "face" | "text") => {
+	const onMethods = (method: RobotType["type"]) => {
 		switch (method) {
+			case "face-record":
+				dispatch(setRobot(botComponents({}).faceRecord));
+				break;
+			case "similar-record":
+				dispatch(setRobot(botComponents({}).similarRecord));
+				break;
+			case "record":
+				dispatch(setRobot(botComponents({}).searchText));
+				break;
 			case "face":
 				dispatch(setRobot(botComponents({}).face));
 				break;
-			case "text":
-				dispatch(setRobot(botComponents({}).searchText));
+			case "similar":
+				dispatch(setRobot(botComponents({}).similar));
 				break;
 			default:
 				break;
 		}
 	};
-  const onShowBot = () => {
-    setShowSearchTag(false);
+	const onShowBot = () => {
+		setShowSearchTag(false);
 		dispatch(setRobot(botComponents({ onMethods }).methods));
 	};
 	const onSearchByTag = async ({ tags }: { tags: Array<string> }) => {
@@ -120,6 +203,7 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 					.then(({ data }) => {
 						dispatch(setSearch(data));
 						navigate("/works/project/search?name=" + tags.toString());
+						form.resetFields();
 					})
 					.catch(() => {
 						dispatch(setRobot(botComponents({}).notfound));
@@ -136,6 +220,7 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 					.then(({ data }) => {
 						dispatch(setSearch(data));
 						navigate("/works/project/search?name=" + tags.toString());
+						form.resetFields();
 					})
 					.catch(() => {
 						dispatch(setRobot(botComponents({}).notfound));
@@ -220,7 +305,13 @@ const Float: React.FC<FloatProps> = ({ isPrivate = false, onSearch }) => {
 							</Form>
 						}
 						forceRender={true}>
-						<FloatButton icon={<TagsOutlined />} onClick={() => setShowSearchTag((e) => !e)} />
+						<FloatButton
+							icon={<TagsOutlined />}
+							onClick={() => {
+								dispatch(resetRobot());
+								setShowSearchTag((e) => !e);
+							}}
+						/>
 					</Popconfirm>
 				)}
 				<FloatButton icon={<LuSearch />} onClick={() => onSearch()} />

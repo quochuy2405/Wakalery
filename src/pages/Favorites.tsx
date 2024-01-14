@@ -25,7 +25,9 @@ const Favorites = () => {
 				<div className='h-full overflow-y-auto overflow-x-hidden mt-4 rounded-md pb-32 '>
 					<section className='py-6 grid grid-cols-1 md:grid-cols-2 h-fit  lg:grid-cols-3 2xl:grid-cols-4  gap-4 md:gap-10'>
 						{favorite.map((item) => {
-							return <ProjectItem refresh={() => setRefresh((e) => !e)} data={item} />;
+							return (
+								<ProjectItem refresh={() => setRefresh((e) => !e)} data={item} deleted={false} />
+							);
 						})}
 					</section>
 				</div>

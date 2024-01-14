@@ -25,7 +25,23 @@ interface TableTrashProps {
 	refresh?: () => void;
 }
 const TableTrash: React.FC<TableTrashProps> = ({ data, refresh }) => {
-	const onDeleteImage = (record: ProjectType & ImageType & PhotoDirectory) => {
+	const onRestore = (record: ProjectType & ImageType & PhotoDirectory) => {
+		const material = {
+			type: (!!record.projectId && "PROJECT") || (!!record.userDirectoryId && "FOLDER") || "IMAGE",
+			fileId:
+				Number(record.projectId) || Number(record.userDirectoryId) || Number(record.photoSerialId),
+		};
+		recoveryMaterial(material)
+			.then(() => {
+				message.success("Recoveried");
+				refresh?.();
+			})
+			.catch(() => {
+				message.error("You can't recovery this " + material.type);
+			});
+	};
+
+	const onDeleteForever = (record: ProjectType & ImageType & PhotoDirectory) => {
 		const material = {
 			type: (!!record.projectId && "PROJECT") || (!!record.userDirectoryId && "FOLDER") || "IMAGE",
 			fileId:
@@ -76,9 +92,9 @@ const TableTrash: React.FC<TableTrashProps> = ({ data, refresh }) => {
 			render: (_: unknown, record: ProjectType & ImageType & PhotoDirectory) => {
 				return (
 					<Popconfirm
-						title='Delete Image'
-						description='Are you sure to delete this image?'
-						onConfirm={() => onDeleteImage(record)}
+						title='Restore'
+						description='Are you sure to restore this ?'
+						onConfirm={() => onRestore(record)}
 						okText='OK'
 						placement='top'
 						cancelText='Cancel'>
@@ -96,12 +112,20 @@ const TableTrash: React.FC<TableTrashProps> = ({ data, refresh }) => {
 			dataIndex: "",
 			key: "",
 			className: "text-xs",
-			render: () => (
-				<Button
-					icon={<MdDelete size={16} />}
-					className='font-normal items-center flex justify-center text-xs border-red-500 text-red-500'>
-					Forever
-				</Button>
+			render: (_: unknown, record: ProjectType & ImageType & PhotoDirectory) => (
+				<Popconfirm
+					title='Delete forever'
+					description='Are you sure to delete forever this ?'
+					onConfirm={() => onDeleteForever(record)}
+					okText='OK'
+					placement='top'
+					cancelText='Cancel'>
+					<Button
+						icon={<MdDelete size={16} />}
+						className='font-normal items-center flex justify-center text-xs border-red-500 text-red-500'>
+						Forever
+					</Button>
+				</Popconfirm>
 			),
 		},
 	];

@@ -4,7 +4,7 @@ import { ImageItem } from "@/components/moleculers";
 import { SideBar } from "@/components/organims";
 import { RootState } from "@/redux/store";
 import { ImageType } from "@/types/image";
-import { Image } from "antd";
+import { Empty, Image } from "antd";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -18,11 +18,11 @@ const SearchResult = () => {
 	const [quickPreview, setQuickPreview] = useState<ImageType | null>(null);
 	const onSearch = () => {};
 	return (
-		<div className='w-full h-screen !h-[100dvh] overflow-y-auto flex'>
+		<div className='w-full h-screen !h-[100dvh] overflow-hidden flex'>
 			<SideBar page='works' />
 
-			<div className='flex-1 bg-neutral-100 h-full p-10'>
-				<div className='flex items-center justify-between bg-white w-full rounded-xl p-3 shadow-lg relative'>
+			<div className='flex-1 bg-neutral-100 h-full flex flex-col lg:p-10 p-2'>
+				<div className='flex h-fit items-center justify-between bg-white w-full rounded-xl p-3 shadow-lg relative'>
 					<div
 						onClick={() => navigate(-1)}
 						className='p-4 w-14 h-14 flex items-center justify-center hover:bg-neutral-100 ease-linear duration-200 cursor-pointer rounded-full mr-auto'>
@@ -41,17 +41,24 @@ const SearchResult = () => {
 						Results search "{title}"
 					</h2>
 				</div>
-				<section className='py-6 grid grid-cols-2 md:grid-cols-3  mt-4 rounded-md lg:grid-cols-4 overflow-y-auto gap-10 h-fit'>
-					{data?.map((item: any) => {
-						return (
-							<ImageItem
-								key={item.photo_id}
-								image={item}
-								onQuickPreview={(image) => setQuickPreview(image)}
-							/>
-						);
-					})}
-				</section>
+				<div className='w-full flex-1 overflow-y-auto my-4 rounded-md'>
+					<section className='py-6 grid grid-cols-2 md:grid-cols-3 pb-32  lg:grid-cols-4 gap-10 h-fit'>
+						{!data?.length && (
+							<div className='col-span-full'>
+								<Empty></Empty>
+							</div>
+						)}
+						{data?.map((item: any) => {
+							return (
+								<ImageItem
+									key={item.photo_id}
+									image={item}
+									onQuickPreview={(image) => setQuickPreview(image)}
+								/>
+							);
+						})}
+					</section>
+				</div>
 			</div>
 			{!!quickPreview && (
 				<Image

@@ -28,7 +28,7 @@ const ModalShare: React.FC<ModalShareProps> = ({ from = "public", photoName }) =
 			message.success("Published");
 		});
 	};
-	const onCopyURL = (copyText:string) => {
+	const onCopyURL = (copyText: string) => {
 		navigator.clipboard.writeText(copyText);
 		message.success("Copied.");
 	};
@@ -67,9 +67,8 @@ const ModalShare: React.FC<ModalShareProps> = ({ from = "public", photoName }) =
 					<h2>Can QRCode</h2>
 					<Space direction='vertical' align='center'>
 						<QRCode
-							value={"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" || "-"}
+							value={`${IMAGE_PREFIX_PUBLIC}${photoName}` || "-"}
 							// status="expired"
-							onRefresh={() => console.log("refresh")}
 						/>
 					</Space>
 				</Col>

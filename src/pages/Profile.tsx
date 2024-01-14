@@ -5,62 +5,18 @@ import { SideBar } from "@/components/organims";
 import { closeLoading, startLoading } from "@/redux/features/loading";
 import { RootState } from "@/redux/store";
 import { UserInfo } from "@/types/user";
-import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { ThunkDispatch } from "@reduxjs/toolkit";
-import { Button, Form, Segmented, Upload, message } from "antd";
+import { Button, Form, Segmented, message } from "antd";
 import { useForm } from "antd/es/form/Form";
-import type { UploadChangeParam } from "antd/es/upload";
-import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-const getBase64 = (img: RcFile, callback: (url: string) => void) => {
-	const reader = new FileReader();
-	reader.addEventListener("load", () => callback(reader.result as string));
-	reader.readAsDataURL(img);
-};
-
-const beforeUpload = (file: RcFile) => {
-	const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-	if (!isJpgOrPng) {
-		message.error("You can only upload JPG/PNG file!");
-	}
-	const isLt2M = file.size / 1024 / 1024 < 2;
-	if (!isLt2M) {
-		message.error("Image must smaller than 2MB!");
-	}
-	return isJpgOrPng && isLt2M;
-};
 const Profile = () => {
-	const [loading, setLoading] = useState(false);
 	const token = useSelector((state: RootState) => state.auth.cookie.token);
-	const [imageUrl, setImageUrl] = useState<string>();
 	const [form] = useForm();
 	const [info, setInfo] = useState<UserInfo>({});
 	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
 
-	const uploadButton = (
-		<div>
-			{loading ? <LoadingOutlined /> : <PlusOutlined />}
-			<div aria-label='up' className='mt-2'>
-				Upload
-			</div>
-		</div>
-	);
-
-	const handleChange: UploadProps["onChange"] = (info: UploadChangeParam<UploadFile>) => {
-		if (info.file.status === "uploading") {
-			setLoading(true);
-			return;
-		}
-		if (info.file.status === "done") {
-			// Get this url from response in real world.
-			getBase64(info.file.originFileObj as RcFile, (url) => {
-				setLoading(false);
-				setImageUrl(url);
-			});
-		}
-	};
 	const onSubmit = (profile: object) => {
 		dispatch(startLoading());
 		updateProfile(profile)
@@ -81,7 +37,6 @@ const Profile = () => {
 			.then(({ data }) => {
 				form.setFieldsValue(data);
 				setInfo(data);
-				setImageUrl(data.avatar);
 			})
 			.catch((e) => {
 				console.log("e", e);
@@ -94,24 +49,14 @@ const Profile = () => {
 				<div className=' bg-white rounded-lg h-fit shadow-lg py-2'>
 					<div className='border-b px-4 pb-6'>
 						<div className='text-center my-4'>
-							<Upload
-								name='avatar'
-								listType='picture-circle'
-								className='avatar-uploader !overflow-hidden !rounded-full'
-								showUploadList={false}
-								action='https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188'
-								beforeUpload={beforeUpload}
-								onChange={handleChange}>
-								{imageUrl ? (
-									<img
-										src={imageUrl}
-										alt='avatar'
-										className='rounded-full w-[100px] h-[100px] object-cover'
-									/>
-								) : (
-									uploadButton
-								)}
-							</Upload>
+							<div className='flex justify-center'>
+								<img
+									src={`https://ui-avatars.com/api/?name=${info?.firstName}&background=0D8ABC&color=fff`}
+									alt='avatar'
+									className='rounded-full w-[100px] h-[100px] object-cover'
+								/>
+							</div>
+
 							<div className='py-2'>
 								<h3 className='font-bold text-lg md:text-2xl text-gray-800 mb-1'>
 									{!!info?.firstName && !!info?.lastName && info?.firstName + " " + info?.lastName}

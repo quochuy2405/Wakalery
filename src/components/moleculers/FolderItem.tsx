@@ -45,16 +45,17 @@ const FolderItem: React.FC<FolderItemProps> = ({ data, onCompletedMove }) => {
 	];
 	const onDeleteImage = async () => {
 		dispatch(startLoading());
+		setIsDeleted(false);
 		await deleteFolderOrImage({ fileId: Number(data.userDirectoryId), type: "FOLDER" })
-			.then(() => {
+			.then(async () => {
 				message.success("Deleted.");
+
 				onCompletedMove?.(data);
 			})
 			.catch(() => {
 				message.error("Something error!!!");
 			})
 			.finally(() => {
-				setIsDeleted(false);
 				dispatch(closeLoading());
 			});
 	};
@@ -74,7 +75,7 @@ const FolderItem: React.FC<FolderItemProps> = ({ data, onCompletedMove }) => {
 					onCancel={() => setIsDeleted(false)}
 					okText='OK'
 					placement='top'
-					open={isDelete}
+					open={!!isDelete}
 					cancelText='Cancel'>
 					<Dropdown menu={menuProps}>
 						<div className='p-3 w-9 h-9 ease-linear duration-200 flex items-center justify-center hover:bg-neutral-100 cursor-pointer rounded-full'>

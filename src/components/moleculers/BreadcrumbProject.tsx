@@ -28,7 +28,8 @@ const BreadcrumbProject: React.FC<BreadcrumbProjectProps> = ({ refresh }) => {
 	}, [projectId, userDirectoryId]);
 	return (
 		<div className='flex md:items-center gap-2 lg:justify-between bg-white w-full rounded-xl p-2 lg:p-3 shadow-lg flex-col md:flex-row '>
-			<Breadcrumb
+      <Breadcrumb
+        className="flex-1"
 				items={[
 					{
 						title: (

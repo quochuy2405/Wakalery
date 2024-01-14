@@ -1,4 +1,5 @@
 import { UploadFace } from "@/components/moleculers";
+import { RobotType } from "@/redux/features/robot";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Button, Form, Spin } from "antd";
 import TextArea from "antd/es/input/TextArea";
@@ -6,7 +7,11 @@ import React from "react";
 import { PiRobotLight } from "react-icons/pi";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const botComponents = ({ onMethods }: { onMethods?: any }) => ({
+export const botComponents = ({
+	onMethods,
+}: {
+	onMethods?: (type: RobotType["type"]) => void;
+}) => ({
 	hello: {
 		title: "Welcome to project",
 		body: <h2>I'm Warkary bot</h2>,
@@ -19,13 +24,13 @@ export const botComponents = ({ onMethods }: { onMethods?: any }) => ({
 			<div className='flex flex-col gap-2'>
 				<h2> Choose the methods do you want. </h2>
 				<div className='flex gap-2'>
-					<Button type='dashed' onClick={() => onMethods("text")} ghost>
+					<Button type='dashed' onClick={() => onMethods?.("record")} ghost>
 						Text Box
 					</Button>
-					<Button type='dashed' onClick={() => onMethods("face")} ghost>
+					<Button type='dashed' onClick={() => onMethods?.("face")} ghost>
 						Face
 					</Button>
-					<Button type='dashed' onClick={() => onMethods("face")} ghost>
+					<Button type='dashed' onClick={() => onMethods?.("similar")} ghost>
 						Similar
 					</Button>
 				</div>
@@ -56,7 +61,7 @@ export const botComponents = ({ onMethods }: { onMethods?: any }) => ({
 	},
 
 	face: {
-		title: "I need your face.",
+		title: "Upload the face you want find.",
 		body: (
 			<Form.Item labelCol={{ span: 6 }} name={"face"} wrapperCol={{ span: 100 }} className='w-full'>
 				<UploadFace />
@@ -64,6 +69,49 @@ export const botComponents = ({ onMethods }: { onMethods?: any }) => ({
 		),
 		show: true,
 		type: "face",
+	},
+
+	faceRecord: {
+		title: "I need your face.",
+		body: (
+			<Form.Item
+				labelCol={{ span: 6 }}
+				name={"faceRecord"}
+				wrapperCol={{ span: 100 }}
+				className='w-full'>
+				<UploadFace />
+			</Form.Item>
+		),
+		show: true,
+		type: "face-record",
+	},
+	similar: {
+		title: "Upload your image to find similar.",
+		body: (
+			<Form.Item
+				labelCol={{ span: 6 }}
+				name={"similar"}
+				wrapperCol={{ span: 100 }}
+				className='w-full'>
+				<UploadFace />
+			</Form.Item>
+		),
+		show: true,
+		type: "similar",
+	},
+	similarRecord: {
+		title: "I need your image to find similar.",
+		body: (
+			<Form.Item
+				labelCol={{ span: 6 }}
+				name={"similarRecord"}
+				wrapperCol={{ span: 100 }}
+				className='w-full'>
+				<UploadFace />
+			</Form.Item>
+		),
+		show: true,
+		type: "similar-record",
 	},
 	waiting: {
 		title: "Waiting...",

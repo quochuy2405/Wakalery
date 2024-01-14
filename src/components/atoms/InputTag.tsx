@@ -6,7 +6,7 @@ interface InputTagProps {
 	value?: Array<string>;
 }
 const InputTag: React.FC<InputTagProps> = ({ value, onChange }) => {
-	const [items, setItems] = useState(["dog", "cat", "people", "hat"]);
+	const [items, setItems] = useState(["tree", "cat", "person", "hat"]);
 	const [name, setName] = useState("");
 	const inputRef = useRef<InputRef>(null);
 

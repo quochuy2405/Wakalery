@@ -97,7 +97,8 @@ const ImageItem: React.FC<ImageItemProps> = ({
 	};
 	const onDeleteImage = async () => {
 		dispatch(startLoading());
-		await deleteFolderOrImage({ fileId: Number(image.photoSerialId), type: "IMAGE" })
+		setIsDeleted(false);
+		await deleteFolderOrImage({ fileId: Number(image.photoSerialId), type: "PHOTO" })
 			.then(() => {
 				message.success("Deleted.");
 				onCompletedMove?.(image);
@@ -107,7 +108,6 @@ const ImageItem: React.FC<ImageItemProps> = ({
 				message.error("Something error!!!");
 			})
 			.finally(() => {
-				setIsDeleted(false);
 				dispatch(closeLoading());
 			});
 	};
