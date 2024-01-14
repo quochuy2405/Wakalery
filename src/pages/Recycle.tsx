@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 
 const Deleted = () => {
 	const [trash, setTrash] = useState<PhotoDirectory[]>([]);
+	const [refresh, setRefresh] = useState<boolean>(false);
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const dispatch = useDispatch<ThunkDispatch<RootState, never, any>>();
 
@@ -22,7 +23,7 @@ const Deleted = () => {
 			.finally(() => {
 				dispatch(closeLoading());
 			});
-	}, []);
+	}, [refresh]);
 
 	return (
 		<div className='w-full h-screen !h-[100dvh] overflow-y-auto flex'>
@@ -42,8 +43,8 @@ const Deleted = () => {
 					</svg>{" "}
 					<p>Recycle</p>
 				</div>
-				<section className='mt-2 max-w-full'>
-					<TableTrash data={trash} />
+				<section className='mt-2 max-w-[120vw]'>
+					<TableTrash refresh={() => setRefresh(e=>!e )} data={trash} />
 				</section>
 			</div>
 		</div>

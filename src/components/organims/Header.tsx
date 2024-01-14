@@ -26,7 +26,7 @@ const Header: React.FC<HeaderProps> = ({ page }) => {
 	}, [dispatch, token]);
 	return (
 		<>
-			<div className='h-fit lg:h-20 w-screen shadow-sm sticky top-0 bg-white/70 flex items-center justify-between gap-16 z-20 px-8 py-2 lg:py-4'>
+			<div className='h-fit lg:h-20 w-full shadow-sm sticky top-0 bg-white/70 flex items-center justify-between gap-16 z-20 px-8 py-2 lg:py-4'>
 				<Link to='/' className='w-fit font-semibold text-base'>
 					Wakalery
 				</Link>
