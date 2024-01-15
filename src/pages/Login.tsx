@@ -24,28 +24,28 @@ const Login = () => {
 				<LoginForm />
 			</div>
 			<div className='hidden lg:block flex-[2] h-full'>
-				<div className='grid grid-cols-2 w-full  h-full grid-rows-2 '>
+				<div className='grid grid-cols-2 w-full  h-full grid-rows-2 gap-1'>
 					<div className='row-span-2'>
 						<img
-							className='h-full w-full object-cover'
+							className='h-full w-full object-cover rounded-sm'
 							alt={"Thumb"}
-							src='/login-image.png'
+							src='https://i.pinimg.com/736x/1f/aa/01/1faa01ca4844d5975ba812a85867ccbb.jpg'
 							loading='lazy'
 						/>
 					</div>
 					<div>
 						<img
-							className='h-full w-full object-cover'
+							className='h-full w-full object-cover rounded-sm'
 							alt={"Thumb"}
-							src='/login-image.png'
+							src='https://i.pinimg.com/564x/1d/93/38/1d9338bd981aca36c13168222d65b3da.jpg'
 							loading='lazy'
 						/>
 					</div>
 					<div className='col-start-2 row-start-2'>
 						<img
-							className='h-full w-full object-cover'
+							className='h-full w-full object-cover rounded-sm'
 							alt={"Thumb"}
-							src='/login-image.png'
+							src='https://i.pinimg.com/564x/cb/f3/f5/cbf3f5b4403ba5198033c0308020770d.jpg'
 							loading='lazy'
 						/>
 					</div>

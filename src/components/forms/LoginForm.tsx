@@ -8,8 +8,6 @@ import { ThunkDispatch } from "@reduxjs/toolkit";
 import { Button, message } from "antd";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { FaFacebook } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
 import { useDispatch } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { TextField, TextFieldPassword } from "../atoms";
@@ -94,12 +92,12 @@ const LoginForm: React.FC = () => {
 						className='bg-emerald-500 flex items-center justify-center button-form mt-6'>
 						Sign in
 					</Button>
-					<span className='text-xs font-semibold text-center text-black/70 h-10'>
+					{/* <span className='text-xs font-semibold text-center text-black/70 h-10'>
 						Or continue with
-					</span>
+					</span> */}
 				</form>
 
-				<div className='flex-1 flex h-full justify-center items-start gap-4'>
+				{/* <div className='flex-1 flex h-full justify-center items-start gap-4'>
 					<Button
 						type='primary'
 						icon={<FcGoogle size={24} />}
@@ -110,7 +108,7 @@ const LoginForm: React.FC = () => {
 						icon={<FaFacebook size={24} color='#1778F2' />}
 						className='!bg-neutral-100 !rounded-md hover:!bg-white hover:ring-2 hover:ring-[#1778F2] !h-14 !w-24 !flex !items-center !justify-center !border-2'
 					/>
-				</div>
+				</div> */}
 				<span className='text-xs font-semibold text-center text-black/70 h-10 mt-5'>
 					{"If you haven't an account. Let's"}
 					<Link to='/signup' className='px-1 text-main hover:underline cursor-pointer'>

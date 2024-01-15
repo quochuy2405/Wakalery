@@ -40,7 +40,7 @@ const FolderItem: React.FC<FolderItemProps> = ({ folder, onCompletedMove, onUpda
 		},
 		{
 			label: "Rename",
-			key: "1",
+			key: "2",
 			icon: <BiRename />,
 			onClick: () => {
 				form.setFieldValue("folderName", folder.folderName);
